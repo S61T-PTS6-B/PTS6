@@ -6,9 +6,12 @@
 package dao;
 
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import model.CarTracker;
 import model.NAW;
 
 /**
@@ -25,8 +28,16 @@ public class NawDAOImp implements NawDAO{
    
     
 
+    @Override
     public void createNaw(NAW naw) {
         em.persist(naw);     
+    }
+    
+    @Override
+    public List<NAW> getAllNaws() {
+        Query query;
+        query = em.createQuery("SELECT * FROM NAW");
+        return (List<NAW>)query.getResultList(); //TODO
     }
     
 }
