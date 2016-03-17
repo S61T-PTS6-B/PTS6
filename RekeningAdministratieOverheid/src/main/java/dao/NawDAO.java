@@ -5,6 +5,7 @@
  */
 package dao;
 
+import java.util.List;
 import model.NAW;
 
 /**
@@ -13,4 +14,6 @@ import model.NAW;
  */
 public interface NawDAO {
     public void createNaw(NAW naw);
+    
+    public List<NAW> getAllNaws();
 }

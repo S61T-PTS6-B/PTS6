@@ -19,18 +19,20 @@ import dao.NawDAOImp;
 import javax.servlet.RequestDispatcher;
 import model.CarTracker;
 import model.NAW;
+import service.CarTrackerService;
+import service.NAWService;
 
 /**
  *
  * @author koenv
  */
-@WebServlet(name = "CarTrackerAdm", urlPatterns = {"/CarTrackerAdm"})
+@WebServlet(name = "CarTrackerAdm", urlPatterns = {"/CarTrackerAdm", "/CarTrackerList", "/NawList"})
 public class DBServlet extends HttpServlet{
     @EJB
-    NawDAO nd;
+    NAWService ns;
     
     @EJB
-    CarTrackerDAO ctd;
+    CarTrackerService cts;
     
 
     protected void processRequest(HttpServletRequest req, HttpServletResponse res)  
@@ -46,20 +48,28 @@ public class DBServlet extends HttpServlet{
 
         switch (userPath) {
             case "/CarTrackerAdm": {
-                req.setAttribute("cartrackers", ctd.getAllCarTrackers());
                 RequestDispatcher view = req.getRequestDispatcher("index.jsp");
                 view.forward(req, res);
                 break;
             }
             case "/Index": {
-                req.setAttribute("cartrackers", ctd.getAllCarTrackers());
                 RequestDispatcher view = req.getRequestDispatcher("index.jsp");
                 view.forward(req, res);
                 break;
             }
             case "/": {
-                req.setAttribute("cartrackers", ctd.getAllCarTrackers());
                 RequestDispatcher view = req.getRequestDispatcher("index.jsp");
+                view.forward(req, res);
+                break;
+            }
+            case "/CarTrackerList": {
+                RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/cartrackerlist.jsp");
+                view.forward(req, res);
+                break;
+            }
+            case "/NawList": {
+                req.setAttribute("naws", ns.getAllNaws());
+                RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/NawList.jsp");
                 view.forward(req, res);
                 break;
             }
@@ -81,8 +91,7 @@ public class DBServlet extends HttpServlet{
             String city = req.getParameter("city");
             String telephone = req.getParameter("telephone");
             NAW n = new NAW(firstname, lastname, address, number, zipcode, city, telephone);
-            nd.createNaw(n);
-            
+            ns.createNAW(n);  
         }
     }
     

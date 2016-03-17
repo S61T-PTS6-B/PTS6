@@ -4,7 +4,6 @@
     Author     : koenv
 --%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -16,15 +15,10 @@
         <h1>Hello World!</h1>
         
                 
-        <p> <a href="CarTrackerAdm"> KLIK HIER MAX JA HAHAHAHHA </a> </p>
+        <p> <a href="NawList"> KLIK HIER MAX JA HAHAHAHHA </a> </p>
+
         
-        <select>
-         <c:forEach var="cartrackers" items="${cartrackers}">
-                 <option name="${cartrackers.getId()}" class="commentOnPost"><c:out value="${cartrackers.getNaw().getFirstname()}"/></c></option>
-         </c:forEach>
-        </select>
-        
-        <p><h1>Cartracker toevoegen: </h1></p>
+        <p><h1>Persoon toevoegen: </h1></p>
         <form action="CarTrackerAdm" method="POST">
             <p>First name: <input type="text" name="firstname" /></p>
             <p>Last name: <input type="text" name="lastname" /></p>

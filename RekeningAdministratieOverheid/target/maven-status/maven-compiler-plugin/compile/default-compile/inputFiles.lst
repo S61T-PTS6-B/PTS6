@@ -2,6 +2,8 @@ C:\Users\koenv\Documents\GitHub\PTS6B\RekeningAdministratieOverheid\src\main\jav
 C:\Users\koenv\Documents\GitHub\PTS6B\RekeningAdministratieOverheid\src\main\java\controller\DBServlet.java
 C:\Users\koenv\Documents\GitHub\PTS6B\RekeningAdministratieOverheid\src\main\java\dao\NawDAO.java
 C:\Users\koenv\Documents\GitHub\PTS6B\RekeningAdministratieOverheid\src\main\java\model\NAW.java
+C:\Users\koenv\Documents\GitHub\PTS6B\RekeningAdministratieOverheid\src\main\java\service\CarTrackerService.java
 C:\Users\koenv\Documents\GitHub\PTS6B\RekeningAdministratieOverheid\src\main\java\dao\CarTrackerDAOImp.java
+C:\Users\koenv\Documents\GitHub\PTS6B\RekeningAdministratieOverheid\src\main\java\service\NAWService.java
 C:\Users\koenv\Documents\GitHub\PTS6B\RekeningAdministratieOverheid\src\main\java\model\CarTracker.java
 C:\Users\koenv\Documents\GitHub\PTS6B\RekeningAdministratieOverheid\src\main\java\dao\CarTrackerDAO.java
