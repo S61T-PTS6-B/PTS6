@@ -38,8 +38,14 @@ public class testDB {
 
     @Test
     public void testDBInsert() {
-        
+        assertTrue(true);
     }
+    
+    @Test
+    public void testDBSelect() {
+        assertTrue(true);
+    }
+    
     // TODO add test methods here.
     // The methods must be annotated with annotation @Test. For example:
     //
