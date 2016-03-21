@@ -14,6 +14,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/default.css" />
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
     </head>
@@ -24,7 +25,7 @@
         <ul>
          <c:forEach var="naws" items="${naws}">
              <form action="PersonalData" method="post">
-                 <button type="submit"><c:out value="${naws.firstname}"/></c></button>
+                 <button class="myButton" type="submit"><c:out value="${naws.firstname}"/></c> <c:out value="${naws.lastname}"/></c></button>
                  <input type="hidden" name="id" value="${naws.id}">
              </form>
          </c:forEach>

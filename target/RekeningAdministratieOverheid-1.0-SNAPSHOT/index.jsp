@@ -11,15 +11,9 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
     </head>
-    <body>
-        <h1>Hello World!</h1>
-        
-                
-        <p> <a href="NawList"> KLIK HIER MAX JA HAHAHAHHA </a> </p>
-
-        
+    <body>      
         <p><h1>Persoon toevoegen: </h1></p>
-        <form action="CarTrackerAdm" method="POST">
+        <form class= "pure-form" action="CarTrackerAdm" method="POST">
             <p>First name: <input type="text" name="firstname" /></p>
             <p>Last name: <input type="text" name="lastname" /></p>
             <p>Address: <input type="text" name="address" /></p>
@@ -34,6 +28,7 @@
             <input type="submit">
         </form>
     
+        <p> <a href="NawList"> Memberlist </a> </p>
 
     </body>
 </html>

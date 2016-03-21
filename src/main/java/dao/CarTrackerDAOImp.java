@@ -57,4 +57,37 @@ public class CarTrackerDAOImp implements CarTrackerDAO{
         return ct;
     }
 
+    @Override
+    public void changeOwner(CarTracker ct, NAW naw) {
+        ct.setNaw(naw);
+    }
+
+    @Override
+    public void changePrizeCategory(CarTracker ct, double prizecategory) {
+        ct.setTariefCategorie(prizecategory);
+        
+    }
+
+    @Override
+    public void changeLicensePlate(CarTracker ct, String licenseplate) {
+        ct.setKenteken(licenseplate);
+    }
+
+    @Override
+    public void changeModelCar(CarTracker ct, String modelcar) {
+        ct.setModelAuto(modelcar);
+    }
+
+    @Override
+    public void changeBrandCar(CarTracker ct, String brandcar) {
+        ct.setMerkAuto(brandcar);
+    }
+
+    @Override
+    public void changeWebsiteSubscription(CarTracker ct, Boolean subscription) {
+        ct.setRekeningrijdersWebsite(subscription);
+    }
+    
+    
+
 }

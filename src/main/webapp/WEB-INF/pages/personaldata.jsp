@@ -13,21 +13,80 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/default.css" />
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
-        <ul>
-            <c:out value="${theUser.naw.getFirstname()}"/>
-            <c:out value="${theUser.naw.getLastname()}"/>
-            <c:out value="${theUser.naw.getTelephone()}"/>
-            <c:out value="${theUser.naw.getCity()}"/>
-            <c:out value="${theUser.getKenteken()}"/>
-            <c:out value="${theUser.getModelAuto()}"/>
-            <c:out value="${theUser.getMerkAuto()}"/>
-            <c:out value="${theUser.getTariefCategorie()}"/>
+        <h1>Personal Data</h1>           
+                <table>
+                    <thead>
+                    <tr>
+                        <th>
+                            First name
+                        </th>
+                        <th >
+                            Last name
+                        </th>
+                        <th>
+                            Telephone
+                        </th>
+                        <th>
+                            City
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td >
+                            <c:out value="${theUser.naw.getFirstname()}"/>
+                        </td>
+                        <td>
+                            <c:out value="${theUser.naw.getLastname()}"/>
+                        </td>
+                        <td>
+                            <c:out value="${theUser.naw.getTelephone()}"/>
+                        </td>
+                        <td>
+                            <c:out value="${theUser.naw.getCity()}"/>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>
+                            License plate
+                        </th>
+                        <th >
+                            Brand
+                        </th>
+                        <th>
+                            Model
+                        </th>
+                        <th>
+                            Prize category
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td >
+                            <c:out value="${theUser.getKenteken()}"/>
+                        </td>
+                        <td>
+                            <c:out value="${theUser.getMerkAuto()}"/>
+                        </td>
+                        <td>
+                            <c:out value="${theUser.getModelAuto()}"/>
+                        </td>
+                        <td>
+                            <c:out value="${theUser.getTariefCategorie()}"/>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             
-        </ul>
     </body>
 </html>

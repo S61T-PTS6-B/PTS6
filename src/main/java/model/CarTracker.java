@@ -35,22 +35,22 @@ public class CarTracker implements Serializable {
     private Long id;
     
     private NAW naw;
-    private double tariefCategorie;
-    private String kenteken;
-    private String modelAuto;
-    private String merkAuto;
-    private boolean rekeningrijdersWebsite;
+    private double prizeCategory;
+    private String licensePlate;
+    private String modelCar;
+    private String brandCar;
+    private boolean websiteSubscription;
 
     public CarTracker() {
     }
     
-    public CarTracker(NAW naw, double tariefCategorie, String kenteken, String modelAuto, String merkAuto, boolean rekeningrijdersWebsite) {
+    public CarTracker(NAW naw, double prizeCategory, String licensePlate, String modelCar, String brandCar, boolean websiteSubscription) {
         this.naw = naw;
-        this.tariefCategorie = tariefCategorie;
-        this.kenteken = kenteken;
-        this.modelAuto = modelAuto;
-        this.merkAuto = merkAuto;
-        this.rekeningrijdersWebsite = rekeningrijdersWebsite;
+        this.prizeCategory = prizeCategory;
+        this.licensePlate = licensePlate;
+        this.modelCar = modelCar;
+        this.brandCar = brandCar;
+        this.websiteSubscription = websiteSubscription;
     }
 
     public NAW getNaw() {
@@ -62,43 +62,43 @@ public class CarTracker implements Serializable {
     }
 
     public double getTariefCategorie() {
-        return tariefCategorie;
+        return prizeCategory;
     }
 
     public void setTariefCategorie(double tariefCategorie) {
-        this.tariefCategorie = tariefCategorie;
+        this.prizeCategory = tariefCategorie;
     }
 
     public String getKenteken() {
-        return kenteken;
+        return licensePlate;
     }
 
     public void setKenteken(String kenteken) {
-        this.kenteken = kenteken;
+        this.licensePlate = kenteken;
     }
 
     public String getModelAuto() {
-        return modelAuto;
+        return modelCar;
     }
 
     public void setModelAuto(String modelAuto) {
-        this.modelAuto = modelAuto;
+        this.modelCar = modelAuto;
     }
 
     public String getMerkAuto() {
-        return merkAuto;
+        return brandCar;
     }
 
     public void setMerkAuto(String merkAuto) {
-        this.merkAuto = merkAuto;
+        this.brandCar = merkAuto;
     }
 
     public boolean isRekeningrijdersWebsite() {
-        return rekeningrijdersWebsite;
+        return websiteSubscription;
     }
 
     public void setRekeningrijdersWebsite(boolean rekeningrijdersWebsite) {
-        this.rekeningrijdersWebsite = rekeningrijdersWebsite;
+        this.websiteSubscription = rekeningrijdersWebsite;
     }
 
     public Long getId() {

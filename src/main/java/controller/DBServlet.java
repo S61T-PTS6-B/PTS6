@@ -5,9 +5,6 @@
  */
 package controller;
 
-import dao.CarTrackerDAO;
-import dao.CarTrackerDAOImp;
-import dao.NawDAO;
 import java.io.IOException;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -15,7 +12,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import dao.NawDAOImp;
 import javax.servlet.RequestDispatcher;
 import model.CarTracker;
 import model.NAW;
@@ -114,6 +110,42 @@ public class DBServlet extends HttpServlet{
                 req.setAttribute("theUser", ct);
                 RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/personaldata.jsp");
                 view.forward(req, res);
+        }
+        if (userPath.equals("/PrizeCategoryChange"))
+        {
+            double category = Double.parseDouble(req.getParameter("category"));
+            
+            id = req.getParameter("id");
+            NAW naw = ns.getNAWById(id);
+            CarTracker ct = cts.getCarTrackerById(naw);
+            ct.setTariefCategorie(category);
+        }
+        if (userPath.equals("/LicenseChange"))
+        {
+            String license = req.getParameter("license");
+            
+            id = req.getParameter("id");
+            NAW naw = ns.getNAWById(id);
+            CarTracker ct = cts.getCarTrackerById(naw);
+            ct.setKenteken(license);
+        }
+        if (userPath.equals("/CarModelChange"))
+        {
+            String carmodel = req.getParameter("carmodel");
+            
+            id = req.getParameter("id");
+            NAW naw = ns.getNAWById(id);
+            CarTracker ct = cts.getCarTrackerById(naw);
+            ct.setModelAuto(carmodel);
+        }
+        if (userPath.equals("/CarBrandChange"))
+        {
+            String carbrand = req.getParameter("carbrand");
+            
+            id = req.getParameter("id");
+            NAW naw = ns.getNAWById(id);
+            CarTracker ct = cts.getCarTrackerById(naw);
+            ct.setMerkAuto(carbrand);
         }
 
         

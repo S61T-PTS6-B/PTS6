@@ -25,4 +25,16 @@ public interface CarTrackerDAO {
     public List<CarTracker> getAllCarTrackers();
 
     public CarTracker getCarTrackerByNaw(NAW naw);
+    
+    public void changeOwner(CarTracker ct, NAW naw);
+    
+    public void changePrizeCategory(CarTracker ct, double prizecategory);
+    
+    public void changeLicensePlate(CarTracker ct, String licenseplate);
+    
+    public void changeModelCar(CarTracker ct, String modelcar);
+    
+    public void changeBrandCar(CarTracker ct, String brandcar);
+    
+    public void changeWebsiteSubscription(CarTracker ct, Boolean subscription);
 }
