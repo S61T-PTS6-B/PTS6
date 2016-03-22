@@ -8,6 +8,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/default.css" />
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
@@ -21,6 +22,7 @@
                  <option name="${cartrackers.getId()}"><c:out value="${cartrackers.getNaw().getFirstname()}"/></c> <c:out value="${cartrackers.getNaw().getLastname()}"/></c></option>
          </c:forEach>
         </select>
+
          
     </body>
 </html>

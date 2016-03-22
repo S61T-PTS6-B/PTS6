@@ -1,20 +1,21 @@
 package model;
 
 import javax.annotation.Generated;
+import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
-import model.NAW;
+import model.CarOwner;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2016-03-20T12:17:30")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2016-03-22T15:06:35")
 @StaticMetamodel(CarTracker.class)
 public class CarTracker_ { 
 
-    public static volatile SingularAttribute<CarTracker, String> merkAuto;
-    public static volatile SingularAttribute<CarTracker, Boolean> rekeningrijdersWebsite;
-    public static volatile SingularAttribute<CarTracker, NAW> naw;
-    public static volatile SingularAttribute<CarTracker, String> kenteken;
-    public static volatile SingularAttribute<CarTracker, String> modelAuto;
+    public static volatile SingularAttribute<CarTracker, String> brandCar;
+    public static volatile SingularAttribute<CarTracker, String> modelCar;
+    public static volatile SingularAttribute<CarTracker, String> licensePlate;
+    public static volatile SingularAttribute<CarTracker, Double> prizeCategory;
+    public static volatile SingularAttribute<CarTracker, Boolean> websiteSubscription;
     public static volatile SingularAttribute<CarTracker, Long> id;
-    public static volatile SingularAttribute<CarTracker, Double> tariefCategorie;
+    public static volatile ListAttribute<CarTracker, CarOwner> carowners;
 
 }

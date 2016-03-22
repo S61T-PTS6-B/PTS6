@@ -5,17 +5,14 @@
  */
 package dao;
 
-import java.util.List;
+import model.CarOwner;
+import model.CarTracker;
 import model.NAW;
 
 /**
  *
  * @author koenv
  */
-public interface NawDAO {
-    public void createNaw(NAW naw);
-    
-    public List<NAW> getAllNaws();
-
-    public NAW getNawById(Long id);
+public interface CarOwnerDAO {
+    public void createCarOwner(CarOwner co);
 }

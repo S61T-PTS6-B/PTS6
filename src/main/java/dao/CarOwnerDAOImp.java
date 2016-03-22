@@ -5,13 +5,11 @@
  */
 package dao;
 
-
-import java.util.List;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
+import model.CarOwner;
 import model.CarTracker;
 import model.NAW;
 
@@ -21,32 +19,13 @@ import model.NAW;
  */
 @Local
 @Stateless
-public class NawDAOImp implements NawDAO{
+public class CarOwnerDAOImp implements CarOwnerDAO{
     @PersistenceContext(unitName = "com.PTS6B_RekeningAdministratieOverheid_war_1.0-SNAPSHOTPU")
     EntityManager em;
-
-    public NawDAOImp() {
-    }
-   
-    
-
-    @Override
-    public void createNaw(NAW naw) {
-        em.persist(naw);   
-        
-    }
     
     @Override
-    public List<NAW> getAllNaws() {
-        Query query;
-        query = em.createQuery("SELECT n FROM NAW n");
-        return (List<NAW>)query.getResultList(); //TODO
-    }
-
-    @Override
-    public NAW getNawById(Long id) {
-        NAW naw = em.find(NAW.class, id);
-        return naw;
+    public void createCarOwner(CarOwner co) {
+        em.persist(co);
     }
     
 }

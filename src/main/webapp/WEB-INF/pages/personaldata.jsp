@@ -87,6 +87,7 @@
                     </tr>
                     </tbody>
                 </table>
-            
+                        <a href="ChangeCT">Change</a><br />
+                        <a href="NawList">Terug naar personenlijst</a>
     </body>
 </html>

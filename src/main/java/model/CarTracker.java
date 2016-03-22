@@ -7,13 +7,17 @@ package model;
 
 import dao.NawDAOImp;
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.TableGenerator;
 
 /**
@@ -24,17 +28,18 @@ import javax.persistence.TableGenerator;
 public class CarTracker implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @TableGenerator(
-    name = "tableGen",
-    allocationSize = 1,
-    initialValue = 1)
+            name = "tableGen",
+            allocationSize = 1,
+            initialValue = 1)
     @Id
-    @GeneratedValue(strategy=GenerationType.TABLE,
-            generator="tableGen")
+    @GeneratedValue(strategy = GenerationType.TABLE,
+            generator = "tableGen")
     private Long id;
     
-    private NAW naw;
+    @OneToMany
+    private List<CarOwner> carowners;
     private double prizeCategory;
     private String licensePlate;
     private String modelCar;
@@ -43,22 +48,13 @@ public class CarTracker implements Serializable {
 
     public CarTracker() {
     }
-    
-    public CarTracker(NAW naw, double prizeCategory, String licensePlate, String modelCar, String brandCar, boolean websiteSubscription) {
-        this.naw = naw;
+
+    public CarTracker(double prizeCategory, String licensePlate, String modelCar, String brandCar, boolean websiteSubscription) {
         this.prizeCategory = prizeCategory;
         this.licensePlate = licensePlate;
         this.modelCar = modelCar;
         this.brandCar = brandCar;
         this.websiteSubscription = websiteSubscription;
-    }
-
-    public NAW getNaw() {
-        return naw;
-    }
-
-    public void setNaw(NAW naw) {
-        this.naw = naw;
     }
 
     public double getTariefCategorie() {
@@ -133,5 +129,5 @@ public class CarTracker implements Serializable {
     public String toString() {
         return "model.CarTracker[ id=" + id + " ]";
     }
-    
+
 }

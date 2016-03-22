@@ -59,12 +59,14 @@ public class CarTrackerDAOImp implements CarTrackerDAO{
 
     @Override
     public void changeOwner(CarTracker ct, NAW naw) {
-        ct.setNaw(naw);
+        //ct.setNaw(naw);
+        //TODO
     }
 
     @Override
     public void changePrizeCategory(CarTracker ct, double prizecategory) {
         ct.setTariefCategorie(prizecategory);
+        em.merge(ct);
         
     }
 
@@ -81,6 +83,7 @@ public class CarTrackerDAOImp implements CarTrackerDAO{
     @Override
     public void changeBrandCar(CarTracker ct, String brandcar) {
         ct.setMerkAuto(brandcar);
+        em.merge(ct);
     }
 
     @Override

@@ -1,9 +1,13 @@
 C:\Users\koenv\Documents\GitHub\PTS6B\src\main\java\dao\NawDAOImp.java
-C:\Users\koenv\Documents\GitHub\PTS6B\src\main\java\controller\DBServlet.java
 C:\Users\koenv\Documents\GitHub\PTS6B\src\main\java\service\CarTrackerService.java
 C:\Users\koenv\Documents\GitHub\PTS6B\src\main\java\dao\NawDAO.java
+C:\Users\koenv\Documents\GitHub\PTS6B\src\main\java\service\CarOwnerService.java
+C:\Users\koenv\Documents\GitHub\PTS6B\src\main\java\dao\CarOwnerDAOImp.java
 C:\Users\koenv\Documents\GitHub\PTS6B\src\main\java\model\CarTracker.java
-C:\Users\koenv\Documents\GitHub\PTS6B\src\main\java\dao\CarTrackerDAOImp.java
 C:\Users\koenv\Documents\GitHub\PTS6B\src\main\java\model\NAW.java
 C:\Users\koenv\Documents\GitHub\PTS6B\src\main\java\dao\CarTrackerDAO.java
 C:\Users\koenv\Documents\GitHub\PTS6B\src\main\java\service\NAWService.java
+C:\Users\koenv\Documents\GitHub\PTS6B\src\main\java\controller\DBServlet.java
+C:\Users\koenv\Documents\GitHub\PTS6B\src\main\java\dao\CarOwnerDAO.java
+C:\Users\koenv\Documents\GitHub\PTS6B\src\main\java\dao\CarTrackerDAOImp.java
+C:\Users\koenv\Documents\GitHub\PTS6B\src\main\java\model\CarOwner.java
