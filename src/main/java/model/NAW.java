@@ -6,10 +6,15 @@
 package model;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.TableGenerator;
 
@@ -37,6 +42,9 @@ public class NAW implements Serializable {
     private String zipcode;
     private String city;
     private String telephone;
+    
+    @OneToMany
+    private List<CarOwner> carowners;
 
     public NAW() {
     }
@@ -107,6 +115,10 @@ public class NAW implements Serializable {
     public void setTelephone(String telephone) {
         this.telephone = telephone;
     }
+    
+//    public void addCarTracker(CarTracker ct) {
+//        cartrackers.add(ct);
+//    }
     
     
 

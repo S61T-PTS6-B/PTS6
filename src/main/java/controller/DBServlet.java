@@ -13,8 +13,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.RequestDispatcher;
+import model.CarOwner;
 import model.CarTracker;
 import model.NAW;
+import service.CarOwnerService;
 import service.CarTrackerService;
 import service.NAWService;
 
@@ -22,13 +24,24 @@ import service.NAWService;
  *
  * @author koenv
  */
-@WebServlet(name = "CarTrackerAdm", urlPatterns = {"/CarTrackerAdm", "/CarTrackerList", "/NawList", "/PersonalData"})
+@WebServlet(name = "CarTrackerAdm", urlPatterns = {"/CarTrackerAdm", 
+                                                   "/CarTrackerList", 
+                                                   "/NawList", 
+                                                   "/PersonalData", 
+                                                   "/ChangeCT", 
+                                                   "/CarBrandChange", 
+                                                   "/CarModelChange", 
+                                                   "/LicenseChange", 
+                                                   "/PrizeCategoryChange"})
 public class DBServlet extends HttpServlet{
     @EJB
     NAWService ns;
     
     @EJB
     CarTrackerService cts;
+    
+    @EJB
+    CarOwnerService cos;
     
     private String id;
     
@@ -68,11 +81,13 @@ public class DBServlet extends HttpServlet{
             case "/NawList": {
                 req.setAttribute("naws", ns.getAllNaws());
                 RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/NawList.jsp");
-                view.forward(req, res);
+                view.forward(req, res); 
                 break;
             }
-            case "/PersonalData": {
-                
+            case "/ChangeCT": {
+                RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/changecartracker.jsp");
+                view.forward(req, res);
+                break;
             }
             
         }
@@ -94,12 +109,16 @@ public class DBServlet extends HttpServlet{
             String telephone = req.getParameter("telephone");
             NAW n = new NAW(firstname, lastname, address, number, zipcode, city, telephone);
             ns.createNAW(n);  
+            
             double category = Double.parseDouble(req.getParameter("category"));
             String license = req.getParameter("license");
             String carmodel = req.getParameter("carmodel");
             String carbrand = req.getParameter("carbrand");
-            CarTracker ct = new CarTracker(n, category, license, carmodel, carbrand, true);
+            CarTracker ct = new CarTracker(category, license, carmodel, carbrand, true);
             cts.createCarTracker(ct);
+            
+            CarOwner co = new CarOwner(ct, n);
+            cos.createCarOwner(co);
             
         }
         if (userPath.equals("/PersonalData"))
@@ -114,38 +133,46 @@ public class DBServlet extends HttpServlet{
         if (userPath.equals("/PrizeCategoryChange"))
         {
             double category = Double.parseDouble(req.getParameter("category"));
-            
-            id = req.getParameter("id");
             NAW naw = ns.getNAWById(id);
             CarTracker ct = cts.getCarTrackerById(naw);
+            req.setAttribute("theUser", ct); 
             ct.setTariefCategorie(category);
+            RequestDispatcher viewResult = req.getRequestDispatcher("/WEB-INF/pages/personaldata.jsp");
+            viewResult.forward(req, res); 
         }
         if (userPath.equals("/LicenseChange"))
         {
             String license = req.getParameter("license");
-            
-            id = req.getParameter("id");
+
             NAW naw = ns.getNAWById(id);
             CarTracker ct = cts.getCarTrackerById(naw);
+            req.setAttribute("theUser", ct); 
             ct.setKenteken(license);
+            RequestDispatcher viewResult = req.getRequestDispatcher("/WEB-INF/pages/personaldata.jsp");
+            viewResult.forward(req, res); 
         }
         if (userPath.equals("/CarModelChange"))
         {
             String carmodel = req.getParameter("carmodel");
-            
-            id = req.getParameter("id");
+
             NAW naw = ns.getNAWById(id);
             CarTracker ct = cts.getCarTrackerById(naw);
+            req.setAttribute("theUser", ct); 
             ct.setModelAuto(carmodel);
+            RequestDispatcher viewResult = req.getRequestDispatcher("/WEB-INF/pages/personaldata.jsp");
+            viewResult.forward(req, res);  
         }
         if (userPath.equals("/CarBrandChange"))
         {
-            String carbrand = req.getParameter("carbrand");
-            
-            id = req.getParameter("id");
             NAW naw = ns.getNAWById(id);
             CarTracker ct = cts.getCarTrackerById(naw);
-            ct.setMerkAuto(carbrand);
+            req.setAttribute("theUser", ct); 
+            String carbrand = req.getParameter("carbrand");
+            cts.changeBrandCar(ct, carbrand);
+            req.setAttribute("theUser", ct);
+            RequestDispatcher viewResult = req.getRequestDispatcher("/WEB-INF/pages/personaldata.jsp");
+            viewResult.forward(req, res);  
+            
         }
 
         

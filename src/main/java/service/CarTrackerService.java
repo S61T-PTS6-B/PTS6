@@ -32,4 +32,9 @@ public class CarTrackerService {
     public CarTracker getCarTrackerById(NAW naw) {
         return ctd.getCarTrackerByNaw(naw);
     }
+    
+    public void changeBrandCar(CarTracker ct, String brand)
+    {
+        ctd.changeBrandCar(ct, brand);
+    }
 }

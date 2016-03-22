@@ -19,9 +19,10 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
         
-                        
+        
+        <div id="nawlist">  
+            <h1>Gebruikerlijst</h1>
         <ul>
          <c:forEach var="naws" items="${naws}">
              <form action="PersonalData" method="post">
@@ -29,6 +30,8 @@
                  <input type="hidden" name="id" value="${naws.id}">
              </form>
          </c:forEach>
-        </ul>
+        </ul>   
+        </div>
+<a href="CarTrackerAdm"> Persoon toevoegen </a>
     </body>
 </html>

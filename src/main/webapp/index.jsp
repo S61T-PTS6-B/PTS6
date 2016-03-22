@@ -8,11 +8,13 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/default.css" />
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
     </head>
-    <body>      
-        <p><h1>Persoon toevoegen: </h1></p>
+    <body>    
+        <div id="wrapper">
+        <p><h1>Persoon toevoegen: </h1></p><p> <a class="linkMember" href="NawList"> Memberlist </a> </p>
         <form class= "pure-form" action="CarTrackerAdm" method="POST">
             <p>First name: <input type="text" name="firstname" /></p>
             <p>Last name: <input type="text" name="lastname" /></p>
@@ -27,8 +29,8 @@
             <p>Car brand: <input type="text" name="carbrand" /></p>
             <input type="submit">
         </form>
-    
-        <p> <a href="NawList"> Memberlist </a> </p>
+        </div>
+        
 
     </body>
 </html>
