@@ -124,21 +124,32 @@ public class DBServlet extends HttpServlet{
         if (userPath.equals("/PersonalData"))
         {
                 id = req.getParameter("id");
+                
                 NAW naw = ns.getNAWById(id);
                 CarTracker ct = cts.getCarTrackerById(naw);
-                req.setAttribute("theUser", ct);
+                
+                req.setAttribute("theCT", ct);
+                req.setAttribute("theUser", naw);
+                
                 RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/personaldata.jsp");
                 view.forward(req, res);
         }
         if (userPath.equals("/PrizeCategoryChange"))
         {
             double category = Double.parseDouble(req.getParameter("category"));
+            
             NAW naw = ns.getNAWById(id);
             CarTracker ct = cts.getCarTrackerById(naw);
+            
             req.setAttribute("theUser", ct); 
-            ct.setTariefCategorie(category);
+            
+            cts.changePrizeCategory(ct, category);
+            
+            req.setAttribute("theCT", ct);
+            req.setAttribute("theUser", naw);
+            
             RequestDispatcher viewResult = req.getRequestDispatcher("/WEB-INF/pages/personaldata.jsp");
-            viewResult.forward(req, res); 
+            viewResult.forward(req, res);
         }
         if (userPath.equals("/LicenseChange"))
         {
@@ -147,7 +158,11 @@ public class DBServlet extends HttpServlet{
             NAW naw = ns.getNAWById(id);
             CarTracker ct = cts.getCarTrackerById(naw);
             req.setAttribute("theUser", ct); 
-            ct.setKenteken(license);
+            cts.changeLicense(ct, license);
+            
+            req.setAttribute("theCT", ct);
+            req.setAttribute("theUser", naw);
+            
             RequestDispatcher viewResult = req.getRequestDispatcher("/WEB-INF/pages/personaldata.jsp");
             viewResult.forward(req, res); 
         }
@@ -158,18 +173,27 @@ public class DBServlet extends HttpServlet{
             NAW naw = ns.getNAWById(id);
             CarTracker ct = cts.getCarTrackerById(naw);
             req.setAttribute("theUser", ct); 
-            ct.setModelAuto(carmodel);
+            cts.changeModelCar(ct, carmodel);
+            
+            req.setAttribute("theCT", ct);
+            req.setAttribute("theUser", naw);
+            
             RequestDispatcher viewResult = req.getRequestDispatcher("/WEB-INF/pages/personaldata.jsp");
-            viewResult.forward(req, res);  
+            viewResult.forward(req, res);
         }
         if (userPath.equals("/CarBrandChange"))
         {
             NAW naw = ns.getNAWById(id);
             CarTracker ct = cts.getCarTrackerById(naw);
+            
             req.setAttribute("theUser", ct); 
+            
             String carbrand = req.getParameter("carbrand");
             cts.changeBrandCar(ct, carbrand);
-            req.setAttribute("theUser", ct);
+            
+            req.setAttribute("theCT", ct);
+            req.setAttribute("theUser", naw);
+            
             RequestDispatcher viewResult = req.getRequestDispatcher("/WEB-INF/pages/personaldata.jsp");
             viewResult.forward(req, res);  
             

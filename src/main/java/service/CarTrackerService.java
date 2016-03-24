@@ -37,4 +37,20 @@ public class CarTrackerService {
     {
         ctd.changeBrandCar(ct, brand);
     }
+    
+    public void changeModelCar(CarTracker ct, String model)
+    {
+        ctd.changeModelCar(ct, model);
+    }
+    
+    public void changeLicense(CarTracker ct, String license)
+    {
+        ctd.changeLicensePlate(ct, license);
+    }
+    
+    public void changePrizeCategory(CarTracker ct, double category)
+    {
+        ctd.changePrizeCategory(ct, category);
+    }
+    
 }

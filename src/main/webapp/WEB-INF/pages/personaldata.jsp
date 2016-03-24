@@ -39,16 +39,16 @@
                     <tbody>
                     <tr>
                         <td >
-                            <c:out value="${theUser.naw.getFirstname()}"/>
+                            <c:out value="${theUser.firstname}"/>
                         </td>
                         <td>
-                            <c:out value="${theUser.naw.getLastname()}"/>
+                            <c:out value="${theUser.lastname}"/>
                         </td>
                         <td>
-                            <c:out value="${theUser.naw.getTelephone()}"/>
+                            <c:out value="${theUser.getTelephone()}"/>
                         </td>
                         <td>
-                            <c:out value="${theUser.naw.getCity()}"/>
+                            <c:out value="${theUser.getCity()}"/>
                         </td>
                     </tr>
                     </tbody>
@@ -73,16 +73,16 @@
                     <tbody>
                     <tr>
                         <td >
-                            <c:out value="${theUser.getKenteken()}"/>
+                            <c:out value="${theCT.getKenteken()}"/>
                         </td>
                         <td>
-                            <c:out value="${theUser.getMerkAuto()}"/>
+                            <c:out value="${theCT.getMerkAuto()}"/>
                         </td>
                         <td>
-                            <c:out value="${theUser.getModelAuto()}"/>
+                            <c:out value="${theCT.getModelAuto()}"/>
                         </td>
                         <td>
-                            <c:out value="${theUser.getTariefCategorie()}"/>
+                            <c:out value="${theCT.getTariefCategorie()}"/>
                         </td>
                     </tr>
                     </tbody>

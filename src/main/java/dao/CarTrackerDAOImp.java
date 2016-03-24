@@ -75,11 +75,13 @@ public class CarTrackerDAOImp implements CarTrackerDAO{
     @Override
     public void changeLicensePlate(CarTracker ct, String licenseplate) {
         ct.setKenteken(licenseplate);
+        em.merge(ct);
     }
 
     @Override
     public void changeModelCar(CarTracker ct, String modelcar) {
         ct.setModelAuto(modelcar);
+        em.merge(ct);
     }
 
     @Override
