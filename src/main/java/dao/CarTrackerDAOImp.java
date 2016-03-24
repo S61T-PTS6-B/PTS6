@@ -53,7 +53,8 @@ public class CarTrackerDAOImp implements CarTrackerDAO{
      */
     @Override
     public CarTracker getCarTrackerByNaw(NAW naw) {
-        CarTracker ct = (CarTracker) em.createQuery("SELECT t FROM CARTRACKER t WHERE t.naw = :naw_id").setParameter("naw_id", naw).getSingleResult();
+
+        CarTracker ct = (CarTracker) em.createQuery("SELECT x FROM CARTRACKER x WHERE x.id = (SELECT t.carid FROM CarOwner t WHERE t.nawid = :naw_id)").setParameter("naw_id", naw).getSingleResult();
         return ct;
     }
 
