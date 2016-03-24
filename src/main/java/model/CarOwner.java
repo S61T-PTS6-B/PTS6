@@ -25,6 +25,11 @@ public class CarOwner implements Serializable {
     
     private boolean active;
 
+    public CarOwner() {
+    }
+    
+    
+
     public CarOwner(CarTracker ct, NAW n) {
         this.carid = ct;
         this.nawid = n;
