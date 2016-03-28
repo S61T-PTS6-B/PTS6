@@ -34,8 +34,12 @@ public class CarTrackerService {
         return ctd.getCarTrackerByNaw(naw);
     }
     
-    public CarTracker getSingleCarTrackerById(NAW naw) {
+    public CarTracker getSingleCarTrackerByNaw(NAW naw) {
         return ctd.getSingleCarTrackerByNaw(naw);
+    }
+    
+    public CarTracker getSingleCarTrackerById(long id) {
+        return ctd.getSingleCarTrackerById(id);
     }
     
     public void changeBrandCar(CarTracker ct, String brand)

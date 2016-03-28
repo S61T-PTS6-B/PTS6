@@ -68,29 +68,37 @@
                         <th>
                             Prize category
                         </th>
+                        <th>
+                            Waardes aanpassen
+                        </th>
                     </tr>
                     </thead>
                     <tbody>
                         <c:forEach var="theCTs" items="${theCTs}">
                  <tr>
                         <td >
-                            <c:out value="${theCTs.getKenteken()}"/>
+                            <c:out value="${theCTs.getLicensePlate()}"/>
                         </td>
                         <td>
-                            <c:out value="${theCTs.getMerkAuto()}"/>
+                            <c:out value="${theCTs.getBrandCar()}"/>
                         </td>
                         <td>
-                            <c:out value="${theCTs.getModelAuto()}"/>
+                            <c:out value="${theCTs.getModelCar()}"/>
                         </td>
                         <td>
-                            <c:out value="${theCTs.getTariefCategorie()}"/>
+                            <c:out value="${theCTs.getPrizeCategory()}"/>
+                        </td>
+                        <td>
+                            <form action="ChangeCT" method="POST">
+                            <button class="myButton" type="submit"> Verander</button>
+                            <input type="hidden" name="id" value="${theCTs.getId()}">
+                            </form>
                         </td>
                     </tr>
             </c:forEach>
                    
                     </tbody>
                 </table>
-                        <a href="ChangeCT">Change</a><br />
                         <a href="NawList">Terug naar personenlijst</a>
     </body>
 </html>

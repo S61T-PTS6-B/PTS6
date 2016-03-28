@@ -3,7 +3,7 @@
     Created on : 15-mrt-2016, 15:09:43
     Author     : koenv
 --%>
-
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -17,12 +17,20 @@
         <h1>Hello World!</h1>
         
                 
-        <select>
-         <c:forEach var="cartrackers" items="${cartrackers}">
-                 <option name="${cartrackers.getId()}"><c:out value="${cartrackers.getNaw().getFirstname()}"/></c> <c:out value="${cartrackers.getNaw().getLastname()}"/></c></option>
-         </c:forEach>
-        </select>
-
-         
+       
+        <div id="nawlist">  
+            <h1>Gebruikerlijst</h1>
+            <ul>
+                <c:forEach var="CTs" items="${CTs}">
+                    <form action="CarTrackerList" method="post">
+                        <button class="myButton" type="submit"><c:out value="${CTs.getId()}"/></c> <c:out value="${CTs.getPrizeCategory()}"/></c><c:out value="${CTs.getLicensePlate()}"/></c></button>
+                        <input type="hidden" name="id" value="${CTs.id}">
+                    </form>
+                </c:forEach>
+            </ul>   
+        </div>
+        <p>
+            <a href="Manage"> Persoon toevoegen </a>
+        </p>
     </body>
 </html>

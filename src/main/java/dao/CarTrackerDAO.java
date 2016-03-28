@@ -40,4 +40,6 @@ public interface CarTrackerDAO {
     public void changeWebsiteSubscription(CarTracker ct, Boolean subscription);
 
     public CarTracker getSingleCarTrackerByNaw(NAW naw);
+
+    public CarTracker getSingleCarTrackerById(long id);
 }

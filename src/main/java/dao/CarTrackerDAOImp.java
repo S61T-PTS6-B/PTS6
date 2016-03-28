@@ -80,26 +80,26 @@ public class CarTrackerDAOImp implements CarTrackerDAO{
 
     @Override
     public void changePrizeCategory(CarTracker ct, double prizecategory) {
-        ct.setTariefCategorie(prizecategory);
+        ct.setPrizeCategory(prizecategory);
         em.merge(ct);
         
     }
 
     @Override
     public void changeLicensePlate(CarTracker ct, String licenseplate) {
-        ct.setKenteken(licenseplate);
+        ct.setLicensePlate(licenseplate);
         em.merge(ct);
     }
 
     @Override
     public void changeModelCar(CarTracker ct, String modelcar) {
-        ct.setModelAuto(modelcar);
+        ct.setModelCar(modelcar);
         em.merge(ct);
     }
 
     @Override
     public void changeBrandCar(CarTracker ct, String brandcar) {
-        ct.setMerkAuto(brandcar);
+        ct.setBrandCar(brandcar);
         em.merge(ct);
     }
 
@@ -112,6 +112,11 @@ public class CarTrackerDAOImp implements CarTrackerDAO{
     public CarTracker getSingleCarTrackerByNaw(NAW naw) {
         CarTracker ctWithId = (CarTracker)em.createQuery("SELECT t.carid FROM CarOwner t WHERE t.nawid = :naw_id").setParameter("naw_id", naw).getSingleResult();
         long id = ctWithId.getId();
+        return (CarTracker)em.createQuery("SELECT x FROM CARTRACKER x WHERE x.id = " + id).getSingleResult();
+    }
+
+    @Override
+    public CarTracker getSingleCarTrackerById(long id) {
         return (CarTracker)em.createQuery("SELECT x FROM CARTRACKER x WHERE x.id = " + id).getSingleResult();
     }
     

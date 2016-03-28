@@ -41,7 +41,7 @@ public class CarTracker implements Serializable {
     private boolean websiteSubscription;
 
     public CarTracker() {
-    }
+    } 
 
     public CarTracker(double prizeCategory, String licensePlate, String modelCar, String brandCar, boolean websiteSubscription) {
         this.prizeCategory = prizeCategory;
@@ -51,35 +51,35 @@ public class CarTracker implements Serializable {
         this.websiteSubscription = websiteSubscription;
     }
 
-    public double getTariefCategorie() {
+    public double getPrizeCategory() {
         return prizeCategory;
     }
 
-    public void setTariefCategorie(double tariefCategorie) {
+    public void setPrizeCategory(double tariefCategorie) {
         this.prizeCategory = tariefCategorie;
     }
 
-    public String getKenteken() {
+    public String getLicensePlate() {
         return licensePlate;
     }
 
-    public void setKenteken(String kenteken) {
+    public void setLicensePlate(String kenteken) {
         this.licensePlate = kenteken;
     }
 
-    public String getModelAuto() {
+    public String getModelCar() {
         return modelCar;
     }
 
-    public void setModelAuto(String modelAuto) {
+    public void setModelCar(String modelAuto) {
         this.modelCar = modelAuto;
     }
 
-    public String getMerkAuto() {
+    public String getBrandCar() {
         return brandCar;
     }
 
-    public void setMerkAuto(String merkAuto) {
+    public void setBrandCar(String merkAuto) {
         this.brandCar = merkAuto;
     }
 

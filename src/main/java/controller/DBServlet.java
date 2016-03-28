@@ -70,6 +70,7 @@ public class DBServlet extends HttpServlet {
                 break;
             }
             case "/CarTrackerList": {
+                req.setAttribute("CTs", cts.getAllCarTrackers());
                 RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/cartrackerlist.jsp");
                 view.forward(req, res);
                 break;
@@ -132,11 +133,21 @@ public class DBServlet extends HttpServlet {
             RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/personaldata.jsp");
             view.forward(req, res);
         }
+        if (userPath.equals("/ChangeCT")) {
+            long cid = Long.parseLong(req.getParameter("id"));
+            
+            CarTracker ct = cts.getSingleCarTrackerById(cid);
+            
+            req.setAttribute("ct", ct);
+            RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/changecartracker.jsp");
+            view.forward(req, res);
+                    
+        }
         if (userPath.equals("/PrizeCategoryChange")) {
             double category = Double.parseDouble(req.getParameter("category"));
 
             NAW naw = ns.getNAWById(id);
-            CarTracker ct = cts.getSingleCarTrackerById(naw);
+            CarTracker ct = cts.getSingleCarTrackerByNaw(naw);
 
             req.setAttribute("theUser", ct);
 
@@ -152,7 +163,7 @@ public class DBServlet extends HttpServlet {
             String license = req.getParameter("license");
 
             NAW naw = ns.getNAWById(id);
-            CarTracker ct = cts.getSingleCarTrackerById(naw);
+            CarTracker ct = cts.getSingleCarTrackerByNaw(naw);
             req.setAttribute("theUser", ct);
             cts.changeLicense(ct, license);
 
@@ -166,7 +177,7 @@ public class DBServlet extends HttpServlet {
             String carmodel = req.getParameter("carmodel");
 
             NAW naw = ns.getNAWById(id);
-            CarTracker ct = cts.getSingleCarTrackerById(naw);
+            CarTracker ct = cts.getSingleCarTrackerByNaw(naw);
             req.setAttribute("theUser", ct);
             cts.changeModelCar(ct, carmodel);
 
@@ -178,7 +189,7 @@ public class DBServlet extends HttpServlet {
         }
         if (userPath.equals("/CarBrandChange")) {
             NAW naw = ns.getNAWById(id);
-            CarTracker ct = cts.getSingleCarTrackerById(naw);
+            CarTracker ct = cts.getSingleCarTrackerByNaw(naw);
 
             req.setAttribute("theUser", ct);
 

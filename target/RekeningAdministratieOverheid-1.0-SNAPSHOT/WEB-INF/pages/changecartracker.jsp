@@ -22,16 +22,16 @@
             <center><h1>Verander cartracker</h1></center>
 
         <form class= "pure-form" action="PrizeCategoryChange" method="POST">
-            <p>Prize Category:  <input type="text" name="category" /><input type="submit"></p>
+            <p>Prize Category:  <input onClick="this.select();" type="text" name="category" placeholder="${ct.getPrizeCategory()}" /><input type="submit"></p>
         </form>
         <form class= "pure-form" action="LicenseChange" method="POST">
-            <p>License plate: <input type="text" name="license" /><input type="submit"></p>
+            <p>License plate: <input onClick="this.select();" type="text" name="license" placeholder="${ct.getLicensePlate()}"/><input type="submit"></p>
         </form>
         <form class= "pure-form" action="CarModelChange" method="POST">
-            <p>Car model: <input type="text" name="carmodel" /><input type="submit"></p>
+            <p>Car model: <input onClick="this.select();" type="text" name="carmodel" placeholder="${ct.getModelCar()}" /><input type="submit"></p>
         </form>
         <form class= "pure-form" action="CarBrandChange" method="POST">
-            <p>Car brand: <input type="text" name="carbrand" /><input type="submit"></p>
+            <p>Car brand: <input onClick="this.select();" type="text" name="carbrand" placeholder="${ct.getBrandCar()}"/><input type="submit"></p>
         </form>
         </div>
         
