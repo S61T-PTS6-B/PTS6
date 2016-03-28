@@ -5,6 +5,7 @@
  */
 package dao;
 
+import java.util.ArrayList;
 import java.util.List;
 import model.CarTracker;
 import model.NAW;
@@ -24,7 +25,7 @@ public interface CarTrackerDAO {
     
     public List<CarTracker> getAllCarTrackers();
 
-    public CarTracker getCarTrackerByNaw(NAW naw);
+    public ArrayList<CarTracker> getCarTrackerByNaw(NAW naw);
     
     public void changeOwner(CarTracker ct, NAW naw);
     
@@ -37,4 +38,6 @@ public interface CarTrackerDAO {
     public void changeBrandCar(CarTracker ct, String brandcar);
     
     public void changeWebsiteSubscription(CarTracker ct, Boolean subscription);
+
+    public CarTracker getSingleCarTrackerByNaw(NAW naw);
 }

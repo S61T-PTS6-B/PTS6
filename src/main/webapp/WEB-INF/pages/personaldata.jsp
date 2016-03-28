@@ -71,20 +71,23 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
+                        <c:forEach var="theCTs" items="${theCTs}">
+                 <tr>
                         <td >
-                            <c:out value="${theCT.getKenteken()}"/>
+                            <c:out value="${theCTs.getKenteken()}"/>
                         </td>
                         <td>
-                            <c:out value="${theCT.getMerkAuto()}"/>
+                            <c:out value="${theCTs.getMerkAuto()}"/>
                         </td>
                         <td>
-                            <c:out value="${theCT.getModelAuto()}"/>
+                            <c:out value="${theCTs.getModelAuto()}"/>
                         </td>
                         <td>
-                            <c:out value="${theCT.getTariefCategorie()}"/>
+                            <c:out value="${theCTs.getTariefCategorie()}"/>
                         </td>
                     </tr>
+            </c:forEach>
+                   
                     </tbody>
                 </table>
                         <a href="ChangeCT">Change</a><br />

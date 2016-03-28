@@ -6,6 +6,7 @@
 package dao;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
@@ -26,7 +27,7 @@ import model.NAW;
 @Local
 @Stateless
 public class CarTrackerDAOImp implements CarTrackerDAO{
-
+    
     @PersistenceContext(unitName = "com.PTS6B_RekeningAdministratieOverheid_war_1.0-SNAPSHOTPU")
     EntityManager em;
 
@@ -52,11 +53,23 @@ public class CarTrackerDAOImp implements CarTrackerDAO{
      * @return
      */
     @Override
-    public CarTracker getCarTrackerByNaw(NAW naw) {
-        CarTracker ctWithID = (CarTracker)em.createQuery("SELECT t.carid FROM CarOwner t WHERE t.nawid = :naw_id").setParameter("naw_id", naw).getSingleResult();
-        long id = ctWithID.getId();
-        CarTracker ct = (CarTracker) em.createQuery("SELECT x FROM CARTRACKER x WHERE x.id = " + id).getSingleResult();
-        return ct;
+    public ArrayList<CarTracker> getCarTrackerByNaw(NAW naw) {
+        ArrayList<CarTracker> result = new ArrayList<>();
+        try {
+            
+            List<CarTracker> ctWithID = em.createQuery("SELECT t.carid FROM CarOwner t WHERE t.nawid = :naw_id").setParameter("naw_id", naw).getResultList();
+            for(CarTracker ct : ctWithID)
+            {
+                long id = ct.getId(); 
+                result.add((CarTracker) em.createQuery("SELECT x FROM CARTRACKER x WHERE x.id = " + id).getSingleResult());
+            }        
+        }
+        catch (Exception e) {
+           System.out.println(e.getMessage());
+        }
+        
+
+        return result;
     }
 
     @Override
@@ -93,6 +106,13 @@ public class CarTrackerDAOImp implements CarTrackerDAO{
     @Override
     public void changeWebsiteSubscription(CarTracker ct, Boolean subscription) {
         ct.setRekeningrijdersWebsite(subscription);
+    }
+
+    @Override
+    public CarTracker getSingleCarTrackerByNaw(NAW naw) {
+        CarTracker ctWithId = (CarTracker)em.createQuery("SELECT t.carid FROM CarOwner t WHERE t.nawid = :naw_id").setParameter("naw_id", naw).getSingleResult();
+        long id = ctWithId.getId();
+        return (CarTracker)em.createQuery("SELECT x FROM CARTRACKER x WHERE x.id = " + id).getSingleResult();
     }
     
     

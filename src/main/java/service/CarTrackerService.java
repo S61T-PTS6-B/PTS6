@@ -6,6 +6,7 @@
 package service;
 
 import dao.CarTrackerDAO;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -29,8 +30,12 @@ public class CarTrackerService {
         return ctd.getAllCarTrackers();
     }    
 
-    public CarTracker getCarTrackerById(NAW naw) {
+    public ArrayList<CarTracker> getCarTrackerById(NAW naw) {
         return ctd.getCarTrackerByNaw(naw);
+    }
+    
+    public CarTracker getSingleCarTrackerById(NAW naw) {
+        return ctd.getSingleCarTrackerByNaw(naw);
     }
     
     public void changeBrandCar(CarTracker ct, String brand)
