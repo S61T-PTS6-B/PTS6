@@ -69,6 +69,11 @@ public class DBServlet extends HttpServlet {
                 view.forward(req, res);
                 break;
             }
+            case "/AddPerson": {
+                RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/manage.jsp");
+                view.forward(req, res);
+                break;
+            }
             case "/CarTrackerList": {
                 req.setAttribute("CTs", cts.getAllCarTrackers());
                 RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/cartrackerlist.jsp");
@@ -110,6 +115,7 @@ public class DBServlet extends HttpServlet {
             view.forward(req, res);
         }
         if (userPath.equals("/AddCarTracker")) {
+            id = req.getParameter("id");
             NAW naw = ns.getNAWById(id);
             double category = Double.parseDouble(req.getParameter("category"));
             String license = req.getParameter("license");

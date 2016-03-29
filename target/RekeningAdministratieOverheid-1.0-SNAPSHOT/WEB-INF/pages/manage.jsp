@@ -33,7 +33,7 @@
     <form class="pure-form" action="AddCarTracker" method="POST">
         <select>
             <c:forEach var="naws" items="${naws}">
-                <option name="${naws.id}"><c:out value="${naws.firstname}"/></c> <c:out value="${naws.lastname}"/></c></option>
+                <option name="${naws.id}" value="${naws.id}"><c:out value="${naws.firstname}"/></c> <c:out value="${naws.lastname}"/></c></option>
             </c:forEach>
         </select>
         <p>Prize Category: <input type="text" name="category" /></p>

@@ -43,6 +43,7 @@ public class NAW implements Serializable {
     private String city;
     private String telephone;
     
+    
     @OneToMany
     private List<CarOwner> carowners;
 

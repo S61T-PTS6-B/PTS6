@@ -4,6 +4,9 @@
  * and open the template in the editor.
  */
 
+import dao.NawDAO;
+import javax.ejb.EJB;
+import model.CarOwner;
 import model.CarTracker;
 import model.NAW;
 import org.junit.After;
@@ -12,6 +15,12 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import static org.mockito.Mockito.verify;
+import org.mockito.runners.MockitoJUnitRunner;
+import service.CarOwnerService;
 import service.CarTrackerService;
 import service.NAWService;
 
@@ -20,11 +29,11 @@ import service.NAWService;
  * @author koenv
  */
 public class testDB {
-    
     CarTrackerService cts;
-    
+      
     NAWService ns;
     
+    CarOwnerService cos;
     
     public testDB() {
     }
@@ -47,11 +56,7 @@ public class testDB {
 
     @Test
     public void testAddCartracker() {
-        ns = new NAWService();
-        NAW n = new NAW("Koen", "van der Borght", "Professor Rogierhof", "54", "5014NT", "Tilburg", "0621876767");
-        ns.createNAW(n);
-        assertEquals(ns.getNAWById("1").getFirstname(), "Koen");
-        
+
     }
 
     

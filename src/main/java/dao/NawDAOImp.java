@@ -32,8 +32,7 @@ public class NawDAOImp implements NawDAO{
 
     @Override
     public void createNaw(NAW naw) {
-        em.persist(naw);   
-        
+        em.persist(naw);       
     }
     
     @Override
