@@ -13,11 +13,11 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
     </head>
-    
+
     <body>
 
         <div id="wrapper">
-            <p><h1>Persoon toevoegen: </h1></p><p> <a class="linkMember" href="NawList"> Memberlist </a> <a class="linkMember" href="CarTrackerList">CarTrackerlist </a></p>
+            <p><h1>Persoon toevoegen: </h1></p><p> <a href="NawList"> Memberlist </a>            <br> <a href="CarTrackerList">CarTrackerlist </a></p>
         <form class= "pure-form" action="AddPerson" method="POST">
             <p>First name: <input type="text" name="firstname" /></p>
             <p>Last name: <input type="text" name="lastname" /></p>

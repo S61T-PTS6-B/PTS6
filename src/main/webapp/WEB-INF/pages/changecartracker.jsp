@@ -33,7 +33,11 @@
         <form class= "pure-form" action="CarBrandChange" method="POST">
             <p>Car brand: <input onClick="this.select();" type="text" name="carbrand" placeholder="${ct.getBrandCar()}"/><input type="submit"></p>
         </form>
-        </div>
+        </div><br> 
+    <center><p><a class="myLink" href="NawList">Terug naar personenlijst</a></p> <br />
+        <p><a class="myLink" href="CarTrackerList">Terug naar cartrackerlijst</a></p> <br />
+        <p><a class="myLink" href="Manage">Terug naar management pagina</a></p></center>
+        
         
     </body>
 </html>

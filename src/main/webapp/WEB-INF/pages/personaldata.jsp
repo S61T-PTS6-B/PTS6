@@ -69,7 +69,7 @@
                             Prize category
                         </th>
                         <th>
-                            Waardes aanpassen
+                            Verander
                         </th>
                     </tr>
                     </thead>

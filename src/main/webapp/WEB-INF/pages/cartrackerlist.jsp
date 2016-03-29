@@ -13,16 +13,12 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
     </head>
-    <body>
-        <h1>Hello World!</h1>
-        
-                
-       
+    <body> 
         <div id="nawlist">  
-            <h1>Gebruikerlijst</h1>
+            <h1>CarTrackerlijst</h1>
             <ul>
                 <c:forEach var="CTs" items="${CTs}">
-                    <form action="CarTrackerList" method="post">
+                    <form action="ChangeCT" method="post">
                         <button class="myButton" type="submit"><c:out value="${CTs.getId()}"/></c> <c:out value="${CTs.getPrizeCategory()}"/></c><c:out value="${CTs.getLicensePlate()}"/></c></button>
                         <input type="hidden" name="id" value="${CTs.id}">
                     </form>
