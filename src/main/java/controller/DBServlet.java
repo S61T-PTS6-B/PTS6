@@ -110,9 +110,6 @@ public class DBServlet extends HttpServlet {
             String telephone = req.getParameter("telephone");
             NAW n = new NAW(firstname, lastname, address, number, zipcode, city, telephone);
             ns.createNAW(n);
-
-            RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/index.jsp");
-            view.forward(req, res);
         }
         if (userPath.equals("/AddCarTracker")) {
             id = req.getParameter("id");
@@ -126,6 +123,9 @@ public class DBServlet extends HttpServlet {
 
             CarOwner co = new CarOwner(ct, naw);
             cos.createCarOwner(co);
+
+            RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/cartrackerlist.jsp");
+            view.forward(req, res);
         }
         if (userPath.equals("/PersonalData")) {
             id = req.getParameter("id");
@@ -141,13 +141,13 @@ public class DBServlet extends HttpServlet {
         }
         if (userPath.equals("/ChangeCT")) {
             long cid = Long.parseLong(req.getParameter("id"));
-            
+
             CarTracker ct = cts.getSingleCarTrackerById(cid);
-            
+
             req.setAttribute("ct", ct);
             RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/changecartracker.jsp");
             view.forward(req, res);
-                    
+
         }
         if (userPath.equals("/PrizeCategoryChange")) {
             double category = Double.parseDouble(req.getParameter("category"));

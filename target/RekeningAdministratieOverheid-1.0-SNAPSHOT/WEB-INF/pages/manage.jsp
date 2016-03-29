@@ -26,12 +26,12 @@
             <p>Zipcode: <input type="text" name="zipcode" /></p>
             <p>City: <input type="text" name="city" /></p>
             <p>Telephone: <input type="text" name="telephone" /></p>
-            <input type="submit">
+            <input type="submit" href="NawList">
         </form>
 
         <p><h1>CarTracker toevoegen: </h1></p>
     <form class="pure-form" action="AddCarTracker" method="POST">
-        <select>
+        <select name="id">
             <c:forEach var="naws" items="${naws}">
                 <option name="${naws.id}" value="${naws.id}"><c:out value="${naws.firstname}"/></c> <c:out value="${naws.lastname}"/></c></option>
             </c:forEach>
@@ -40,7 +40,7 @@
         <p>License plate: <input type="text" name="license" /></p>
         <p>Car model: <input type="text" name="carmodel" /></p>
         <p>Car brand: <input type="text" name="carbrand" /></p>
-        <input id="button" type="submit">
+        <input id="button" type="submit" href="CarTrackerList">
     </form>
 
 </div>
