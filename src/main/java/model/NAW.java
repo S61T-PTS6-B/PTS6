@@ -7,6 +7,7 @@ package model;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -43,6 +44,9 @@ public class NAW implements Serializable {
     private String city;
     private String telephone;
     
+    @Column(unique = true)
+    private String email;
+    
     
     @OneToMany
     private List<CarOwner> carowners;
@@ -51,7 +55,7 @@ public class NAW implements Serializable {
     }
 
     
-    public NAW(String firstname, String lastname, String address, String number, String zipcode, String city, String telephone) {
+    public NAW(String firstname, String lastname, String address, String number, String zipcode, String city, String telephone, String email) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.address = address;
@@ -59,6 +63,7 @@ public class NAW implements Serializable {
         this.zipcode = zipcode;
         this.city = city;
         this.telephone = telephone;
+        this.email = email;
     }
 
     public String getFirstname() {
@@ -120,8 +125,14 @@ public class NAW implements Serializable {
 //    public void addCarTracker(CarTracker ct) {
 //        cartrackers.add(ct);
 //    }
-    
-    
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public int getIdAsInt() {
         return id.intValue();

@@ -8,7 +8,9 @@ package model;
 import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.TableGenerator;
 
 /**
  *
@@ -16,7 +18,15 @@ import javax.persistence.Id;
  */
 @Entity
 public class CarOwner implements Serializable {    
-    @Id @GeneratedValue
+      private static final long serialVersionUID = 1L;
+
+    @TableGenerator(
+            name = "tableGen",
+            allocationSize = 1,
+            initialValue = 1)
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE,
+            generator = "tableGen")
     private Long id;
     
     private CarTracker carid;

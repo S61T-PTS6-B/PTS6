@@ -110,7 +110,8 @@ public class DBServlet extends HttpServlet {
             String zipcode = req.getParameter("zipcode");
             String city = req.getParameter("city");
             String telephone = req.getParameter("telephone");
-            NAW n = new NAW(firstname, lastname, address, number, zipcode, city, telephone);
+            String email = req.getParameter("email");
+            NAW n = new NAW(firstname, lastname, address, number, zipcode, city, telephone, email);
             ns.createNAW(n);
             req.setAttribute("naws", ns.getAllNaws());
             RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/manage.jsp");
@@ -222,9 +223,7 @@ public class DBServlet extends HttpServlet {
 
             RequestDispatcher viewResult = req.getRequestDispatcher("/WEB-INF/pages/personaldata.jsp");
             viewResult.forward(req, res);
-
         }
-
     }
 
 }

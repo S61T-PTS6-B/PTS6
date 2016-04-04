@@ -26,6 +26,7 @@
             <p>Zipcode: <input type="text" name="zipcode" /></p>
             <p>City: <input type="text" name="city" /></p>
             <p>Telephone: <input type="text" name="telephone" /></p>
+            <p>Email: <input type="text" name="email" /></p>
             <input type="submit" href="NawList">
         </form>
 
