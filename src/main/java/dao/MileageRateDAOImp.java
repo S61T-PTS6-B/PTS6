@@ -52,5 +52,36 @@ public class MileageRateDAOImp implements MileageRateDAO{
         query = em.createQuery("SELECT m FROM MILEAGERATE m WHERE m.tijdsinterval = :ti").setParameter("ti", interval);
         return (List<MileageRate>)query.getResultList(); //TODO
     }
+
+    @Override
+    public List<MileageRate> getRatePerRate(double mileageRate) {
+        Query query;
+        query = em.createQuery("SELECT m FROM MILEAGERATE m WHERE m.mileageRate = :mrr").setParameter("mrr", mileageRate);
+        return (List<MileageRate>)query.getResultList(); //TODO
+    }
+
+    @Override
+    public void changeRate(MileageRate mr, double mileageRate) {
+        mr.setMileageRate(mileageRate);
+        em.merge(mr);
+    }
+
+    @Override
+    public void changeRegio(MileageRate mr, String regio) {
+        mr.setRegio(regio);
+        em.merge(mr);
+    }
+
+    @Override
+    public void changePrizeCategory(MileageRate mr, double prizeCategory) {
+        mr.setPrizecategory(prizeCategory);
+        em.merge(mr);
+    }
+
+    @Override
+    public void changeInterval(MileageRate mr, double interval) {
+        mr.setTijdsinterval(interval);
+        em.merge(mr);
+    }
     
 }

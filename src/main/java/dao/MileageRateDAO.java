@@ -17,9 +17,19 @@ public interface MileageRateDAO {
     
     public List<MileageRate> getAllRates();
     
+    public List<MileageRate> getRatePerRate(double mileageRate);
+    
     public List<MileageRate> getRatePerArea(String regio);
     
     public List<MileageRate> getRatePerPrizeCategory(double prizecategory);
     
     public List<MileageRate> getRatePerInterval(double interval);
+    
+    public void changeRate(MileageRate mr, double mileageRate);
+    
+    public void changeRegio(MileageRate mr, String regio);
+    
+    public void changePrizeCategory(MileageRate mr, double prizeCategory);
+    
+    public void changeInterval(MileageRate mr, double interval);
 }

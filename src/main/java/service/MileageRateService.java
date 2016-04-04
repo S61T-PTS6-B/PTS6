@@ -44,4 +44,24 @@ public class MileageRateService {
     {
         return mrd.getRatePerArea(regio);
     }
+    
+    public void changeMileageRate(MileageRate mr, double mar)
+    {
+        mrd.changeRate(mr, mar);
+    }
+    
+    public void changeRegio(MileageRate mr, String regio)
+    {
+        mrd.changeRegio(mr, regio);
+    }
+    
+    public void changePrizeCategory(MileageRate mr, double prizecategory)
+    {
+        mrd.changePrizeCategory(mr, prizecategory);
+    }
+    
+    public void changeInterval(MileageRate mr, double interval)
+    {
+        mrd.changeInterval(mr, interval);
+    }
 }
