@@ -5,8 +5,13 @@ dao\CarTrackerDAO.class
 model\CarOwner.class
 model\NAW_.class
 dao\CarOwnerDAOImp.class
+dao\MileageRateDAO.class
 dao\CarTrackerDAOImp.class
 model\CarTracker_.class
+dao\MileageRateDAOImp.class
+model\MileageRate.class
+service\MileageRateService.class
+model\MileageRate_.class
 dao\NawDAO.class
 service\CarTrackerService.class
 service\NAWService.class

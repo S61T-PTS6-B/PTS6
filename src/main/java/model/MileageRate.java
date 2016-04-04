@@ -16,7 +16,7 @@ import javax.persistence.TableGenerator;
  *
  * @author koenv
  */
-@Entity (name = "MILEAGE")
+@Entity (name = "MILEAGERATE")
 public class MileageRate implements Serializable {
      
     private static final long serialVersionUID = 1L;
