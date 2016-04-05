@@ -9,26 +9,24 @@ and open the template in the editor.
 */
 body {
     font-family: sans-serif;
+    overflow: hidden;
 
 }
 table {
-    float: left;
-    border-collapse: collapse; 
-
+    border-collapse: collapse;
+    width: 100%;
 }
 
-table, th, td {
-    border: 1px solid black;
-    padding: 5px;
-    margin-right: 1%;
+th, td {
+    text-align: left;
+    padding: 8px;
 }
 
-td {
-    width: 150px;
-}
+tr:nth-child(even){background-color: #f2f2f2}
 
 th {
-    background-color: #f2f2f2;
+    background-color: #4CAF50;
+    color: white;
 }
 
 .myButton {
@@ -86,16 +84,40 @@ input[type=submit]:hover {
     background-color: #45a049;
 }
 
-div {
+#persoonWrapper {
+    margin-left: 5em;
+    width: 30%;
+    float: left;
+}
+
+#cartrackerWrapper {
+    margin-left: 5em;
+    width: 30%;
+    float: left;
+}
+
+#wrapper {
+    width: 40%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#wrappercenter {
+    width: 170em;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#divborder {
     border-radius: 5px;
     background-color: #f2f2f2;
     padding: 20px;
 }
 
-#wrapper {
-    width: 40%;
-        margin-left: auto;
-    margin-right: auto;
+#divbordercar {
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px;
 }
 
 #nawlist {
@@ -110,7 +132,7 @@ div {
 }
 
 #changeCar {
-    width: 25%;
+    width: 50%;
     margin-left: auto;
     margin-right: auto;
 }

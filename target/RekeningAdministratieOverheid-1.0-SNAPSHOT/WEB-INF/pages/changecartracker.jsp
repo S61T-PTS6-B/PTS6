@@ -14,30 +14,40 @@
 <html>
     <head>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/default.css" />
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/nav.css" />
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
     </head>
     <body>
-        <div id="changeCar">
-            <center><h1>Verander cartracker</h1></center>
+        <div id="nav" class='balk'>
+            <ul>
+                <li><a  href="Manage">Manage</a></li>
+                <li><a href="NawList">Personen</a></li>
+                <li><a href="CarTrackerList">Cartrackers</a></li>
+                <li><a class="activeLegacy" href="#">Change</a></li>
+            </ul>
+        </div>
+        <div id="wrapper">
+            <div id="divborder">
 
-        <form class= "pure-form" action="PrizeCategoryChange" method="POST">
-            <p>Prize Category:  <input onClick="this.select();" type="text" name="category" placeholder="${ct.getPrizeCategory()}" /><input type="submit"></p>
-        </form>
-        <form class= "pure-form" action="LicenseChange" method="POST">
-            <p>License plate: <input onClick="this.select();" type="text" name="license" placeholder="${ct.getLicensePlate()}"/><input type="submit"></p>
-        </form>
-        <form class= "pure-form" action="CarModelChange" method="POST">
-            <p>Car model: <input onClick="this.select();" type="text" name="carmodel" placeholder="${ct.getModelCar()}" /><input type="submit"></p>
-        </form>
-        <form class= "pure-form" action="CarBrandChange" method="POST">
-            <p>Car brand: <input onClick="this.select();" type="text" name="carbrand" placeholder="${ct.getBrandCar()}"/><input type="submit"></p>
-        </form>
-        </div><br> 
-    <center><p><a class="myLink" href="NawList">Terug naar personenlijst</a></p> <br />
-        <p><a class="myLink" href="CarTrackerList">Terug naar cartrackerlijst</a></p> <br />
-        <p><a class="myLink" href="Manage">Terug naar management pagina</a></p></center>
-        
-        
-    </body>
+                <div id="changeCar">
+                    <center><h1>Verander cartracker</h1></center>
+
+                    <form class= "pure-form" action="PrizeCategoryChange" method="POST">
+                        <p>Prize Category:  <input onClick="this.select();" type="text" name="category" placeholder="${ct.getPrizeCategory()}" /><input type="submit"></p>
+                    </form>
+                    <form class= "pure-form" action="LicenseChange" method="POST">
+                        <p>License plate: <input onClick="this.select();" type="text" name="license" placeholder="${ct.getLicensePlate()}"/><input type="submit"></p>
+                    </form>
+                    <form class= "pure-form" action="CarModelChange" method="POST">
+                        <p>Car model: <input onClick="this.select();" type="text" name="carmodel" placeholder="${ct.getModelCar()}" /><input type="submit"></p>
+                    </form>
+                    <form class= "pure-form" action="CarBrandChange" method="POST">
+                        <p>Car brand: <input onClick="this.select();" type="text" name="carbrand" placeholder="${ct.getBrandCar()}"/><input type="submit"></p>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <br> 
+</body>
 </html>

@@ -1,0 +1,44 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 5-apr-2016, 20:36:53
+    Author     : koenv
+*/
+
+.balk ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+.balk li {
+    float: left;
+}
+li {
+    border-right: 1px solid #bbb;
+}
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li a:hover:not(.active .activeLegacy) {
+    background-color: #555;
+}
+
+
+.active {
+    background-color: #4CAF50;
+}
+
+.activeLegacy {
+    background-color: red;
+}

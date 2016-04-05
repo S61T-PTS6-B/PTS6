@@ -10,23 +10,30 @@
     <head>
 
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/default.css" />
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/nav.css" />
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
     </head>
     <body> 
-        <div id="nawlist">  
-            <h1>CarTrackerlijst</h1>
+        <div id="nav" class='balk'>
             <ul>
-                <c:forEach var="CTs" items="${CTs}">
-                    <form action="ChangeCT" method="post">
-                        <button class="myButton" type="submit"><c:out value="${CTs.getId()}"/></c> <c:out value="${CTs.getPrizeCategory()}"/></c><c:out value="${CTs.getLicensePlate()}"/></c></button>
-                        <input type="hidden" name="id" value="${CTs.id}">
-                    </form>
-                </c:forEach>
-            </ul>   
+                <li><a href="Manage">Manage</a></li>
+                <li><a href="NawList">Personen</a></li>
+                <li><a class="active" href="CarTrackerList">Cartrackers</a></li>
+            </ul>
         </div>
-        <p>
-            <a href="Manage"> Persoon toevoegen </a>
-        </p>
+        <div id="wrapper">
+            <div id="divborder">  
+                <h1>CarTrackerlijst</h1>
+                <ul>
+                    <c:forEach var="CTs" items="${CTs}">
+                        <form action="ChangeCT" method="post">
+                            <button class="myButton" type="submit"><c:out value="${CTs.getId()}"/></c> <c:out value="${CTs.getPrizeCategory()}"/></c><c:out value="${CTs.getLicensePlate()}"/></c></button>
+                            <input type="hidden" name="id" value="${CTs.id}">
+                        </form>
+                    </c:forEach>
+                </ul>   
+            </div>
+        </div>
     </body>
 </html>

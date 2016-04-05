@@ -14,91 +14,102 @@
 <html>
     <head>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/default.css" />
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/css/nav.css" />
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Personal Data</h1>           
+        <div id="nav" class='balk'>
+            <ul>
+                <li><a  href="Manage">Manage</a></li>
+                <li><a href="NawList">Personen</a></li>
+                <li><a href="CarTrackerList">Cartrackers</a></li>
+                <li><a class="activeLegacy" href="#">Enkel persoon</a></li>
+            </ul>
+        </div>
+        <div id="wrapper">
+            <div id="divborder">
+                <h1>Personal Data</h1>           
                 <table>
                     <thead>
-                    <tr>
-                        <th>
-                            First name
-                        </th>
-                        <th >
-                            Last name
-                        </th>
-                        <th>
-                            Telephone
-                        </th>
-                        <th>
-                            City
-                        </th>
-                    </tr>
+                        <tr>
+                            <th>
+                                First name
+                            </th>
+                            <th >
+                                Last name
+                            </th>
+                            <th>
+                                Telephone
+                            </th>
+                            <th>
+                                City
+                            </th>
+                        </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td >
-                            <c:out value="${theUser.firstname}"/>
-                        </td>
-                        <td>
-                            <c:out value="${theUser.lastname}"/>
-                        </td>
-                        <td>
-                            <c:out value="${theUser.getTelephone()}"/>
-                        </td>
-                        <td>
-                            <c:out value="${theUser.getCity()}"/>
-                        </td>
-                    </tr>
+                        <tr>
+                            <td >
+                                <c:out value="${theUser.firstname}"/>
+                            </td>
+                            <td>
+                                <c:out value="${theUser.lastname}"/>
+                            </td>
+                            <td>
+                                <c:out value="${theUser.getTelephone()}"/>
+                            </td>
+                            <td>
+                                <c:out value="${theUser.getCity()}"/>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
                 <table>
                     <thead>
-                    <tr>
-                        <th>
-                            License plate
-                        </th>
-                        <th >
-                            Brand
-                        </th>
-                        <th>
-                            Model
-                        </th>
-                        <th>
-                            Prize category
-                        </th>
-                        <th>
-                            Verander
-                        </th>
-                    </tr>
+                        <tr>
+                            <th>
+                                License plate
+                            </th>
+                            <th >
+                                Brand
+                            </th>
+                            <th>
+                                Model
+                            </th>
+                            <th>
+                                Prize category
+                            </th>
+                            <th>
+                                Verander
+                            </th>
+                        </tr>
                     </thead>
                     <tbody>
                         <c:forEach var="theCTs" items="${theCTs}">
-                 <tr>
-                        <td >
-                            <c:out value="${theCTs.getLicensePlate()}"/>
-                        </td>
-                        <td>
-                            <c:out value="${theCTs.getBrandCar()}"/>
-                        </td>
-                        <td>
-                            <c:out value="${theCTs.getModelCar()}"/>
-                        </td>
-                        <td>
-                            <c:out value="${theCTs.getPrizeCategory()}"/>
-                        </td>
-                        <td>
-                            <form action="ChangeCT" method="POST">
-                            <button class="myButton" type="submit"> Verander</button>
-                            <input type="hidden" name="id" value="${theCTs.getId()}">
-                            </form>
-                        </td>
-                    </tr>
-            </c:forEach>
-                   
+                            <tr>
+                                <td >
+                                    <c:out value="${theCTs.getLicensePlate()}"/>
+                                </td>
+                                <td>
+                                    <c:out value="${theCTs.getBrandCar()}"/>
+                                </td>
+                                <td>
+                                    <c:out value="${theCTs.getModelCar()}"/>
+                                </td>
+                                <td>
+                                    <c:out value="${theCTs.getPrizeCategory()}"/>
+                                </td>
+                                <td>
+                                    <form action="ChangeCT" method="POST">
+                                        <button class="myButton" type="submit"> Verander</button>
+                                        <input type="hidden" name="id" value="${theCTs.getId()}">
+                                    </form>
+                                </td>
+                            </tr>
+                        </c:forEach>
                     </tbody>
                 </table>
-                        <a href="NawList">Terug naar personenlijst</a>
+            </div>
+        </div>
     </body>
 </html>
