@@ -15,10 +15,11 @@ import model.CarOwner;
  * @author koenv
  */
 @Stateless
-public class CarOwnerService {
+public class CarOwnerService implements ICarOwnerService {
     @EJB
     CarOwnerDAO cod;
     
+    @Override
     public void createCarOwner(CarOwner c) {
         cod.createCarOwner(c);
     }

@@ -17,5 +17,5 @@ public interface NawDAO {
     
     public List<NAW> getAllNaws();
 
-    public NAW getNawById(Long id);
+    public NAW getNawByBsn(int bsn);
 }

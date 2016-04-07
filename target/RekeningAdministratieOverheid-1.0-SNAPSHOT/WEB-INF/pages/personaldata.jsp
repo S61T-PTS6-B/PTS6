@@ -33,6 +33,9 @@
                 <table>
                     <thead>
                         <tr>
+                            <th> 
+                                BSN
+                            </th>
                             <th>
                                 First name
                             </th>
@@ -49,6 +52,9 @@
                     </thead>
                     <tbody>
                         <tr>
+                            <td> 
+                                <c:out value="${theUser.bsn}"/>
+                            </td>
                             <td >
                                 <c:out value="${theUser.firstname}"/>
                             </td>

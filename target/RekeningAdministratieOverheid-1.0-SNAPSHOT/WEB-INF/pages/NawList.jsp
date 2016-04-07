@@ -34,7 +34,7 @@
                     <c:forEach var="naws" items="${naws}">
                         <form action="PersonalData" method="post">
                             <button class="myButton" type="submit"><c:out value="${naws.firstname}"/></c> <c:out value="${naws.lastname}"/></c></button>
-                            <input type="hidden" name="id" value="${naws.id}">
+                            <input type="hidden" name="id" value="${naws.bsn}">
                         </form>
                     </c:forEach>
                 </ul>   

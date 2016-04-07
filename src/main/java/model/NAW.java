@@ -27,14 +27,9 @@ import javax.persistence.TableGenerator;
 public class NAW implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @TableGenerator(
-    name = "tableGen",
-    allocationSize = 1,
-    initialValue = 1)
+
     @Id
-    @GeneratedValue(strategy=GenerationType.TABLE,
-            generator="tableGen")
-    private Long id;
+    private int bsn;
     
     private String firstname;
     private String lastname;
@@ -55,7 +50,8 @@ public class NAW implements Serializable {
     }
 
     
-    public NAW(String firstname, String lastname, String address, String number, String zipcode, String city, String telephone, String email) {
+    public NAW(int bsn, String firstname, String lastname, String address, String number, String zipcode, String city, String telephone, String email) {
+        this.bsn = bsn;
         this.firstname = firstname;
         this.lastname = lastname;
         this.address = address;
@@ -64,6 +60,14 @@ public class NAW implements Serializable {
         this.city = city;
         this.telephone = telephone;
         this.email = email;
+    }
+
+    public int getBsn() {
+        return bsn;
+    }
+
+    public void setBsn(int bsn) {
+        this.bsn = bsn;
     }
 
     public String getFirstname() {
@@ -134,41 +138,10 @@ public class NAW implements Serializable {
         this.email = email;
     }
 
-    public int getIdAsInt() {
-        return id.intValue();
-    }
     
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof NAW)) {
-            return false;
-        }
-        NAW other = (NAW) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
-    }
-
     @Override
     public String toString() {
-        return "model.NAW[ id=" + id + " ]";
+        return "model.NAW[ bsn=" + bsn + " ]";
     }
     
 }

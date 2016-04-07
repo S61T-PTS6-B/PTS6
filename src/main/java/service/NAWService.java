@@ -9,6 +9,7 @@ import dao.CarTrackerDAO;
 import dao.NawDAO;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.ejb.Local;
 import javax.ejb.Stateless;
 import model.NAW;
 
@@ -17,19 +18,27 @@ import model.NAW;
  *
  * @author koenv
  */
+@Local
 @Stateless
-public class NAWService {
+public class NAWService implements INAWService{
     @EJB
     NawDAO nd;
+
+    public NAWService() {
+    }
     
+    @Override
     public void createNAW(NAW naw) {
         nd.createNaw(naw);
     }
+    @Override
     public List<NAW> getAllNaws(){
         return nd.getAllNaws();
     }
 
-    public NAW getNAWById(String id) {
-        return nd.getNawById(Long.parseLong(id));
+    @Override
+                                                                                                                                                                  public NAW getNAWByBsn(int bsn) {
+        return nd.getNawByBsn(bsn);
     }
+    
 }

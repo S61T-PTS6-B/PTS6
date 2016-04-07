@@ -43,8 +43,8 @@ public class NawDAOImp implements NawDAO{
     }
 
     @Override
-    public NAW getNawById(Long id) {
-        NAW naw = em.find(NAW.class, id);
+    public NAW getNawByBsn(int bsn) {
+        NAW naw = em.find(NAW.class, bsn);
         return naw;
     }
     

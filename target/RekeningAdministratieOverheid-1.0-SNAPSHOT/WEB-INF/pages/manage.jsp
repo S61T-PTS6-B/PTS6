@@ -16,24 +16,20 @@
         <title>JSP Page</title>
         <script>
             $(document).ready(function () {
-
-                $('#myTooltip').tooltip({
-                    open: function (e) {
-                        setTimeout(function () {
-                            $(e.target).tooltip('close');
-                        }, 1000);
-                    }
-                });
-
-                $('#myBtn').click(function () {
-                    $('#myTooltip').tooltip('open');
+                $('#persoonadd').submit(function () {
+                    alert("Persoon succesvol toegevoegd!");
                 });
             });
         </script>
+        <style>
+            #progress { 
+                display: none;
+                color: green; 
+            }
+        </style> 
     </head>
 
     <body>
-        <a id="myTooltip" title="Persoon succesvol toegevoegd!"></a>
         <div id="nav" class='balk'>
             <ul>
                 <li><a class="active" href="Manage">Manage</a></li>
@@ -45,7 +41,8 @@
             <div id="persoonWrapper">
                 <div id="divborder">
                     <p><h1>Persoon toevoegen: </h1></p>
-                    <form class= "pure-form" action="AddPerson" method="POST">
+                    <form id="persoonadd" class= "pure-form" action="AddPerson" method="POST">
+                        <p>Burger Service Nummer: <input type="text" name="bsn" /></p>
                         <p>First name: <input type="text" name="firstname" /></p>
                         <p>Last name: <input type="text" name="lastname" /></p>
                         <p>Address: <input type="text" name="address" /></p>
@@ -54,7 +51,7 @@
                         <p>City: <input type="text" name="city" /></p>
                         <p>Telephone: <input type="text" name="telephone" /></p>
                         <p>Email: <input type="text" name="email" /></p>
-                        <input id="myBtn" type="submit" href="NawList">
+                        <input id="myBtn" onclick="showDiv()" type="submit" href="NawList">
                     </form>
                 </div>
             </div>
@@ -64,9 +61,9 @@
                     <p><h1>CarTracker toevoegen: </h1></p>
                     <form class="pure-form" action="AddCarTracker" method="POST">
                         Personenlijst:
-                        <select name="id">
+                        <select name="bsn">
                             <c:forEach var="naws" items="${naws}">
-                                <option name="${naws.id}" value="${naws.id}"><c:out value="${naws.firstname}"/></c> <c:out value="${naws.lastname}"/></c></option>
+                                <option name="${naws.bsn}" value="${naws.bsn}"><c:out value="${naws.firstname}"/></c> <c:out value="${naws.lastname}"/></c></option>
                             </c:forEach>
                         </select>
                         <p>Prize Category: <input type="text" name="category" /></p>

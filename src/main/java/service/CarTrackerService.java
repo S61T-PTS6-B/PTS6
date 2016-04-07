@@ -18,48 +18,54 @@ import model.NAW;
  * @author koenv
  */
 @Stateless
-public class CarTrackerService {
+public class CarTrackerService implements ICarTrackerService {
+
     @EJB
     CarTrackerDAO ctd;
-    
+
+    @Override
     public void createCarTracker(CarTracker c) {
         ctd.createCarTracker(c);
     }
-    
-    public List<CarTracker> getAllCarTrackers(){
-        return ctd.getAllCarTrackers();
-    }    
 
+    @Override
+    public List<CarTracker> getAllCarTrackers() {
+        return ctd.getAllCarTrackers();
+    }
+
+    @Override
     public ArrayList<CarTracker> getCarTrackerById(NAW naw) {
         return ctd.getCarTrackerByNaw(naw);
     }
-    
+
+    @Override
     public CarTracker getSingleCarTrackerByNaw(NAW naw) {
         return ctd.getSingleCarTrackerByNaw(naw);
     }
-    
+
+    @Override
     public CarTracker getSingleCarTrackerById(long id) {
         return ctd.getSingleCarTrackerById(id);
     }
-    
-    public void changeBrandCar(CarTracker ct, String brand)
-    {
+
+    @Override
+    public void changeBrandCar(CarTracker ct, String brand) {
         ctd.changeBrandCar(ct, brand);
     }
-    
-    public void changeModelCar(CarTracker ct, String model)
-    {
+
+    @Override
+    public void changeModelCar(CarTracker ct, String model) {
         ctd.changeModelCar(ct, model);
     }
-    
-    public void changeLicense(CarTracker ct, String license)
-    {
+
+    @Override
+    public void changeLicense(CarTracker ct, String license) {
         ctd.changeLicensePlate(ct, license);
     }
-    
-    public void changePrizeCategory(CarTracker ct, double category)
-    {
+
+    @Override
+    public void changePrizeCategory(CarTracker ct, double category) {
         ctd.changePrizeCategory(ct, category);
     }
-    
+
 }

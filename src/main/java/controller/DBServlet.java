@@ -49,7 +49,7 @@ public class DBServlet extends HttpServlet {
     @EJB
     CarOwnerService cos;
 
-    private String id;
+    private int bsn;
 
     protected void processRequest(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
@@ -102,7 +102,7 @@ public class DBServlet extends HttpServlet {
             throws ServletException, IOException {
         String userPath = req.getServletPath();
         if (userPath.equals("/AddPerson")) {
-            
+            int bsn = Integer.parseInt(req.getParameter("bsn"));
             String firstname = req.getParameter("firstname");
             String lastname = req.getParameter("lastname");
             String address = req.getParameter("address");
@@ -111,7 +111,7 @@ public class DBServlet extends HttpServlet {
             String city = req.getParameter("city");
             String telephone = req.getParameter("telephone");
             String email = req.getParameter("email");
-            NAW n = new NAW(firstname, lastname, address, number, zipcode, city, telephone, email);
+            NAW n = new NAW(bsn, firstname, lastname, address, number, zipcode, city, telephone, email);
             ns.createNAW(n);
             req.setAttribute("naws", ns.getAllNaws());
             RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/manage.jsp");
@@ -119,8 +119,8 @@ public class DBServlet extends HttpServlet {
         }
         if (userPath.equals("/AddCarTracker")) {
             req.setAttribute("naws", ns.getAllNaws());
-            id = req.getParameter("id");
-            NAW naw = ns.getNAWById(id);
+            bsn = Integer.parseInt(req.getParameter("bsn"));
+            NAW naw = ns.getNAWByBsn(bsn);
             double category = Double.parseDouble(req.getParameter("category"));
             String license = req.getParameter("license");
             String carmodel = req.getParameter("carmodel");
@@ -135,9 +135,9 @@ public class DBServlet extends HttpServlet {
             view.forward(req, res);
         }
         if (userPath.equals("/PersonalData")) {
-            id = req.getParameter("id");
+            bsn = Integer.parseInt(req.getParameter("bsn"));
 
-            NAW naw = ns.getNAWById(id);
+            NAW naw = ns.getNAWByBsn(bsn);
             ArrayList<CarTracker> ctList = cts.getCarTrackerById(naw);
 
             req.setAttribute("theCTs", ctList);
@@ -159,7 +159,7 @@ public class DBServlet extends HttpServlet {
         if (userPath.equals("/PrizeCategoryChange")) {
             double category = Double.parseDouble(req.getParameter("category"));
 
-            NAW naw = ns.getNAWById(id);
+            NAW naw = ns.getNAWByBsn(bsn);
             CarTracker ct = cts.getSingleCarTrackerByNaw(naw);
 
             req.setAttribute("theUser", ct);
@@ -177,7 +177,7 @@ public class DBServlet extends HttpServlet {
         if (userPath.equals("/LicenseChange")) {
             String license = req.getParameter("license");
 
-            NAW naw = ns.getNAWById(id);
+            NAW naw = ns.getNAWByBsn(bsn);
             CarTracker ct = cts.getSingleCarTrackerByNaw(naw);
             req.setAttribute("theUser", ct);
             cts.changeLicense(ct, license);
@@ -192,34 +192,30 @@ public class DBServlet extends HttpServlet {
         }
         if (userPath.equals("/CarModelChange")) {
             String carmodel = req.getParameter("carmodel");
-            
 
-            NAW naw = ns.getNAWById(id);
+            NAW naw = ns.getNAWByBsn(bsn);
             CarTracker ct = cts.getSingleCarTrackerByNaw(naw);
-            ArrayList<CarTracker> ctList = cts.getCarTrackerById(naw);
+            cts.changeModelCar(ct, carmodel);
 
             req.setAttribute("theCT", ct);
             req.setAttribute("theUser", naw);
+            ArrayList<CarTracker> ctList = cts.getCarTrackerById(naw);
             req.setAttribute("theCTs", ctList);
 
             RequestDispatcher viewResult = req.getRequestDispatcher("/WEB-INF/pages/personaldata.jsp");
             viewResult.forward(req, res);
         }
         if (userPath.equals("/CarBrandChange")) {
-            NAW naw = ns.getNAWById(id);
-            CarTracker ct = cts.getSingleCarTrackerByNaw(naw);
-            ArrayList<CarTracker> ctList = cts.getCarTrackerById(naw);
-
-            req.setAttribute("theCTs", ctList);
-            req.setAttribute("theUser", naw);
-
-            req.setAttribute("theUser", ct);
-
             String carbrand = req.getParameter("carbrand");
+            
+            NAW naw = ns.getNAWByBsn(bsn);
+            CarTracker ct = cts.getSingleCarTrackerByNaw(naw);
             cts.changeBrandCar(ct, carbrand);
 
             req.setAttribute("theCT", ct);
             req.setAttribute("theUser", naw);
+            ArrayList<CarTracker> ctList = cts.getCarTrackerById(naw);
+            req.setAttribute("theCTs", ctList);
 
             RequestDispatcher viewResult = req.getRequestDispatcher("/WEB-INF/pages/personaldata.jsp");
             viewResult.forward(req, res);
