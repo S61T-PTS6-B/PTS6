@@ -18,7 +18,6 @@ import model.NAW;
  *
  * @author koenv
  */
-@Local
 @Stateless
 public class NAWService implements INAWService{
     @EJB
