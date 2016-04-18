@@ -21,9 +21,11 @@
     <body>
         <div id="nav" class='balk'>
             <ul>
-                <li><a  href="Manage">Manage</a></li>
+                <li><a href="Manage">Manage</a></li>
+                <li><a href="ManageMileage">Manage mileage</a></li>
                 <li><a href="NawList">Personen</a></li>
                 <li><a href="CarTrackerList">Cartrackers</a></li>
+                <li><a href="MileageList">Mileages</a></li>
                 <li><a class="activeLegacy" href="#">Change</a></li>
             </ul>
         </div>

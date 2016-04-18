@@ -21,9 +21,6 @@ import model.NAW;
 public class NAWService implements INAWService{
     @EJB
     NawDAO nd;
-
-    public NAWService() {
-    }
     
     @Override
     public void createNAW(NAW naw) {

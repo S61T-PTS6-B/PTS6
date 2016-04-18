@@ -22,9 +22,12 @@
     <body>
         <div id="nav" class='balk'>
             <ul>
+
                 <li><a href="Manage">Manage</a></li>
+                <li><a href="ManageMileage">Manage mileage</a></li>
                 <li><a class="active" href="NawList">Personen</a></li>
                 <li><a href="CarTrackerList">Cartrackers</a></li>
+                <li><a href="MileageList">Mileages</a></li>
             </ul>
         </div>
         <div id="wrapper">
@@ -33,8 +36,9 @@
                 <ul>
                     <c:forEach var="naws" items="${naws}">
                         <form action="PersonalData" method="post">
+                            <input type="hidden" name="bsn" value="${naws.bsn}">
                             <button class="myButton" type="submit"><c:out value="${naws.firstname}"/></c> <c:out value="${naws.lastname}"/></c></button>
-                            <input type="hidden" name="id" value="${naws.bsn}">
+
                         </form>
                     </c:forEach>
                 </ul>   

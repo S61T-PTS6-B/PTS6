@@ -1,4 +1,4 @@
-                                                                    /*
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -34,10 +34,13 @@ import service.NAWService;
  */
 @WebServlet(name = "CarTrackerAdm", urlPatterns = {"/CarTrackerAdm",
     "/Manage",
+    "/ManageMileage",
+    "/AddMileage",
     "/AddPerson",
     "/AddCarTracker",
     "/CarTrackerList",
     "/NawList",
+    "/MileageList",
     "/PersonalData",
     "/ChangeCT",
     "/CarBrandChange",
@@ -54,7 +57,7 @@ public class DBServlet extends HttpServlet {
 
     @Inject
     ICarOwnerService cos;
-    
+
     @Inject
     IMileageRateService mrs;
 
@@ -78,7 +81,7 @@ public class DBServlet extends HttpServlet {
                 view.forward(req, res);
                 break;
             }
-            case "/AddMileage": {
+            case "/ManageMileage": {
                 RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/managemilage.jsp");
                 view.forward(req, res);
                 break;
@@ -101,6 +104,13 @@ public class DBServlet extends HttpServlet {
                 view.forward(req, res);
                 break;
             }
+            case "/MileageList": {
+                List<MileageRate> mars = mrs.getAllRates();
+                req.setAttribute("MAR", mars);
+                RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/mileagelist.jsp");
+                view.forward(req, res);
+                break;
+            }
             case "/ChangeCT": {
                 RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/changecartracker.jsp");
                 view.forward(req, res);
@@ -115,15 +125,18 @@ public class DBServlet extends HttpServlet {
     public void doPost(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
         String userPath = req.getServletPath();
-        if(userPath.equals("/AddMileage")) {
+        if (userPath.equals("/AddMileage")) {
             double rate = Double.parseDouble(req.getParameter("mar"));
             String regio = req.getParameter("regio");
             double category = Double.parseDouble(req.getParameter("pricecategory"));
             double interval = Double.parseDouble(req.getParameter("interval"));
-            
+
             MileageRate mar = new MileageRate(rate, regio, category, interval);
             mrs.createMileageRate(mar);
             
+            RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/managemilage.jsp");
+                view.forward(req, res);
+
         }
         if (userPath.equals("/AddPerson")) {
             int bsn = Integer.parseInt(req.getParameter("bsn"));
@@ -231,7 +244,7 @@ public class DBServlet extends HttpServlet {
         }
         if (userPath.equals("/CarBrandChange")) {
             String carbrand = req.getParameter("carbrand");
-            
+
             NAW naw = ns.getNAWByBsn(bsn);
             CarTracker ct = cts.getSingleCarTrackerByNaw(naw);
             cts.changeBrandCar(ct, carbrand);

@@ -7,6 +7,7 @@ package websocket;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.websocket.OnError;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
@@ -19,14 +20,20 @@ import model.NAW;
  */
 @ServerEndpoint(value="/RekeningAdministratieSocket", decoders = {MessageDecoder.class}, encoders = {MessageEncoder.class})
 public class NAWSocket {
+
+    public NAWSocket() {
+    }
+    
     
     @OnMessage
     public NAW message(NAW naw, Session session){
+        System.out.println("Hij is in message");
         try {
             session.getBasicRemote().sendObject(naw);
             System.out.println("Verstuur NAW");
         } catch (Exception ex)
         {
+            System.out.println("Shit man");
             Logger.getLogger(NAWSocket.class.getName()).log(Level.SEVERE, null, ex);
         }
         
@@ -35,7 +42,15 @@ public class NAWSocket {
     
     @OnOpen 
     public void myOnOpen(Session session) {
+        System.out.println("Hij is open " + session.toString());
+        System.out.println(session.isOpen());
+        
+    }
     
+    @OnError
+    public void onError(Session session, Throwable thr) 
+    {
+        System.out.println(thr.toString());
     }
     
     

@@ -6,6 +6,8 @@
 package dao;
 
 import java.util.List;
+import javax.ejb.Local;
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -16,6 +18,8 @@ import model.NAW;
  *
  * @author koenv
  */
+@Local
+@Stateless
 public class MileageRateDAOImp implements MileageRateDAO{
     @PersistenceContext(unitName = "com.PTS6B_RekeningAdministratieOverheid_war_1.0-SNAPSHOTPU")
     EntityManager em;

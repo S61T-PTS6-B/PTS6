@@ -17,6 +17,7 @@ import javax.websocket.DecodeException;
 import javax.websocket.Decoder;
 import javax.websocket.EndpointConfig;
 import model.NAW;
+import service.INAWService;
 
 /**
  *
@@ -25,26 +26,27 @@ import model.NAW;
 class MessageDecoder implements Decoder.TextStream<NAW> {
 
     @Inject
-    private NawDAO nd;
+    INAWService ns;
     
     @Override
     public void init(EndpointConfig config) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println("Init");
     }
 
     @Override
     public void destroy() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 
     @Override
     public NAW decode(Reader reader) throws DecodeException, IOException {
+        System.out.println("Decoder");
         JsonReader jsonReader = Json.createReader(reader);
         JsonObject jsonObj = jsonReader.readObject();
         NAW test = null;
         String bsnReceive;
         bsnReceive = jsonObj.getString("bsn");
-        test = nd.getNawByBsn(Integer.parseInt(bsnReceive));
+        test = ns.getNAWByBsn(Integer.parseInt(bsnReceive));
         return test;
     }
     

@@ -33,8 +33,11 @@
         <div id="nav" class='balk'>
             <ul>
                 <li><a class="active" href="Manage">Manage</a></li>
+                <li><a href="ManageMileage">Manage mileage</a></li>
                 <li><a href="NawList">Personen</a></li>
                 <li><a href="CarTrackerList">Cartrackers</a></li>
+                <li><a href="MileageList">Mileages</a></li>
+                
             </ul>
         </div>
         <div id="wrappercenter">
