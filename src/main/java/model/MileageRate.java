@@ -33,9 +33,17 @@ public class MileageRate implements Serializable {
     private double mileageRate;
     
     private String regio;
-    private double prizecategory;
+    private double pricecategory;
     private double tijdsinterval; //Casus, Wat wordt hier mee bedoelt?
 
+    public MileageRate(double mileageRate, String regio, double pricecategory, double tijdsinterval) {
+        this.mileageRate = mileageRate;
+        this.regio = regio;
+        this.pricecategory = pricecategory;
+        this.tijdsinterval = tijdsinterval;
+    }
+
+    
     public MileageRate() {
     }
 
@@ -64,11 +72,11 @@ public class MileageRate implements Serializable {
     }
 
     public double getPrizecategory() {
-        return prizecategory;
+        return pricecategory;
     }
 
     public void setPrizecategory(double prizecategory) {
-        this.prizecategory = prizecategory;
+        this.pricecategory = prizecategory;
     }
 
     public double getTijdsinterval() {

@@ -1,4 +1,4 @@
-/*
+                                                                    /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,9 +18,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.RequestDispatcher;
 import model.CarOwner;
 import model.CarTracker;
+import model.MileageRate;
 import model.NAW;
 import service.CarOwnerService;
 import service.CarTrackerService;
+import service.ICarOwnerService;
+import service.ICarTrackerService;
+import service.IMileageRateService;
+import service.INAWService;
 import service.NAWService;
 
 /**
@@ -40,14 +46,17 @@ import service.NAWService;
     "/PrizeCategoryChange"})
 public class DBServlet extends HttpServlet {
 
-    @EJB
-    NAWService ns;
+    @Inject
+    INAWService ns;
 
-    @EJB
-    CarTrackerService cts;
+    @Inject
+    ICarTrackerService cts;
 
-    @EJB
-    CarOwnerService cos;
+    @Inject
+    ICarOwnerService cos;
+    
+    @Inject
+    IMileageRateService mrs;
 
     private int bsn;
 
@@ -66,6 +75,11 @@ public class DBServlet extends HttpServlet {
             case "/Manage": {
                 req.setAttribute("naws", ns.getAllNaws());
                 RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/manage.jsp");
+                view.forward(req, res);
+                break;
+            }
+            case "/AddMileage": {
+                RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/managemilage.jsp");
                 view.forward(req, res);
                 break;
             }
@@ -101,6 +115,16 @@ public class DBServlet extends HttpServlet {
     public void doPost(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
         String userPath = req.getServletPath();
+        if(userPath.equals("/AddMileage")) {
+            double rate = Double.parseDouble(req.getParameter("mar"));
+            String regio = req.getParameter("regio");
+            double category = Double.parseDouble(req.getParameter("pricecategory"));
+            double interval = Double.parseDouble(req.getParameter("interval"));
+            
+            MileageRate mar = new MileageRate(rate, regio, category, interval);
+            mrs.createMileageRate(mar);
+            
+        }
         if (userPath.equals("/AddPerson")) {
             int bsn = Integer.parseInt(req.getParameter("bsn"));
             String firstname = req.getParameter("firstname");

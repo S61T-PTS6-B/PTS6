@@ -9,7 +9,6 @@ import dao.CarTrackerDAO;
 import dao.NawDAO;
 import java.util.List;
 import javax.ejb.EJB;
-import javax.ejb.Local;
 import javax.ejb.Stateless;
 import model.NAW;
 
@@ -36,7 +35,7 @@ public class NAWService implements INAWService{
     }
 
     @Override
-                                                                                                                                                                  public NAW getNAWByBsn(int bsn) {
+    public NAW getNAWByBsn(int bsn) {
         return nd.getNawByBsn(bsn);
     }
     
