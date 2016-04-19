@@ -33,6 +33,11 @@ public class MileageRateService implements IMileageRateService{
     }
     
     @Override
+    public MileageRate getRateById(String id) {
+        return mrd.getRatePerId(id);
+    }
+    
+    @Override
     public List<MileageRate> getRateByPrizeCategory(double prizecategory)
     {
         return mrd.getRatePerPrizeCategory(prizecategory);

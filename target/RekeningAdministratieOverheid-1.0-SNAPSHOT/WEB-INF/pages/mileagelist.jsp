@@ -28,7 +28,7 @@
         </div>
         <div id="wrapper">
             <div id="divborder">  
-                <h1>CarTrackerlijst</h1>
+                <h1>Mileage lijst</h1>
                 <ul>
                     <c:forEach var="MAR" items="${MAR}">
                         <form action="ChangeMA" method="post">

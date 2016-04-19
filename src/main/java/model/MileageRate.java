@@ -71,11 +71,11 @@ public class MileageRate implements Serializable {
         this.regio = regio;
     }
 
-    public double getPrizecategory() {
+    public double getPricecategory() {
         return pricecategory;
     }
 
-    public void setPrizecategory(double prizecategory) {
+    public void setPricecategory(double prizecategory) {
         this.pricecategory = prizecategory;
     }
 

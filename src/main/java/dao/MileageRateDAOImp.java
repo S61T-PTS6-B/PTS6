@@ -35,6 +35,15 @@ public class MileageRateDAOImp implements MileageRateDAO{
         query = em.createQuery("SELECT m FROM MILEAGERATE m");
         return (List<MileageRate>)query.getResultList(); //TODO
     }
+    
+    @Override    
+    public MileageRate getRatePerId(String id) {
+        long realid = Long.parseLong(id);
+        Query query;
+        query = em.createQuery("SELECT m FROM MILEAGERATE m WHERE m.id = :id").setParameter("id", realid);
+        return (MileageRate) query.getSingleResult();
+        
+    }
 
     @Override
     public List<MileageRate> getRatePerArea(String regio) {
@@ -78,7 +87,7 @@ public class MileageRateDAOImp implements MileageRateDAO{
 
     @Override
     public void changePrizeCategory(MileageRate mr, double prizeCategory) {
-        mr.setPrizecategory(prizeCategory);
+        mr.setPricecategory(prizeCategory);
         em.merge(mr);
     }
 

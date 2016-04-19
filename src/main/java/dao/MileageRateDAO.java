@@ -17,6 +17,8 @@ public interface MileageRateDAO {
     
     public List<MileageRate> getAllRates();
     
+    public MileageRate getRatePerId(String id);
+    
     public List<MileageRate> getRatePerRate(double mileageRate);
     
     public List<MileageRate> getRatePerArea(String regio);

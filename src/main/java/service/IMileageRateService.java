@@ -17,6 +17,8 @@ public interface IMileageRateService {
     
     public List<MileageRate> getAllRates();
     
+    public MileageRate getRateById(String id);
+    
     public List<MileageRate> getRateByPrizeCategory(double prizecategory);
     
     public List<MileageRate> getRateByInterval(double interval);

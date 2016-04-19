@@ -5,53 +5,42 @@
  */
 package websocket;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.websocket.OnError;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
-import model.NAW;
+import org.json.JSONException;
 
 /**
  *
  * @author koenv
  */
-@ServerEndpoint(value="/RekeningAdministratieSocket", decoders = {MessageDecoder.class}, encoders = {MessageEncoder.class})
+@ServerEndpoint(value = "/RekeningAdministratieSocket")
 public class NAWSocket {
+
+    private Set<Session> sessions = Collections.synchronizedSet(new HashSet<Session>());
+    @Inject
+    IMessageDecoder decoder;
 
     public NAWSocket() {
     }
-    
-    
+
+    @OnOpen
+    public void onOpen(Session session) {
+        System.out.println("Server : open");
+        sessions.add(session);
+    }
+
     @OnMessage
-    public NAW message(NAW naw, Session session){
-        System.out.println("Hij is in message");
-        try {
-            session.getBasicRemote().sendObject(naw);
-            System.out.println("Verstuur NAW");
-        } catch (Exception ex)
-        {
-            System.out.println("Shit man");
-            Logger.getLogger(NAWSocket.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        return naw;
+    public String onMessage(String Message) throws JSONException {
+        System.out.println("Receive from client: " + Message);
+        String replyMessage = decoder.Decode(Message);
+        System.out.println("send to client: " + replyMessage);
+        return replyMessage;
     }
-    
-    @OnOpen 
-    public void myOnOpen(Session session) {
-        System.out.println("Hij is open " + session.toString());
-        System.out.println(session.isOpen());
-        
-    }
-    
-    @OnError
-    public void onError(Session session, Throwable thr) 
-    {
-        System.out.println(thr.toString());
-    }
-    
-    
 }

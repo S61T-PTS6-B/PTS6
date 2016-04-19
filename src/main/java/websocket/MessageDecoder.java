@@ -5,49 +5,41 @@
  */
 package websocket;
 
-import dao.NawDAO;
-import java.io.IOException;
-import java.io.Reader;
+import javax.ejb.EJB;
+import javax.ejb.Local;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
-import javax.json.JsonStructure;
-import javax.websocket.DecodeException;
-import javax.websocket.Decoder;
-import javax.websocket.EndpointConfig;
 import model.NAW;
+import org.json.JSONException;
+import org.json.JSONObject;
 import service.INAWService;
+import service.NAWService;
 
 /**
  *
  * @author koenv
  */
-class MessageDecoder implements Decoder.TextStream<NAW> {
-
+@Stateless
+public class MessageDecoder implements IMessageDecoder {
     @Inject
-    INAWService ns;
+    private INAWService ns;
+
+    MessageEncoder encode;
+
     
-    @Override
-    public void init(EndpointConfig config) {
-        System.out.println("Init");
+    public MessageDecoder() {
     }
 
     @Override
-    public void destroy() {
-        
-    }
-
-    @Override
-    public NAW decode(Reader reader) throws DecodeException, IOException {
+    public String Decode(String object) throws JSONException {
+        encode = new MessageEncoder();
         System.out.println("Decoder");
-        JsonReader jsonReader = Json.createReader(reader);
-        JsonObject jsonObj = jsonReader.readObject();
+        JSONObject jsonObj = new JSONObject(object);
         NAW test = null;
         String bsnReceive;
         bsnReceive = jsonObj.getString("bsn");
-        test = ns.getNAWByBsn(Integer.parseInt(bsnReceive));
-        return test;
+        int bsnConverted = Integer.parseInt(bsnReceive);
+        test = ns.getNAWByBsn(bsnConverted);
+        return encode.Encode(test);
     }
-    
 }

@@ -5,28 +5,22 @@
  */
 package websocket;
 
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.math.BigDecimal;
+import javax.ejb.Stateless;
 import javax.json.Json;
 import javax.json.JsonObject;
-import javax.json.JsonWriter;
-import javax.websocket.EncodeException;
-import javax.websocket.Encoder;
-import javax.websocket.EndpointConfig;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
 import model.NAW;
 
 /**
  *
  * @author koenv
  */
-class MessageEncoder implements Encoder.TextStream<NAW> {
+public class MessageEncoder {
 
-    @Override
-    public void encode(NAW object, Writer writer) throws EncodeException, IOException {
+    public MessageEncoder() {
+    }
+    
+    
+        public String Encode(NAW object){
         System.out.print("Encoder: ");
         JsonObject json = Json.createObjectBuilder()
                 .add("bsn", object.getBsn())
@@ -39,22 +33,6 @@ class MessageEncoder implements Encoder.TextStream<NAW> {
                 .add("telephone", object.getTelephone())
                 .add("email", object.getEmail())
                 .build();
-        try {
-            JsonWriter jsonWriter = Json.createWriter(writer);
-            jsonWriter.write(json);
-        } catch (Exception e) {
-
-        }
+        return json.toString();
     }
-
-    @Override
-    public void init(EndpointConfig config) {
-        
-    }
-
-    @Override
-    public void destroy() {
-        
-    }
-
 }
