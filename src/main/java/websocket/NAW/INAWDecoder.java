@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package websocket;
+package websocket.NAW;
 
 import org.json.JSONException;
 
@@ -11,7 +11,7 @@ import org.json.JSONException;
  *
  * @author koenv
  */
-public interface ICarOwnerDecoder {
+public interface INAWDecoder {
     
     public String Decode(String object) throws JSONException;
     

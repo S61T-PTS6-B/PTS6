@@ -52,7 +52,31 @@ public class CarOwner implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-    
+
+    public CarTracker getCarid() {
+        return carid;
+    }
+
+    public void setCarid(CarTracker carid) {
+        this.carid = carid;
+    }
+
+    public NAW getNawid() {
+        return nawid;
+    }
+
+    public void setNawid(NAW nawid) {
+        this.nawid = nawid;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+        
     
     
     

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package websocket;
+package websocket.CarOwner;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -12,14 +12,17 @@ import javax.inject.Inject;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
+import javax.websocket.server.ServerEndpoint;
 import org.json.JSONException;
 
 /**
  *
  * @author koenv
  */
+@ServerEndpoint(value = "/CarOwnerSocket")
 public class CarOwnerSocket {
-        private Set<Session> sessions = Collections.synchronizedSet(new HashSet<Session>());
+
+    private Set<Session> sessions = Collections.synchronizedSet(new HashSet<Session>());
     @Inject
     ICarOwnerDecoder decoder;
 
