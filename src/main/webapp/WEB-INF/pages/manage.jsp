@@ -15,46 +15,76 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
         <script>
-            $(document).ready(function () {
-                $('#persoonadd').submit(function () {
-                    alert("Persoon succesvol toegevoegd!");
-                });
-            });
-            
             function hasLetter(str) {
                 // check for characters between a and z
                 // i flag makes it case insensitive
                 return /[a-z]/i.test(str);
             }
-            
+
+            function hasSpecialLetter(str) {
+                // check for characters between a and z
+                // i flag makes it case insensitive
+                return /[a-z']/i.test(str);
+            }
+
+            function validateEmail(str) {
+                var re = ^(([a-zA-Z0-9_.-])+@([a-zA-Z0-9_.-])+\.([a-zA-Z])+([a-zA-Z])+)?$;
+                return re.test(str);
+            }
+
             function nawvalidate()
             {
                 var bsn = document.getElementById("bsn");
+                var firstname = document.getElementById("firstname");
+                var lastname = document.getElementById("lastname");
+                var address = document.getElementById("address");
+                var city = document.getElementById("city");
+                var email = document.getElementById("email");
+                var telephone = document.getElementById("telephone");
                 var bsnValue = document.getElementById("bsn").value;
                 var valid = true;
                 if (bsn.value.length <= 0 || firstname.value.length <= 0)
                 {
                     alert("Don't leave the field empty!");
                     valid = false;
-                } else {
-                    if (bsnValue.length >= 10)
-                    {
-                        alert("Een bsn bestaat uit 9 cijfers");
-                        valid = false;
-                    } else {
-                        if (isNaN(bsnValue)) {
-                            alert("Enter a number");
-                            valid = false;
-                        }
-                    }
-                    if (!hasLetter(firstname))
-                    {
-                        alert("Een voornaam mag alleen uit letters bestaan");
-                        valid = false;
-                    }
-                    
                 }
-                
+                if (bsnValue.length != 9)
+                {
+                    alert("Een bsn bestaat uit 9 cijfers");
+                    valid = false;
+                } else {
+                    if (isNaN(bsnValue)) {
+                        alert("Enter a number");
+                        valid = false;
+                    }
+                }
+                if (!hasLetter(firstname))
+                {
+                    alert("Een voornaam mag alleen uit letters bestaan");
+                    valid = false;
+                }
+                if (!hasLetter(lastname)) {
+                    alert("Een achternaam mag alleen uit letters bestaan");
+                    valid = false;
+                }
+                if (!hasSpecialLetter(address)) {
+                    alert("Een adres mag alleen uit letters bestaan");
+                    valid = false;
+                }
+                if (!hasSpecialLetter(city)) {
+                    alert("Een stad mag alleen uit letters bestaan");
+                    valid = false;
+                }
+                if (!validateEmail(email)) {
+                    alert("Voer een juist e-mail adres in");
+                    valid = false;
+                }
+                if (isNaN(telephone)) {
+                    alert("Enter a number");
+                    valid = false;
+                }
+
+
                 return valid;
             }
             ;
@@ -85,14 +115,14 @@
                     <p><h1>Persoon toevoegen: </h1></p>
                     <form id="persoonadd" class= "pure-form" action="AddPerson" method="POST" onsubmit="return nawvalidate();">
                         <p>Burger Service Nummer: <input id="bsn" type="text" name="bsn" /></p>
-                        <p>First name: <input type="text" name="firstname" /></p>
-                        <p>Last name: <input type="text" name="lastname" /></p>
-                        <p>Address: <input type="text" name="address" /></p>
-                        <p>Number: <input type="text" name="number" /></p>
-                        <p>Zipcode: <input type="text" name="zipcode" /></p>
-                        <p>City: <input type="text" name="city" /></p>
-                        <p>Telephone: <input type="text" name="telephone" /></p>
-                        <p>Email: <input type="text" name="email" /></p>
+                        <p>First name: <input id="firstname" type="text" name="firstname" /></p>
+                        <p>Last name: <input id="lastname" type="text" name="lastname" /></p>
+                        <p>Address: <input  id="address" type="text" name="address" /></p>
+                        <p>Number: <input  id="housenumber" type="text" name="number" /></p>
+                        <p>Zipcode: <input  id="zipcode" type="text" name="zipcode" /></p>
+                        <p>City: <input  id="city" type="text" name="city" /></p>
+                        <p>Telephone: <input  id="telephone" type="text" name="telephone" /></p>
+                        <p>Email: <input id="email" type="text" name="email" /></p>
                         <input id="myBtn" onclick="showDiv()" type="submit" href="NawList">
                     </form>
                 </div>
