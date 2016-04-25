@@ -14,9 +14,9 @@ import model.NAW;
  *
  * @author koenv
  */
-public class MessageEncoder {
+public class NAWEncoder {
 
-    public MessageEncoder() {
+    public NAWEncoder() {
     }
     
     

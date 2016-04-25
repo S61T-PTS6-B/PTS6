@@ -5,10 +5,12 @@
  */
 package dao;
 
+import java.util.List;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import model.CarOwner;
 import model.CarTracker;
 import model.NAW;
@@ -26,6 +28,13 @@ public class CarOwnerDAOImp implements CarOwnerDAO{
     @Override
     public void createCarOwner(CarOwner co) {
         em.persist(co);
+    }
+
+    @Override
+    public CarOwner getCarOwnerByNawId(NAW id) {
+        Query query;
+        query = em.createQuery("SELECT c FROM CAROWNER c WHERE nawid = :id").setParameter("id", id);
+        return (CarOwner)query.getSingleResult(); //TODO
     }
     
 }

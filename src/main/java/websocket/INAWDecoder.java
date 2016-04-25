@@ -3,18 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dao;
+package websocket;
 
-import model.CarOwner;
-import model.CarTracker;
-import model.NAW;
+import org.json.JSONException;
 
 /**
  *
  * @author koenv
  */
-public interface CarOwnerDAO {
-    public void createCarOwner(CarOwner co);
-
-    public CarOwner getCarOwnerByNawId(NAW id);
+public interface INAWDecoder {
+    
+    public String Decode(String object) throws JSONException;
+    
 }

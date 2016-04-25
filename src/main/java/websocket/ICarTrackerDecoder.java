@@ -11,8 +11,6 @@ import org.json.JSONException;
  *
  * @author koenv
  */
-public interface IMessageDecoder {
-    
+public interface ICarTrackerDecoder {
     public String Decode(String object) throws JSONException;
-    
 }

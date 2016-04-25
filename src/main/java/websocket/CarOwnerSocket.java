@@ -8,26 +8,22 @@ package websocket;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
-import javax.websocket.server.ServerEndpoint;
 import org.json.JSONException;
 
 /**
  *
  * @author koenv
  */
-@ServerEndpoint(value = "/NAWSocket")
-public class NAWSocket {
-
-    private Set<Session> sessions = Collections.synchronizedSet(new HashSet<Session>());
+public class CarOwnerSocket {
+        private Set<Session> sessions = Collections.synchronizedSet(new HashSet<Session>());
     @Inject
-    INAWDecoder decoder;
+    ICarOwnerDecoder decoder;
 
-    public NAWSocket() {
+    public CarOwnerSocket() {
     }
 
     @OnOpen

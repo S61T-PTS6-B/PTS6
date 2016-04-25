@@ -6,6 +6,7 @@
 package service;
 
 import model.CarOwner;
+import model.NAW;
 
 /**
  *
@@ -14,5 +15,7 @@ import model.CarOwner;
 public interface ICarOwnerService {
 
     public void createCarOwner(CarOwner c);
+
+    public CarOwner getCarOwnerByNawId(NAW id);
     
 }

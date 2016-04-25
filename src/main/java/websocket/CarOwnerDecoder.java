@@ -5,41 +5,43 @@
  */
 package websocket;
 
-import javax.ejb.EJB;
-import javax.ejb.Local;
-import javax.ejb.Stateless;
 import javax.inject.Inject;
-import model.NAW;
+import model.CarOwner;
+import model.CarTracker;
 import org.json.JSONException;
 import org.json.JSONObject;
+import service.ICarOwnerService;
+import service.ICarTrackerService;
 import service.INAWService;
-import service.NAWService;
 
 /**
  *
  * @author koenv
  */
-@Stateless
-public class MessageDecoder implements IMessageDecoder {
+public class CarOwnerDecoder implements ICarOwnerDecoder {
+
+    @Inject
+    private ICarOwnerService cos;
+
     @Inject
     private INAWService ns;
 
-    MessageEncoder encode;
+    CarOwnerEncoder encode;
 
-    
-    public MessageDecoder() {
+    public CarOwnerDecoder() {
+
     }
 
     @Override
     public String Decode(String object) throws JSONException {
-        encode = new MessageEncoder();
+        encode = new CarOwnerEncoder();
         System.out.println("Decoder");
         JSONObject jsonObj = new JSONObject(object);
-        NAW test = null;
-        String bsnReceive;
-        bsnReceive = jsonObj.getString("bsn");
-        int bsnConverted = Integer.parseInt(bsnReceive);
-        test = ns.getNAWByBsn(bsnConverted);
-        return encode.Encode(test);
+        CarOwner co = null;
+        String id;
+        id = jsonObj.getString("id");
+        co = cos.getCarOwnerByNawId(ns.getNAWByBsn(Integer.parseInt(id)));
+        return encode.Encode(co);
     }
 }
+

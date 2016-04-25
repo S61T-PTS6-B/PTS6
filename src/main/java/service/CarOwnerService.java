@@ -9,6 +9,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import dao.CarOwnerDAO;
 import model.CarOwner;
+import model.NAW;
 
 /**
  *
@@ -22,6 +23,11 @@ public class CarOwnerService implements ICarOwnerService {
     @Override
     public void createCarOwner(CarOwner c) {
         cod.createCarOwner(c);
+    }
+
+    @Override
+    public CarOwner getCarOwnerByNawId(NAW id) {
+        return cod.getCarOwnerByNawId(id);
     }
     
     
