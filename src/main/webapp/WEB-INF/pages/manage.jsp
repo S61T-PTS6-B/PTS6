@@ -15,79 +15,119 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
         <script>
-            function hasLetter(str) {
-                // check for characters between a and z
-                // i flag makes it case insensitive
-                return /[a-z]/i.test(str);
-            }
+                $('form').submit(function (/*DOMEvent*/ e) {
+                    e.preventDefault();
 
-            function hasSpecialLetter(str) {
-                // check for characters between a and z
-                // i flag makes it case insensitive
-                return /[a-z']/i.test(str);
-            }
-
-            function validateEmail(str) {
-                var re = ^(([a-zA-Z0-9_.-])+@([a-zA-Z0-9_.-])+\.([a-zA-Z])+([a-zA-Z])+)?$;
-                return re.test(str);
-            }
-
-            function nawvalidate()
-            {
-                var bsn = document.getElementById("bsn");
-                var firstname = document.getElementById("firstname");
-                var lastname = document.getElementById("lastname");
-                var address = document.getElementById("address");
-                var city = document.getElementById("city");
-                var email = document.getElementById("email");
-                var telephone = document.getElementById("telephone");
-                var bsnValue = document.getElementById("bsn").value;
-                var valid = true;
-                if (bsn.value.length <= 0 || firstname.value.length <= 0)
-                {
-                    alert("Don't leave the field empty!");
-                    valid = false;
+                    var url = $(this).attr('action'),
+                            data = $(this).serialize();
+                    $.post(url, data, function (response) {
+                        alert("Test!");
+                    });
+                });
+                function hasLetter(str) {
+                    // check for characters between a and z
+                    // i flag makes it case insensitive
+                    return /[a-z]/i.test(str);
                 }
-                if (bsnValue.length != 9)
+
+                function hasSpecialLetter(str) {
+                    // check for characters between a and z
+                    // i flag makes it case insensitive
+                    return /[a-z']/i.test(str);
+                }
+
+                function validateEmail(str) {
+//                    var re = ^(([a - zA - Z0 - 9_. - ]) + @([a - zA - Z0 - 9_. - ]) + \.([a - zA - Z]) + ([a - zA - Z]) + )?$;
+//                            return re.test(str);
+                    return true;
+                }
+
+                function nawvalidate()
                 {
-                    alert("Een bsn bestaat uit 9 cijfers");
-                    valid = false;
-                } else {
-                    if (isNaN(bsnValue)) {
-                        alert("Enter a number");
+                    var bsn = document.getElementById("bsn");
+                    var firstname = document.getElementById("firstname");
+                    var lastname = document.getElementById("lastname");
+                    var address = document.getElementById("address");
+                    var city = document.getElementById("city");
+                    var email = document.getElementById("email");
+                    var telephone = document.getElementById("telephone");
+                    var bsnValue = document.getElementById("bsn").value;
+                    var valid = true;
+                    if (bsn.value.length <= 0 || firstname.value.length <= 0)
+                    {
+                        alert("Graag alle velden invullen!");
                         valid = false;
                     }
-                }
-                if (!hasLetter(firstname))
-                {
-                    alert("Een voornaam mag alleen uit letters bestaan");
-                    valid = false;
-                }
-                if (!hasLetter(lastname)) {
-                    alert("Een achternaam mag alleen uit letters bestaan");
-                    valid = false;
-                }
-                if (!hasSpecialLetter(address)) {
-                    alert("Een adres mag alleen uit letters bestaan");
-                    valid = false;
-                }
-                if (!hasSpecialLetter(city)) {
-                    alert("Een stad mag alleen uit letters bestaan");
-                    valid = false;
-                }
-                if (!validateEmail(email)) {
-                    alert("Voer een juist e-mail adres in");
-                    valid = false;
-                }
-                if (isNaN(telephone)) {
-                    alert("Enter a number");
-                    valid = false;
-                }
+                    if (bsnValue.length != 9)
+                    {
+                        alert("Een bsn bestaat uit 9 cijfers");
+                        valid = false;
+                    } else {
+                        if (isNaN(bsnValue)) {
+                            alert("Voer een correct burgerservicenummer in");
+                            valid = false;
+                        }
+                    }
+                    if (!hasLetter(firstname))
+                    {
+                        alert("Een voornaam mag alleen uit letters bestaan");
+                        valid = false;
+                    }
+                    if (!hasLetter(lastname)) {
+                        alert("Een achternaam mag alleen uit letters bestaan");
+                        valid = false;
+                    }
+                    if (!hasSpecialLetter(address)) {
+                        alert("Een adres mag alleen uit letters bestaan");
+                        valid = false;
+                    }
+                    if (!hasSpecialLetter(city)) {
+                        alert("Een stad mag alleen uit letters bestaan");
+                        valid = false;
+                    }
+                    if (!validateEmail(email)) {
+                        alert("Voer een juist e-mail adres in");
+                        valid = false;
+                    }
+                    if (isNaN(telephone.value)) {
+                        alert("Voer een telefoonnummer in");
+                        valid = false;
+                    }
+                    if (valid) {
+                        alert("Persoon toegevoegd!");
+                    }
 
 
-                return valid;
-            }
-            ;
+                    return valid;
+                }
+                
+
+                function ctvalidate() 
+		{
+                    var price = document.getElementById("priceCategory");
+                    var license = document.getElementById("licensePlate");
+                    var model = document.getElementById("model");
+                    var brand = document.getElementById("brand");
+		    var valid = true;
+		    
+		    if (price.value.length <= 0 || license.value.length <= 0 || model.value.length <= 0 || brand.value.length <= 0)
+                    {
+                        alert("Graag alle velden invullen!");
+                        valid = false;
+                    }
+		    if(isNaN(price.value)) {
+			    alert("Prijs bestaat alleen uit cijfers");
+			    valid = false;
+		    }
+		    if(!hasLetter(brand)) {
+			    alert("Gelieve alleen letters in te voeren bij Merk auto")
+		    }
+		    if(valid) {
+			    alert("Cartracker toegevoegd");
+		    }
+		    
+		    return valid;
+                }
 
         </script>
         <style>
@@ -117,7 +157,7 @@
                         <p>Burger Service Nummer: <input id="bsn" type="text" name="bsn" /></p>
                         <p>First name: <input id="firstname" type="text" name="firstname" /></p>
                         <p>Last name: <input id="lastname" type="text" name="lastname" /></p>
-                        <p>Address: <input  id="address" type="text" name="address" /></p>
+                        <p>Street: <input  id="address" type="text" name="address" /></p>
                         <p>Number: <input  id="housenumber" type="text" name="number" /></p>
                         <p>Zipcode: <input  id="zipcode" type="text" name="zipcode" /></p>
                         <p>City: <input  id="city" type="text" name="city" /></p>
@@ -135,13 +175,13 @@
                         Personenlijst:
                         <select name="bsn">
                             <c:forEach var="naws" items="${naws}">
-                                <option name="${naws.bsn}" value="${naws.bsn}"><c:out value="${naws.firstname}"/></c> <c:out value="${naws.lastname}"/></c></option>
+				    <option name="${naws.bsn}" value="${naws.bsn}"><c:out value="${naws.firstname}"/></c> <c:out value="${naws.lastname}"/></c></option>
                             </c:forEach>
                         </select>
-                        <p>Prize Category: <input type="text" name="category" /></p>
-                        <p>License plate: <input type="text" name="license" /></p>
-                        <p>Car model: <input type="text" name="carmodel" /></p>
-                        <p>Car brand: <input type="text" name="carbrand" /></p>
+                        <p>Prize Category: <input id="priceCategory" type="text" name="category" /></p>
+                        <p>License plate: <input id="licensePlate" type="text" name="license" /></p>
+                        <p>Car model: <input id="model" type="text" name="carmodel" /></p>
+                        <p>Car brand: <input id="brand" type="text" name="carbrand" /></p>
                         <input id="button" type="submit" href="CarTrackerList">
                     </form>
                 </div>

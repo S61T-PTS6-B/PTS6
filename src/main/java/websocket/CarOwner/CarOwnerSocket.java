@@ -23,6 +23,7 @@ import org.json.JSONException;
 public class CarOwnerSocket {
 
     private Set<Session> sessions = Collections.synchronizedSet(new HashSet<Session>());
+    
     @Inject
     ICarOwnerDecoder decoder;
 

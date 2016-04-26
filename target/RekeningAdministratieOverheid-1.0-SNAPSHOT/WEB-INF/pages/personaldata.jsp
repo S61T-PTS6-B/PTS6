@@ -105,7 +105,7 @@
                                     <c:out value="${theCTs.getModelCar()}"/>
                                 </td>
                                 <td>
-                                    <c:out value="${theCTs.getPrizeCategory()}"/>
+                                    <c:out value="${theCTs.getPriceCategory()}"/>
                                 </td>
                                 <td>
                                     <form action="ChangeCT" method="POST">

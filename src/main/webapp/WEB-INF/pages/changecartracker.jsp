@@ -36,7 +36,7 @@
                     <center><h1>Verander cartracker</h1></center>
 
                     <form class= "pure-form" action="PrizeCategoryChange" method="POST">
-                        <p>Prize Category:  <input onClick="this.select();" type="text" name="category" placeholder="${ct.getPrizeCategory()}" /><input type="submit"></p>
+                        <p>Prize Category:  <input onClick="this.select();" type="text" name="category" placeholder="${ct.getPriceCategory()}" /><input type="submit"></p>
                     </form>
                     <form class= "pure-form" action="LicenseChange" method="POST">
                         <p>License plate: <input onClick="this.select();" type="text" name="license" placeholder="${ct.getLicensePlate()}"/><input type="submit"></p>

@@ -80,7 +80,7 @@ public class CarTrackerDAOImp implements CarTrackerDAO{
 
     @Override
     public void changePrizeCategory(CarTracker ct, double prizecategory) {
-        ct.setPrizeCategory(prizecategory);
+        ct.setPriceCategory(prizecategory);
         em.merge(ct);
         
     }

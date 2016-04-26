@@ -51,11 +51,11 @@ public class CarTracker implements Serializable {
         this.websiteSubscription = websiteSubscription;
     }
 
-    public double getPrizeCategory() {
+    public double getPriceCategory() {
         return priceCategory;
     }
 
-    public void setPrizeCategory(double tariefCategorie) {
+    public void setPriceCategory(double tariefCategorie) {
         this.priceCategory = tariefCategorie;
     }
 

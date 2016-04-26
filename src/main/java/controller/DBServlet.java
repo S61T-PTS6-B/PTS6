@@ -176,7 +176,7 @@ public class DBServlet extends HttpServlet {
             CarOwner co = new CarOwner(ct, naw);
             cos.createCarOwner(co);
 
-            RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/cartrackerlist.jsp");
+            RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/manage.jsp");
             view.forward(req, res);
         }
         if (userPath.equals("/PersonalData")) {

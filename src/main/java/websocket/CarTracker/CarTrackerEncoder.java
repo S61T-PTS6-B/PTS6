@@ -23,7 +23,7 @@ public class CarTrackerEncoder {
         System.out.print("Encoder: ");
         JsonObject json = Json.createObjectBuilder()
                 .add("id", object.getId())
-                .add("priceCategory", object.getPrizeCategory())
+                .add("priceCategory", object.getPriceCategory())
                 .add("licensePlate", object.getLicensePlate())
                 .add("modelCar", object.getModelCar())
                 .add("brandCar", object.getBrandCar())

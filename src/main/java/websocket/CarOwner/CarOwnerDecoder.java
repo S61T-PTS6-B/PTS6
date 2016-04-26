@@ -5,6 +5,7 @@
  */
 package websocket.CarOwner;
 
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import model.CarOwner;
 import model.CarTracker;
@@ -18,6 +19,7 @@ import service.INAWService;
  *
  * @author koenv
  */
+@Stateless
 public class CarOwnerDecoder implements ICarOwnerDecoder {
 
     @Inject

@@ -30,7 +30,7 @@
                 <ul>
                     <c:forEach var="CTs" items="${CTs}">
                         <form action="ChangeCT" method="post">
-                            <button class="myButton" type="submit"><c:out value="${CTs.getId()}"/></c> <c:out value="${CTs.getPrizeCategory()}"/></c><c:out value="${CTs.getLicensePlate()}"/></c></button>
+                            <button class="myButton" type="submit"><c:out value="${CTs.getId()}"/></c> <c:out value="${CTs.getPriceCategory()}"/></c><c:out value="${CTs.getLicensePlate()}"/></c></button>
                             <input type="hidden" name="id" value="${CTs.id}">
                         </form>
                     </c:forEach>
