@@ -11,6 +11,8 @@ dao\MileageRateDAOImp.class
 model\MileageRate.class
 websocket\CarOwner\CarOwnerEncoder.class
 websocket\CarTracker\CarTrackerDecoder.class
+websocket\Politie\IPolitieDecoder.class
+websocket\Politie\PolitieDecoder.class
 service\MileageRateService.class
 model\MileageRate_.class
 dao\NawDAO.class
@@ -21,10 +23,12 @@ dao\NawDAOImp.class
 model\CarOwner_.class
 service\INAWService.class
 model\CarTracker.class
+websocket\Politie\PolitieSocket.class
 model\CarOwner.class
 model\NAW_.class
 dao\CarOwnerDAOImp.class
 dao\MileageRateDAO.class
+websocket\Politie\PolitieEncoder.class
 dao\CarTrackerDAOImp.class
 service\IMileageRateService.class
 websocket\CarTracker\CarTrackerSocket.class

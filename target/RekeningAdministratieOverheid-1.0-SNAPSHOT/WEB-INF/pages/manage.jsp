@@ -10,6 +10,7 @@
     <head>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/default.css" />
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/nav.css" />
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/elements.css" />
         <script src="//code.jquery.com/jquery-1.10.2.js"></script>
         <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -22,6 +23,9 @@
 
                 var GlobalBSN = "";
 
+                window.onload = function () {
+                    fixSize();
+                };
                 $('form').submit(function (/*DOMEvent*/ e) {
                     e.preventDefault();
 
@@ -152,6 +156,7 @@
 
                 function populateData() {
                     var e = document.getElementById("personList");
+
                     var strUser = e.options[e.selectedIndex].value;
                     if (strUser === null) {
                         console.log("BSN IS LEEG");
@@ -165,38 +170,40 @@
 
                             console.log(evt);
                             msg = evt;
-                            document.getElementById("bsn").value = msg.bsn;
+                            document.getElementById("bsnshow").value = msg.bsn;
                             GlobalBSN = msg.bsn;
-                            document.getElementById("firstname").value = msg.firstname;
-                            document.getElementById("lastname").value = msg.lastname;
-                            document.getElementById("address").value = msg.address;
-                            document.getElementById("housenumber").value = msg.housenumber;
-                            document.getElementById("zipcode").value = msg.zipcode;
-                            document.getElementById("city").value = msg.city;
-                            document.getElementById("telephone").value = msg.telephone;
-                            document.getElementById("email").value = msg.email;
+                            document.getElementById("firstnameshow").value = msg.firstname;
+                            document.getElementById("lastnameshow").value = msg.lastname;
+                            document.getElementById("addressshow").value = msg.address;
+                            document.getElementById("housenumbershow").value = msg.housenumber;
+                            document.getElementById("zipcodeshow").value = msg.zipcode;
+                            document.getElementById("cityshow").value = msg.city;
+                            document.getElementById("telephoneshow").value = msg.telephone;
+                            document.getElementById("emailshow").value = msg.email;
+			    document.getElementById("bsnhide").value = msg.bsn;
 
-                            document.getElementById("bsn").disabled = true;
-                            document.getElementById("firstname").disabled = true;
-                            document.getElementById("lastname").disabled = true;
-                            document.getElementById("address").disabled = true;
-                            document.getElementById("housenumber").disabled = true;
-                            document.getElementById("zipcode").disabled = true;
-                            document.getElementById("city").disabled = true;
-                            document.getElementById("telephone").disabled = true;
-                            document.getElementById("email").disabled = true;
-
+                            document.getElementById("bsnshow").disabled = true;
+                            document.getElementById("firstnameshow").disabled = true;
+                            document.getElementById("lastnameshow").disabled = true;
+                            document.getElementById("addressshow").disabled = true;
+                            document.getElementById("housenumbershow").disabled = true;
+                            document.getElementById("zipcodeshow").disabled = true;
+                            document.getElementById("cityshow").disabled = true;
+                            document.getElementById("telephoneshow").disabled = true;
+                            document.getElementById("emailshow").disabled = true;
+                            e.size += +1;
                             $.ajax({
                                 type: "post",
                                 url: "FillCT", //this is my servlet
                                 data: {OptionBSN: strUser}, //Wat moet hier
                                 success: function (ctevt) {
+                                    msg = JSON.parse(ctevt);
+                                    console.log("Dit is de output:" + msg.cartrackers[0].licensePlate);
 
-                                    console.log("Dit is de output:" + ctevt);
-                                    msg = ctevt;
-
-
-
+                                },
+                                error: function (xhr, status, error) {
+                                    var err = eval("(" + xhr.responseText + ")");
+                                    alert(err.Message);
                                 }
                             });
 
@@ -215,10 +222,17 @@
 
                 function ChangeEnabler(fieldName) {
                     document.getElementById(fieldName).disabled = false;
+                    document.getElementById(fieldName).focus();
+                    PopulateDataCT();
+                }
+                function reload(fieldname) {
+                    var container = document.getElementById(fieldname);
+                    var content = container.innerHTML;
+                    container.innerHTML = content;
                 }
 
                 function ChangeFirstname() {
-                    var newname = document.getElementById("firstname").value;
+                    var newname = document.getElementById("firstnameshow").value;
                     $.ajax({
                         type: "post",
                         url: "ChangeFirstname", //this is my servlet
@@ -227,19 +241,19 @@
 
                             console.log(evt);
                             msg = evt;
-                            document.getElementById("bsn").value = msg.bsn;
+                            document.getElementById("bsnshow").value = msg.bsn;
                             GlobalBSN = msg.bsn;
-                            document.getElementById("firstname").value = msg.firstname;
+                            document.getElementById("firstnameshow").value = msg.firstname;
+                            document.getElementById("firstnameshow").disabled = true;
 
-                            document.getElementById("firstname").disabled = true;
-
-
+                            location.reload();
                         }
                     });
+
                 }
 
                 function ChangeLastname() {
-                    var newname = document.getElementById("lastname").value;
+                    var newname = document.getElementById("lastnameshow").value;
                     $.ajax({
                         type: "post",
                         url: "ChangeLastname", //this is my servlet
@@ -248,19 +262,19 @@
 
                             console.log(evt);
                             msg = evt;
-                            document.getElementById("bsn").value = msg.bsn;
+                            document.getElementById("bsnshow").value = msg.bsn;
                             GlobalBSN = msg.bsn;
-                            document.getElementById("lastname").value = msg.lastname;
+                            document.getElementById("lastnameshow").value = msg.lastname;
 
-                            document.getElementById("lastname").disabled = true;
+                            document.getElementById("lastnameshow").disabled = true;
 
-
+                            location.reload();
                         }
                     });
                 }
 
                 function ChangeAddress() {
-                    var newstreet = document.getElementById("address").value;
+                    var newstreet = document.getElementById("addressshow").value;
                     $.ajax({
                         type: "post",
                         url: "ChangeAddress", //this is my servlet
@@ -269,19 +283,19 @@
 
                             console.log(evt);
                             msg = evt;
-                            document.getElementById("bsn").value = msg.bsn;
+                            document.getElementById("bsnshow").value = msg.bsn;
                             GlobalBSN = msg.bsn;
-                            document.getElementById("address").value = msg.address;
+                            document.getElementById("addressshow").value = msg.address;
 
-                            document.getElementById("address").disabled = true;
+                            document.getElementById("addressshow").disabled = true;
 
-
+                            location.reload();
                         }
                     });
                 }
 
                 function ChangeNumber() {
-                    var newnumber = document.getElementById("housenumber").value;
+                    var newnumber = document.getElementById("housenumbershow").value;
                     $.ajax({
                         type: "post",
                         url: "ChangeNumber", //this is my servlet
@@ -290,15 +304,21 @@
 
                             console.log(evt);
                             msg = evt;
-                            document.getElementById("bsn").value = msg.bsn;
+                            document.getElementById("bsnshow").value = msg.bsn;
                             GlobalBSN = msg.bsn;
-                            document.getElementById("housenumber").value = msg.housenumber;
+                            document.getElementById("housenumbershow").value = msg.housenumber;
 
-                            document.getElementById("housenumber").disabled = true;
+                            document.getElementById("housenumbershow").disabled = true;
 
-
+                            location.reload();
                         }
                     });
+                }
+
+                function fixSize() {
+                    $('#personList').attr('size', $('select option').length);
+                    console.log("Fixed size!");
+		    console.log(document.getElementById("bsnhide").value);
                 }
 
                 function getStreet() {
@@ -312,7 +332,7 @@
                 }
 
                 function ChangeZipcode() {
-                    var newzipcode = document.getElementById("zipcode").value;
+                    var newzipcode = document.getElementById("zipcodeshow").value;
                     $.ajax({
                         type: "post",
                         url: "ChangeZipcode", //this is my servlet
@@ -321,19 +341,19 @@
 
                             console.log(evt);
                             msg = evt;
-                            document.getElementById("bsn").value = msg.bsn;
+                            document.getElementById("bsnshow").value = msg.bsn;
                             GlobalBSN = msg.bsn;
-                            document.getElementById("zipcode").value = msg.zipcode;
+                            document.getElementById("zipcodeshow").value = msg.zipcode;
 
-                            document.getElementById("zipcode").disabled = true;
+                            document.getElementById("zipcodeshow").disabled = true;
 
-
+                            location.reload();
                         }
                     });
                 }
 
                 function ChangeCity() {
-                    var newcity = document.getElementById("city").value;
+                    var newcity = document.getElementById("cityshow").value;
                     $.ajax({
                         type: "post",
                         url: "ChangeCity", //this is my servlet
@@ -342,19 +362,19 @@
 
                             console.log(evt);
                             msg = evt;
-                            document.getElementById("bsn").value = msg.bsn;
+                            document.getElementById("bsnshow").value = msg.bsn;
                             GlobalBSN = msg.bsn;
-                            document.getElementById("city").value = msg.city;
+                            document.getElementById("cityshow").value = msg.city;
 
-                            document.getElementById("city").disabled = true;
+                            document.getElementById("cityshow").disabled = true;
 
-
+                            location.reload();
                         }
                     });
                 }
 
                 function ChangeTelephone() {
-                    var newtelephone = document.getElementById("telephone").value;
+                    var newtelephone = document.getElementById("telephoneshow").value;
                     $.ajax({
                         type: "post",
                         url: "ChangeTelephone", //this is my servlet
@@ -363,19 +383,19 @@
 
                             console.log(evt);
                             msg = evt;
-                            document.getElementById("bsn").value = msg.bsn;
+                            document.getElementById("bsnshow").value = msg.bsn;
                             GlobalBSN = msg.bsn;
-                            document.getElementById("telephone").value = msg.telephone;
+                            document.getElementById("telephoneshow").value = msg.telephone;
 
-                            document.getElementById("telephone").disabled = true;
+                            document.getElementById("telephoneshow").disabled = true;
 
-
+                            location.reload();
                         }
                     });
                 }
 
                 function ChangeMail() {
-                    var newmail = document.getElementById("email").value;
+                    var newmail = document.getElementById("emailshow").value;
                     $.ajax({
                         type: "post",
                         url: "ChangeMail", //this is my servlet
@@ -384,15 +404,27 @@
 
                             console.log(evt);
                             msg = evt;
-                            document.getElementById("bsn").value = msg.bsn;
+                            document.getElementById("bsnshow").value = msg.bsn;
                             GlobalBSN = msg.bsn;
-                            document.getElementById("email").value = msg.mail;
+                            document.getElementById("emailshow").value = msg.mail;
 
-                            document.getElementById("email").disabled = true;
+                            document.getElementById("emailshow").disabled = true;
 
-
+                            location.reload();
                         }
                     });
+                }
+                //Function To Display Popup
+                function div_show() {
+                    document.getElementById('abc').style.display = "block";
+                }
+                function div_showct() {
+                    document.getElementById('abct').style.display = "block";
+                }
+//Function to Hide Popup
+                function div_hide() {
+                    document.getElementById('abc').style.display = "none";
+                    document.getElementById('abct').style.display = "none";
                 }
 
 
@@ -419,64 +451,102 @@
             </ul>
         </div>
 
+	<div id="abc">
+	    <!-- Popup Div Starts Here -->
+	    <div id="popupContact">
+		<!-- Contact Us Form -->
+		<form action="AddPerson" id="popform" method="post" name="popform" class="popform">
+		    <img id="close" src="${pageContext.request.contextPath}/icons/close.png" onclick ="div_hide()">
+		    <h2 class="poph2">Persoon toevoegen</h2>
+		    <hr class="pophr">
+		    <p>Burger Service Nummer: <br /> <input class="popf" id="bsn" type="text" name="bsn"></p>
+		    <p>First name: <br /> <input class="popf"  id="firstname" type="text" name="firstname" /> </p> 
+		    <p>Last name: <br /> <input class="popf" id="lastname" type="text" name="lastname" /></p>
+		    <p >Street:  Housenumber: <br /><input  class="popf" id="address" type="text" name="address" />
+			<input class="popf"  id="housenumber" type="text" name="number" /></p>
+		    <p>Zipcode: <br /> <input class="popf"  id="zipcode" type="text" name="zipcode" /></p>
+		    <p>City: <br /> <input class="popf"  id="city" type="text" name="city" /></p>
+		    <p>Telephone: <br /> <input class="popf"  id="telephone" type="text" name="telephone" /></p>
+		    <p>Email: <br /> <input class="popf"  id="email" type="text" name="email" /></p>
+		    <input class="popbutton" type="submit" onclick="fixSize();" href="#"/>
+		</form>
+	    </div>
+	    <!-- Popup Div Ends Here -->
+	</div>
+
+	<div id="abct">
+	    <!-- Popup Div Starts Here -->
+	    <div id="popupContact">
+		<!-- Contact Us Form -->
+		<form action="AddCarTracker" id="popform" method="post" name="popform" class="popform">
+		    <img id="close" src="${pageContext.request.contextPath}/icons/close.png" onclick ="div_hide()">
+		    <h2 class="poph2">CarTracker toevoegen</h2>
+		    <hr class="pophr">
+		    <input id="bsnhide" type="hidden" value="replace" name="bsnhide"/>
+		    <p>Prize Category: <br/><input id="priceCategory" type="text" name="category" /></p>
+		    <p>License plate: <br/><input id="licensePlate" type="text" name="license" /></p>
+		    <p>Car brand: <br/><input id="brand" type="text" name="carbrand" /> </p>		    
+		    <p>Car model: <br/><input id="model" type="text" name="carmodel" /> </p>
+		    <input class="popbutton" type="submit" onclick="fixSize();" href="#"/>
+		</form>
+	    </div>
+	    <!-- Popup Div Ends Here -->
+	</div>
+
 	<!--<button onclick="getStreet()" >Test street</button>
 	<button onclick="clearData()" ></button> -->
         <div id="wrappercenter">
-	    <p><h1>Personen:</h1></p>
-	<select id= "personList" name="personList" size="${countnaws}" onchange="populateData()">
 
-	    <c:forEach var="naws" items="${naws}">
-		    <option id="OptionBSN" name="${naws.bsn}" value="${naws.bsn}"><c:out value="${naws.firstname}"/></c> <c:out value="${naws.lastname}"/></c></option> 
-	    </c:forEach>
-	</select>
+	    <select id= "personList" name="personList" size="${countnaws}" onchange="populateData();
+                        fixSize();">
 
-	<div id="persoonWrapper">
-	    <div id="divborder">
-		<p><h1>Persoon toevoegen: </h1></p>
-		<form id="persoonadd" class= "pure-form" action="AddPerson" method="POST" onsubmit="return nawvalidate();">
-		    <p>Burger Service Nummer: <br /> <input id="bsn" type="text" name="bsn"></p>
-		    <p>First name: <br /> <input id="firstname" type="text" name="firstname" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('firstname')" /> <img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeFirstname()" /> </p> 
-		    <p>Last name: <br /> <input id="lastname" type="text" name="lastname" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('lastname')" /> <img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeLastname()" /></p>
-		    <p class="street">Street:  Housenumber: <br /><input  id="address" type="text" name="address" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('address')" /> <img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeAddress()" />
-			<input  id="housenumber" type="text" name="number" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('housenumber')" /> <img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeNumber()" /></p>
-		    <p>Zipcode: <br /> <input  id="zipcode" type="text" name="zipcode" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('zipcode')" /> <img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeZipcode()" /></p>
-		    <p>City: <br /> <input  id="city" type="text" name="city" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('city')" /><img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeCity()" /></p>
-		    <p>Telephone: <br /> <input  id="telephone" type="text" name="telephone" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('telephone')" /><img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeTelephone()" /></p>
-		    <p>Email: <br /> <input id="email" type="text" name="email" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('email')" /><img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeMail()" /></p>
-		    <input id="myBtn" onclick="showDiv()" type="submit" href="NawList">
-		</form>
+		<c:forEach var="naws" items="${naws}">
+			<option id="OptionBSN" name="${naws.bsn}" value="${naws.bsn}"><c:out value="${naws.firstname}"/></c> <c:out value="${naws.lastname}"/></c></option> 
+		</c:forEach>
+	    </select>
+
+	    <div id="persoonWrapper">
+		<div id="divborder">
+		    <p><h1>NAW gegevens: </h1></p>
+		    <img id="addico" onclick="div_show()" src="${pageContext.request.contextPath}/icons/add.png" href="#" width="5%" />
+		    <form id="persoonadd" class= "pure-form" action="AddPerson" method="POST" onsubmit="return nawvalidate();">
+			<p>Burger Service Nummer: <br /> <input id="bsnshow" type="text" name="bsn"></p>
+			<p>First name: <br /> <input id="firstnameshow" type="text" name="firstname" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('firstnameshow')" /> <img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeFirstname()" /> </p> 
+			<p>Last name: <br /> <input id="lastnameshow" type="text" name="lastname" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('lastnameshow')" /> <img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeLastname()" /></p>
+			<p class="street">Street:  Housenumber: <br /><input  id="addressshow" type="text" name="address" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('addressshow')" /> <img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeAddress()" />
+			    <input  id="housenumbershow" type="text" name="number" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('housenumbershow')" /> <img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeNumber()" /></p>
+			<p>Zipcode: <br /> <input  id="zipcodeshow" type="text" name="zipcode" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('zipcodeshow')" /> <img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeZipcode()" /></p>
+			<p>City: <br /> <input  id="cityshow" type="text" name="city" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('cityshow')" /><img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeCity()" /></p>
+			<p>Telephone: <br /> <input  id="telephoneshow" type="text" name="telephone" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('telephoneshow')" /><img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeTelephone()" /></p>
+			<p>Email: <br /> <input id="emailshow" type="text" name="email" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('emailshow')" /><img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeMail()" /></p>
+			<!--<input id="myBtn" onclick="showDiv()" type="submit" href="NawList"> -->
+		    </form>
+		</div>
 	    </div>
-	</div>
 
-	<div id="cartrackerWrapper">
-	    <div id="divbordercar">
-		<select id= "cartrackerList" name="cartrackerList" size="${countcartrackers}" onchange="populateDataCT()">
-		    <c:forEach var="cartracker" items="${cartrackers}">
-			    <option id="OptionBSN" name="${cartracker.id}" value="${cartracker.id}"><c:out  value="${cartracker.licenseplate}"/></c>, <c:out value="${cartracker.brandcar}"/></c>,  <c:out value="${cartracker.modelcar}"/></c></option> 
-		    </c:forEach>
-		</select>
+	    <div id="cartrackerWrapper">
+		<div id="divbordercar">
+		    <select id= "cartrackerList" name="cartrackerList" size="${countcartrackers}" onchange="populateDataCT()">
+			<c:forEach var="cartracker" items="${cartrackers}">
+				<option id="OptionBSN" name="${cartracker.id}" value="${cartracker.id}"><c:out  value="${cartracker.licenseplate}"/></c>, <c:out value="${cartracker.brandcar}"/></c>,  <c:out value="${cartracker.modelcar}"/></c></option> 
+			</c:forEach>
+		    </select>
+		</div>
 	    </div>
+	    <div id="cartrackerWrapper2">
+		<div id="divbordercar2">
+		    <p><h1>CarTracker toevoegen: </h1></p>
+		    <img id="addico" onclick="div_showct()" src="${pageContext.request.contextPath}/icons/car_add.png" href="#" width="5%" />
+		    <form class="pure-form">
+			<p>Prize Category: <br/><input id="priceCategoryshow" type="text" name="category" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('priceCategoryshow')" /> <img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangePriceCategory()" /> </p> </p>
+			<p>License plate: <br/><input id="licensePlateshow" type="text" name="license" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('licensePlateshow')" /> <img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeLicensePlate()" /> </p> </p>
+			<p>Car brand: <br/><input id="brandshow" type="text" name="carbrand" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('brandshow')" /> <img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeCarBrand()" /> </p> </p>		    
+			<p>Car model: <br/><input id="modelshow" type="text" name="carmodel" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('modelshow')" /> <img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeCarModel()" /> </p> </p>
+
+		    </form>
+		</div>
+	    </div>
+
 	</div>
-	<!--
-<div id="cartrackerWrapper">
-<div id="divbordercar">
-    <p><h1>CarTracker toevoegen: </h1></p>
-    <form class="pure-form" action="AddCarTracker" method="POST" onsubmit="return ctvalidate();">
-	Personenlijst:
-	<select name="bsn">
-	<c:forEach var="naws" items="${naws}">
-		<option name="${naws.bsn}" value="${naws.bsn}"><c:out value="${naws.firstname}"/></c> <c:out value="${naws.lastname}"/></c></option>
-	</c:forEach>
-    </select>
-    <p>Prize Category: <input id="priceCategory" type="text" name="category" /></p>
-    <p>License plate: <input id="licensePlate" type="text" name="license" /></p>
-    <p>Car model: <input id="model" type="text" name="carmodel" /></p>
-    <p>Car brand: <input id="brand" type="text" name="carbrand" /></p>
-    <input id="button" type="submit" href="CarTrackerList">
-</form>
-</div>
-</div>
-	-->
-    </div>
-</body>
+    </body>
 </html>
