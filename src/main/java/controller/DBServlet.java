@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.inject.Inject;
+import javax.json.Json;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -32,8 +33,6 @@ import service.ICarOwnerService;
 import service.ICarTrackerService;
 import service.IMileageRateService;
 import service.INAWService;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 
 /**
  *
@@ -176,45 +175,26 @@ public class DBServlet extends HttpServlet {
 
 				System.out.println("Dit is de json: " + json.toString());
 				res.setContentType("application/json");
-				req.setAttribute("countcartrackers", cts.getCarTrackerById(fix).size());
-				List<CarTracker> lijst = cts.getCarTrackerById(fix);
-				req.setAttribute("cartrackers", lijst);
 				res.setCharacterEncoding("UTF-8");
 				res.getWriter().write(json);
-
 			}
 
 		}
-		if (userPath.equals("/FillCT")) {
+		if (userPath.equals("FillCT")) {
 			String json = null;
 			String OptionBSN = req.getParameter("OptionBSN").trim();
 			Map<String, String> jsonMap = new LinkedHashMap<String, String>();
 			NAW fix = ns.getNAWByBsn(Integer.parseInt(OptionBSN));
 			List<CarTracker> cartrackers = cts.getCarTrackerById(fix);
-
-			JSONObject js = new JSONObject();
-			js.put("cartrackers", cartrackers);
-
-//			JsonArrayBuilder jsonArray = Json.createArrayBuilder();
-//			for (CarTracker ct : cartrackers) {
-//				jsonArray.add(Json.createObjectBuilder()
-//					.add("id", ct.getId())
-//					.add("priceCategory", ct.getPriceCategory())
-//					.add("licensePlate", ct.getLicensePlate())
-//					.add("modelCar", ct.getModelCar())
-//					.add("brandCar", ct.getBrandCar())
-//					.add("websiteSubscription", ct.isRekeningrijdersWebsite()));
-//			}
-//			jsonArray.build();
-			System.out.println("Dit is de CT json: " + js);
-			res.setCharacterEncoding("UTF-8");
-			json = new Gson().toJson(cartrackers);
-
-			res.getWriter().write(json);
+			if (OptionBSN != null) {
+				json = new Gson().toJson(cartrackers, List.class);
+				System.out.println("Dit is de CT json: " + json.toString());
+				res.setContentType("application/json");
+				res.setCharacterEncoding("UTF-8");
+				res.getWriter().write(json);
+			}
 		}
-
-		if (userPath.equals(
-			"/ChangeFirstname")) {
+		if (userPath.equals("/ChangeFirstname")) {
 			String json = null;
 			String newbsn = req.getParameter("BSN").trim();
 			String newfirstname = req.getParameter("NewFirstname");
@@ -232,9 +212,7 @@ public class DBServlet extends HttpServlet {
 				res.getWriter().write(json);
 			}
 		}
-
-		if (userPath.equals(
-			"/ChangeLastname")) {
+		if (userPath.equals("/ChangeLastname")) {
 			String json = null;
 			String newbsn = req.getParameter("BSN").trim();
 			String newlastname = req.getParameter("NewLastname");
@@ -252,9 +230,7 @@ public class DBServlet extends HttpServlet {
 				res.getWriter().write(json);
 			}
 		}
-
-		if (userPath.equals(
-			"/ChangeAddress")) {
+		if (userPath.equals("/ChangeAddress")) {
 			String json = null;
 			String newbsn = req.getParameter("BSN").trim();
 			String newstreet = req.getParameter("NewAddress");
@@ -272,9 +248,7 @@ public class DBServlet extends HttpServlet {
 				res.getWriter().write(json);
 			}
 		}
-
-		if (userPath.equals(
-			"/ChangeNumber")) {
+		if (userPath.equals("/ChangeNumber")) {
 			String json = null;
 			String newbsn = req.getParameter("BSN").trim();
 			String newnumber = req.getParameter("NewNumber");
@@ -293,8 +267,7 @@ public class DBServlet extends HttpServlet {
 			}
 		}
 
-		if (userPath.equals(
-			"/ChangeZipcode")) {
+		if (userPath.equals("/ChangeZipcode")) {
 			String json = null;
 			String newbsn = req.getParameter("BSN").trim();
 			String newzipcode = req.getParameter("NewZipcode");
@@ -313,8 +286,7 @@ public class DBServlet extends HttpServlet {
 			}
 		}
 
-		if (userPath.equals(
-			"/ChangeCity")) {
+		if (userPath.equals("/ChangeCity")) {
 			String json = null;
 			String newbsn = req.getParameter("BSN").trim();
 			String newcity = req.getParameter("NewCity");
@@ -332,9 +304,7 @@ public class DBServlet extends HttpServlet {
 				res.getWriter().write(json);
 			}
 		}
-
-		if (userPath.equals(
-			"/ChangeTelephone")) {
+		if (userPath.equals("/ChangeTelephone")) {
 			String json = null;
 			String newbsn = req.getParameter("BSN").trim();
 			String newtelephone = req.getParameter("NewTelephone");
@@ -352,9 +322,7 @@ public class DBServlet extends HttpServlet {
 				res.getWriter().write(json);
 			}
 		}
-
-		if (userPath.equals(
-			"/ChangeMail")) {
+		if (userPath.equals("/ChangeMail")) {
 			String json = null;
 			String newbsn = req.getParameter("BSN").trim();
 			String newmail = req.getParameter("NewMail");
@@ -372,9 +340,7 @@ public class DBServlet extends HttpServlet {
 				res.getWriter().write(json);
 			}
 		}
-
-		if (userPath.equals(
-			"/AddMileage")) {
+		if (userPath.equals("/AddMileage")) {
 			double rate = Double.parseDouble(req.getParameter("mar"));
 			String regio = req.getParameter("regio");
 			double category = Double.parseDouble(req.getParameter("pricecategory"));
@@ -387,9 +353,7 @@ public class DBServlet extends HttpServlet {
 			view.forward(req, res);
 
 		}
-
-		if (userPath.equals(
-			"/AddPerson")) {
+		if (userPath.equals("/AddPerson")) {
 			int bsn = Integer.parseInt(req.getParameter("bsn"));
 			String firstname = req.getParameter("firstname");
 			String lastname = req.getParameter("lastname");
@@ -405,11 +369,9 @@ public class DBServlet extends HttpServlet {
 			RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/manage.jsp");
 			view.forward(req, res);
 		}
-
-		if (userPath.equals(
-			"/AddCarTracker")) {
+		if (userPath.equals("/AddCarTracker")) {
 			req.setAttribute("naws", ns.getAllNaws());
-			bsn = Integer.parseInt(req.getParameter("bsnhide"));
+			bsn = Integer.parseInt(req.getParameter("bsn"));
 			NAW naw = ns.getNAWByBsn(bsn);
 			double category = Double.parseDouble(req.getParameter("category"));
 			String license = req.getParameter("license");
@@ -432,9 +394,7 @@ public class DBServlet extends HttpServlet {
 			RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/manage.jsp");
 			view.forward(req, res);
 		}
-
-		if (userPath.equals(
-			"/PersonalData")) {
+		if (userPath.equals("/PersonalData")) {
 			bsn = Integer.parseInt(req.getParameter("bsn"));
 
 			NAW naw = ns.getNAWByBsn(bsn);
@@ -446,9 +406,7 @@ public class DBServlet extends HttpServlet {
 			RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/personaldata.jsp");
 			view.forward(req, res);
 		}
-
-		if (userPath.equals(
-			"/ChangeCT")) {
+		if (userPath.equals("/ChangeCT")) {
 			long cid = Long.parseLong(req.getParameter("id"));
 
 			CarTracker ct = cts.getSingleCarTrackerById(cid);
@@ -458,9 +416,7 @@ public class DBServlet extends HttpServlet {
 			view.forward(req, res);
 
 		}
-
-		if (userPath.equals(
-			"/ChangeMA")) {
+		if (userPath.equals("/ChangeMA")) {
 			String id = req.getParameter("id");
 
 			MileageRate mr = mrs.getRateById(id);
@@ -469,9 +425,7 @@ public class DBServlet extends HttpServlet {
 			RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/changemileage.jsp");
 			view.forward(req, res);
 		}
-
-		if (userPath.equals(
-			"/PrizeCategoryChange")) {
+		if (userPath.equals("/PrizeCategoryChange")) {
 			double category = Double.parseDouble(req.getParameter("category"));
 
 			NAW naw = ns.getNAWByBsn(bsn);
@@ -489,9 +443,7 @@ public class DBServlet extends HttpServlet {
 			RequestDispatcher viewResult = req.getRequestDispatcher("/WEB-INF/pages/personaldata.jsp");
 			viewResult.forward(req, res);
 		}
-
-		if (userPath.equals(
-			"/LicenseChange")) {
+		if (userPath.equals("/LicenseChange")) {
 			String license = req.getParameter("license");
 
 			NAW naw = ns.getNAWByBsn(bsn);
@@ -507,9 +459,7 @@ public class DBServlet extends HttpServlet {
 			RequestDispatcher viewResult = req.getRequestDispatcher("/WEB-INF/pages/personaldata.jsp");
 			viewResult.forward(req, res);
 		}
-
-		if (userPath.equals(
-			"/CarModelChange")) {
+		if (userPath.equals("/CarModelChange")) {
 			String carmodel = req.getParameter("carmodel");
 
 			NAW naw = ns.getNAWByBsn(bsn);
@@ -524,9 +474,7 @@ public class DBServlet extends HttpServlet {
 			RequestDispatcher viewResult = req.getRequestDispatcher("/WEB-INF/pages/personaldata.jsp");
 			viewResult.forward(req, res);
 		}
-
-		if (userPath.equals(
-			"/CarBrandChange")) {
+		if (userPath.equals("/CarBrandChange")) {
 			String carbrand = req.getParameter("carbrand");
 
 			NAW naw = ns.getNAWByBsn(bsn);
@@ -541,9 +489,7 @@ public class DBServlet extends HttpServlet {
 			RequestDispatcher viewResult = req.getRequestDispatcher("/WEB-INF/pages/personaldata.jsp");
 			viewResult.forward(req, res);
 		}
-
-		if (userPath.equals(
-			"/MileageChange")) {
+		if (userPath.equals("/MileageChange")) {
 			String id = req.getParameter("id");
 			String mileageRate = req.getParameter("mileagerate");
 
@@ -554,9 +500,7 @@ public class DBServlet extends HttpServlet {
 			viewResult.forward(req, res);
 
 		}
-
-		if (userPath.equals(
-			"/RegioChange")) {
+		if (userPath.equals("/RegioChange")) {
 			String id = req.getParameter("id");
 			String regio = req.getParameter("regio");
 
@@ -567,9 +511,7 @@ public class DBServlet extends HttpServlet {
 			RequestDispatcher viewResult = req.getRequestDispatcher("/WEB-INF/pages/changemileage.jsp");
 			viewResult.forward(req, res);
 		}
-
-		if (userPath.equals(
-			"/CategoryChange")) {
+		if (userPath.equals("/CategoryChange")) {
 			String id = req.getParameter("id");
 			String pricecategory = req.getParameter("pricecategory");
 
@@ -579,9 +521,7 @@ public class DBServlet extends HttpServlet {
 			RequestDispatcher viewResult = req.getRequestDispatcher("/WEB-INF/pages/personaldata.jsp");
 			viewResult.forward(req, res);
 		}
-
-		if (userPath.equals(
-			"/IntervalChange")) {
+		if (userPath.equals("/IntervalChange")) {
 			String id = req.getParameter("id");
 			String interval = req.getParameter("interval");
 

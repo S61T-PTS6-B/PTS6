@@ -60,11 +60,11 @@ input[type=text], select {
     border-radius: 4px;
     box-sizing: border-box;
 }
-#addressshow {
+#address {
     width: 60%
 }
 
-#housenumbershow {
+#housenumber {
     width: 10%;
 }
 input[type=submit] {
@@ -104,20 +104,7 @@ input[type=submit]:hover {
     width: 30%;
     float: left;
 }
-#addico {
-    float: right;
-    
-}
 
-img {
-    cursor: pointer;
-}
-#cartrackerWrapper2 {
-    padding-top: 1em;
-    margin-left: 5em;
-    width: 30%;
-    float: left;
-}
 #wrapper {
     width: 40%;
     margin-left: auto;
@@ -137,12 +124,6 @@ img {
 }
 
 #divbordercar {
-    border-radius: 5px;
-    background-color: #f2f2f2;
-    padding: 20px;
-}
-
-#divbordercar2 {
     border-radius: 5px;
     background-color: #f2f2f2;
     padding: 20px;
@@ -171,7 +152,7 @@ img {
 
 #personList {
     width: 10%;
-    height: 45.7em;
+    height: 52.7em;
     float: left;
 }
 
