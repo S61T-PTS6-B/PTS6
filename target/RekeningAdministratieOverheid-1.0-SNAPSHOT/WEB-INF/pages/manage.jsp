@@ -419,8 +419,8 @@
             </ul>
         </div>
 
-	<button onclick="getStreet()" >Test street</button>
-	<button onclick="clearData()" ></button>
+	<!--<button onclick="getStreet()" >Test street</button>
+	<button onclick="clearData()" ></button> -->
         <div id="wrappercenter">
 	    <p><h1>Personen:</h1></p>
 	<select id= "personList" name="personList" size="${countnaws}" onchange="populateData()">
