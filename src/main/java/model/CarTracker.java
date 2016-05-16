@@ -120,9 +120,6 @@ public class CarTracker implements Serializable {
         return true;
     }
 
-    @Override
-    public String toString() {
-        return "model.CarTracker[ id=" + id + " ]";
-    }
+
 
 }

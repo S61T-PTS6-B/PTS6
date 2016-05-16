@@ -21,7 +21,7 @@ import org.json.JSONException;
  *
  * @author koenv
  */
-@ServerEndpoint(value = "/NAWSocket")
+@ServerEndpoint(value = "/PolitieSocket")
 public class PolitieSocket {
 
     private Set<Session> sessions = Collections.synchronizedSet(new HashSet<Session>());
