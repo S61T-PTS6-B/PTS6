@@ -26,100 +26,99 @@ import model.NAW;
  */
 @Local
 @Stateless
-public class CarTrackerDAOImp implements CarTrackerDAO{
-    
-    @PersistenceContext(unitName = "com.PTS6B_RekeningAdministratieOverheid_war_1.0-SNAPSHOTPU")
-    EntityManager em;
+public class CarTrackerDAOImp implements CarTrackerDAO {
 
-    public CarTrackerDAOImp() {
-    }
-    
-    
-    @Override
-    public void createCarTracker(CarTracker ct) {
-        em.persist(ct);     
-    }
-    
-    @Override
-    public List<CarTracker> getAllCarTrackers() {
-        Query query;
-        query = em.createQuery("SELECT c FROM CARTRACKER c");
-        return (List<CarTracker>)query.getResultList(); //TODO
-    }
-    
-    /**
-     *
-     * @param id
-     * @return
-     */
-    @Override
-    public ArrayList<CarTracker> getCarTrackerByNaw(NAW naw) {
-        ArrayList<CarTracker> result = new ArrayList<>();
-        try {
-            
-            List<CarTracker> ctWithID = em.createQuery("SELECT t.carid FROM CarOwner t WHERE t.nawid = :naw_id").setParameter("naw_id", naw).getResultList();
-            for(CarTracker ct : ctWithID)
-            {
-                long id = ct.getId(); 
-                result.add((CarTracker) em.createQuery("SELECT x FROM CARTRACKER x WHERE x.id = " + id).getSingleResult());
-            }        
-        }
-        catch (Exception e) {
-           System.out.println(e.getMessage());
-        }
-        
+	@PersistenceContext(unitName = "com.PTS6B_RekeningAdministratieOverheid_war_1.0-SNAPSHOTPU")
+	EntityManager em;
 
-        return result;
-    }
+	public CarTrackerDAOImp() {
+	}
 
-    @Override
-    public void changeOwner(CarTracker ct, NAW naw) {
-        //ct.setNaw(naw);
-        //TODO
-    }
+	@Override
+	public void createCarTracker(CarTracker ct) {
+		em.persist(ct);
+	}
 
-    @Override
-    public void changePrizeCategory(CarTracker ct, double prizecategory) {
-        ct.setPriceCategory(prizecategory);
-        em.merge(ct);
-        
-    }
+	@Override
+	public List<CarTracker> getAllCarTrackers() {
+		Query query;
+		query = em.createQuery("SELECT c FROM CARTRACKER c");
+		return (List<CarTracker>) query.getResultList(); //TODO
+	}
 
-    @Override
-    public void changeLicensePlate(CarTracker ct, String licenseplate) {
-        ct.setLicensePlate(licenseplate);
-        em.merge(ct);
-    }
+	/**
+	 *
+	 * @param id
+	 * @return
+	 */
+	@Override
+	public ArrayList<CarTracker> getCarTrackerByNaw(NAW naw) {
+		ArrayList<CarTracker> result = new ArrayList<>();
+		try {
 
-    @Override
-    public void changeModelCar(CarTracker ct, String modelcar) {
-        ct.setModelCar(modelcar);
-        em.merge(ct);
-    }
+			List<CarTracker> ctWithID = em.createQuery("SELECT t.carid FROM CarOwner t WHERE t.nawid = :naw_id").setParameter("naw_id", naw).getResultList();
+			for (CarTracker ct : ctWithID) {
+				long id = ct.getId();
+				result.add((CarTracker) em.createQuery("SELECT x FROM CARTRACKER x WHERE x.id = " + id).getSingleResult());
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 
-    @Override
-    public void changeBrandCar(CarTracker ct, String brandcar) {
-        ct.setBrandCar(brandcar);
-        em.merge(ct);
-    }
+		return result;
+	}
 
-    @Override
-    public void changeWebsiteSubscription(CarTracker ct, Boolean subscription) {
-        ct.setRekeningrijdersWebsite(subscription);
-    }
+	@Override
+	public void changeOwner(CarTracker ct, NAW naw) {
+		//ct.setNaw(naw);
+		//TODO
+	}
 
-    @Override
-    public CarTracker getSingleCarTrackerByNaw(NAW naw) {
-        CarTracker ctWithId = (CarTracker)em.createQuery("SELECT t.carid FROM CarOwner t WHERE t.nawid = :naw_id").setParameter("naw_id", naw).getSingleResult();
-        long id = ctWithId.getId();
-        return (CarTracker)em.createQuery("SELECT x FROM CARTRACKER x WHERE x.id = " + id).getSingleResult();
-    }
+	@Override
+	public void changePrizeCategory(CarTracker ct, double prizecategory) {
+		ct.setPriceCategory(prizecategory);
+		em.merge(ct);
 
-    @Override
-    public CarTracker getSingleCarTrackerById(long id) {
-        return (CarTracker)em.createQuery("SELECT x FROM CARTRACKER x WHERE x.id = " + id).getSingleResult();
-    }
-    
-    
+	}
+
+	@Override
+	public void changeLicensePlate(CarTracker ct, String licenseplate) {
+		ct.setLicensePlate(licenseplate);
+		em.merge(ct);
+	}
+
+	@Override
+	public void changeModelCar(CarTracker ct, String modelcar) {
+		ct.setModelCar(modelcar);
+		em.merge(ct);
+	}
+
+	@Override
+	public void changeBrandCar(CarTracker ct, String brandcar) {
+		ct.setBrandCar(brandcar);
+		em.merge(ct);
+	}
+
+	@Override
+	public void changeWebsiteSubscription(CarTracker ct, Boolean subscription) {
+		ct.setRekeningrijdersWebsite(subscription);
+	}
+
+	@Override
+	public CarTracker getSingleCarTrackerByNaw(NAW naw) {
+		CarTracker ctWithId = (CarTracker) em.createQuery("SELECT t.carid FROM CarOwner t WHERE t.nawid = :naw_id").setParameter("naw_id", naw).getSingleResult();
+		long id = ctWithId.getId();
+		return (CarTracker) em.createQuery("SELECT x FROM CARTRACKER x WHERE x.id = " + id).getSingleResult();
+	}
+
+	@Override
+	public CarTracker getSingleCarTrackerById(long id) {
+		return (CarTracker) em.createQuery("SELECT x FROM CARTRACKER x WHERE x.id = " + id).getSingleResult();
+	}
+
+	@Override
+	public CarTracker getCarTrackerByLicensePlate(String licenseplateReceive) {
+		return (CarTracker) em.createQuery("SELECT x FROM CARTRACKER x WHERE x.licensePlate = :lp").setParameter("lp", licenseplateReceive).getSingleResult();
+	}
 
 }

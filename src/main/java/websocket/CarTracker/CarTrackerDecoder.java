@@ -5,9 +5,12 @@
  */
 package websocket.CarTracker;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import model.CarTracker;
+import model.NAW;
 import org.json.JSONException;
 import org.json.JSONObject;
 import service.ICarTrackerService;
@@ -38,9 +41,11 @@ public class CarTrackerDecoder implements ICarTrackerDecoder{
         System.out.println("Decoder");
         JSONObject jsonObj = new JSONObject(object);
         CarTracker ct = null;
-        String id;
-        id = jsonObj.getString("id");
-        ct = cts.getSingleCarTrackerById(Long.parseLong(id));
-        return encode.Encode(ct);
+	NAW nawct = ns.getNAWByBsn(jsonObj.getInt("bsn"));
+	List<CarTracker> CtListForJson;
+	CtListForJson = new ArrayList<>();
+	
+	CtListForJson = cts.getCarTrackerById(nawct);
+        return encode.Encode(CtListForJson);
     }
 }

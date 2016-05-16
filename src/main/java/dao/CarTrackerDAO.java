@@ -42,4 +42,6 @@ public interface CarTrackerDAO {
     public CarTracker getSingleCarTrackerByNaw(NAW naw);
 
     public CarTracker getSingleCarTrackerById(long id);
+
+	public CarTracker getCarTrackerByLicensePlate(String licenseplateReceive);
 }

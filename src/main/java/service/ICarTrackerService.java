@@ -33,4 +33,6 @@ public interface ICarTrackerService {
     public void changeLicense(CarTracker ct, String license);
 
     public void changePrizeCategory(CarTracker ct, double category);
+
+	public CarTracker getCarTrackerByLicensePlate(String licenseplateReceive);
 }

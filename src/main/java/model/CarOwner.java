@@ -6,78 +6,89 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.TableGenerator;
+import javax.persistence.Temporal;
 
 /**
  *
  * @author koenv
  */
 @Entity
-public class CarOwner implements Serializable {    
-      private static final long serialVersionUID = 1L;
+public class CarOwner implements Serializable {
 
-    @TableGenerator(
-            name = "tableGen",
-            allocationSize = 1,
-            initialValue = 1)
-    @Id
-    @GeneratedValue(strategy = GenerationType.TABLE,
-            generator = "tableGen")
-    private Long id;
-    
-    private CarTracker carid;
-   
-    private NAW nawid;  
-    
-    private boolean active;
+	private static final long serialVersionUID = 1L;
 
-    public CarOwner() {
-    }
-    
-    
+	@TableGenerator(
+		name = "tableGen",
+		allocationSize = 1,
+		initialValue = 1)
+	@Id
+	@GeneratedValue(strategy = GenerationType.TABLE,
+		generator = "tableGen")
+	private Long id;
 
-    public CarOwner(CarTracker ct, NAW n) {
-        this.carid = ct;
-        this.nawid = n;
-    }
+	private CarTracker carid;
 
-    public Long getId() {
-        return id;
-    }
+	private NAW nawid;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	@Temporal(javax.persistence.TemporalType.TIMESTAMP)
+	private Date startOwnership;
 
-    public CarTracker getCarid() {
-        return carid;
-    }
+	@Temporal(javax.persistence.TemporalType.TIMESTAMP)
+	private Date endOwnership;
 
-    public void setCarid(CarTracker carid) {
-        this.carid = carid;
-    }
+	private boolean active;
 
-    public NAW getNawid() {
-        return nawid;
-    }
+	public CarOwner() {
+	}
 
-    public void setNawid(NAW nawid) {
-        this.nawid = nawid;
-    }
+	public CarOwner(CarTracker ct, NAW n, Date startOwnership) {
+		this.carid = ct;
+		this.nawid = n;
+		this.startOwnership = startOwnership;
 
-    public boolean isActive() {
-        return active;
-    }
+		active = false;
 
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-        
-    
-    
-    
+		if (endOwnership == null) {
+			active = true;
+		}
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public CarTracker getCarid() {
+		return carid;
+	}
+
+	public void setCarid(CarTracker carid) {
+		this.carid = carid;
+	}
+
+	public NAW getNawid() {
+		return nawid;
+	}
+
+	public void setNawid(NAW nawid) {
+		this.nawid = nawid;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
 }

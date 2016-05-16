@@ -9,6 +9,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import dao.CarOwnerDAO;
 import model.CarOwner;
+import model.CarTracker;
 import model.NAW;
 
 /**
@@ -17,18 +18,23 @@ import model.NAW;
  */
 @Stateless
 public class CarOwnerService implements ICarOwnerService {
-    @EJB
-    CarOwnerDAO cod;
-    
-    @Override
-    public void createCarOwner(CarOwner c) {
-        cod.createCarOwner(c);
-    }
 
-    @Override
-    public CarOwner getCarOwnerByNawId(NAW id) {
-        return cod.getCarOwnerByNawId(id);
-    }
-    
-    
+	@EJB
+	CarOwnerDAO cod;
+
+	@Override
+	public void createCarOwner(CarOwner c) {
+		cod.createCarOwner(c);
+	}
+
+	@Override
+	public CarOwner getCarOwnerByNawId(NAW id) {
+		return cod.getCarOwnerByNawId(id);
+	}
+
+	@Override
+	public CarOwner getCarOwnerByCarTracker(CarTracker id) {
+		return cod.getCarOwnerByCarTrackerId(id);
+	}
+
 }

@@ -42,6 +42,7 @@ public class CarTracker implements Serializable {
 
     public CarTracker() {
     } 
+    
 
     public CarTracker(double prizeCategory, String licensePlate, String modelCar, String brandCar, boolean websiteSubscription) {
         this.priceCategory = prizeCategory;

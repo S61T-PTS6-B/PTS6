@@ -21,25 +21,43 @@ import service.NAWService;
  */
 @Stateless
 public class NAWDecoder implements INAWDecoder {
-    @Inject
-    private INAWService ns;
 
-    NAWEncoder encode;
+	@Inject
+	private INAWService ns;
 
-    
-    public NAWDecoder() {
-    }
+	NAWEncoder encode;
 
-    @Override
-    public String Decode(String object) throws JSONException {
-        encode = new NAWEncoder();
-        System.out.println("Decoder");
-        JSONObject jsonObj = new JSONObject(object);
-        NAW test = null;
-        String bsnReceive;
-        bsnReceive = jsonObj.getString("bsn");
-        int bsnConverted = Integer.parseInt(bsnReceive);
-        test = ns.getNAWByBsn(bsnConverted);
-        return encode.Encode(test);
-    }
+	public NAWDecoder() {
+	}
+
+	@Override
+	public String Decode(String object) throws JSONException {
+		encode = new NAWEncoder();
+		System.out.println("Decoder");
+		JSONObject jsonObj = new JSONObject(object);
+		NAW test = null;
+		String bsnReceive;
+		bsnReceive = jsonObj.getString("bsn");
+		int bsnConverted = Integer.parseInt(bsnReceive);
+		test = ns.getNAWByBsn(bsnConverted);
+		String email = jsonObj.getString("newmail");
+		String telephone = jsonObj.getString("newphone");
+		if (email.equals("")) {
+			if (telephone.equals("")) {
+				test = ns.getNAWByBsn(bsnConverted);
+				return encode.Encode(test);
+			} else {
+				String newphone = jsonObj.getString("newphone");
+				System.out.println("Nieuwe telefoon: " + newphone);
+				NAW result = ns.changePhone(test, newphone);
+				return encode.Encode(result);
+			}
+		} else {
+			String newmail = jsonObj.getString("newmail");
+			System.out.println("Nieuwe email: " + newmail);
+			NAW result = ns.changeMail(test, newmail);
+			return encode.Encode(result);
+		}
+
+	}
 }

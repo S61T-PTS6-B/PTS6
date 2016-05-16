@@ -17,4 +17,6 @@ public interface CarOwnerDAO {
     public void createCarOwner(CarOwner co);
 
     public CarOwner getCarOwnerByNawId(NAW id);
+
+	public CarOwner getCarOwnerByCarTrackerId(CarTracker id);
 }
