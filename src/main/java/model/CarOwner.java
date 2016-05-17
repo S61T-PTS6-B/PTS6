@@ -35,28 +35,28 @@ public class CarOwner implements Serializable {
 	private CarTracker carid;
 
 	private NAW nawid;
-
-	@Temporal(javax.persistence.TemporalType.TIMESTAMP)
-	private Date startOwnership;
-
-	@Temporal(javax.persistence.TemporalType.TIMESTAMP)
-	private Date endOwnership;
+//
+//	@Temporal(javax.persistence.TemporalType.TIMESTAMP)
+//	private Date startOwnership;
+//
+//	@Temporal(javax.persistence.TemporalType.TIMESTAMP)
+//	private Date endOwnership;
 
 	private boolean active;
 
 	public CarOwner() {
 	}
 
-	public CarOwner(CarTracker ct, NAW n, Date startOwnership) {
+	public CarOwner(CarTracker ct, NAW n) {
 		this.carid = ct;
 		this.nawid = n;
-		this.startOwnership = startOwnership;
-
-		active = false;
-
-		if (endOwnership == null) {
-			active = true;
-		}
+//		this.startOwnership = startOwnership;
+//
+//		active = false;
+//
+//		if (endOwnership == null) {
+//			active = true;
+//		}
 	}
 
 	public Long getId() {

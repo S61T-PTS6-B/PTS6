@@ -7,16 +7,10 @@ package controller;
 
 import com.google.gson.Gson;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -42,6 +36,7 @@ import org.json.simple.JSONObject;
 @WebServlet(name = "CarTrackerAdm", urlPatterns = {"/CarTrackerAdm",
 	"/Manage",
 	"/FillCT",
+	"/FillFieldsCT",
 	"/ManageMileage",
 	"/AddMileage",
 	"/AddPerson",
@@ -192,25 +187,43 @@ public class DBServlet extends HttpServlet {
 			NAW fix = ns.getNAWByBsn(Integer.parseInt(OptionBSN));
 			List<CarTracker> cartrackers = cts.getCarTrackerById(fix);
 
-			JSONObject js = new JSONObject();
-			js.put("cartrackers", cartrackers);
-
-//			JsonArrayBuilder jsonArray = Json.createArrayBuilder();
-//			for (CarTracker ct : cartrackers) {
-//				jsonArray.add(Json.createObjectBuilder()
-//					.add("id", ct.getId())
-//					.add("priceCategory", ct.getPriceCategory())
-//					.add("licensePlate", ct.getLicensePlate())
-//					.add("modelCar", ct.getModelCar())
-//					.add("brandCar", ct.getBrandCar())
-//					.add("websiteSubscription", ct.isRekeningrijdersWebsite()));
-//			}
-//			jsonArray.build();
-			System.out.println("Dit is de CT json: " + js);
+			JSONObject container = new JSONObject();
+			JSONArray jsonArray = new JSONArray();
+			for (CarTracker ct : cartrackers) {
+				JSONObject js = new JSONObject();
+				js.put("priceCategory", ct.getPriceCategory());
+				js.put("licensePlate", ct.getLicensePlate());
+				js.put("modelCar", ct.getModelCar());
+				js.put("brandCar", ct.getBrandCar());
+				js.put("websiteSubscription", ct.isRekeningrijdersWebsite());
+				jsonArray.add(js);
+			}
+			container.put("cartrackers", jsonArray);
+			System.out.println("Dit is de CT json: " + container.toJSONString());
 			res.setCharacterEncoding("UTF-8");
-			json = new Gson().toJson(cartrackers);
+			res.getWriter().write(container.toJSONString());
+		}
+		if (userPath.equals("/FillFieldsCT")) {
+			String json = null;
+			String Kenteken = req.getParameter("OptionBSN").trim();
+			Map<String, String> jsonMap = new LinkedHashMap<String, String>();
+			CarTracker ct = cts.getCarTrackerByLicensePlate(Kenteken);
+			double price = ct.getPriceCategory();
 
-			res.getWriter().write(json);
+			if (Kenteken != null) {
+				jsonMap.put("pricecategory", Double.toString(price));
+				jsonMap.put("licenseplate", ct.getLicensePlate());
+				jsonMap.put("modelcar", ct.getModelCar());
+				jsonMap.put("brandcar", ct.getBrandCar());
+
+				json = new Gson().toJson(jsonMap, Map.class);
+
+				System.out.println("Dit is de json: " + json.toString());
+				res.setContentType("application/json");
+				res.setCharacterEncoding("UTF-8");
+				res.getWriter().write(json);
+
+			}
 		}
 
 		if (userPath.equals(
@@ -415,19 +428,11 @@ public class DBServlet extends HttpServlet {
 			String license = req.getParameter("license");
 			String carmodel = req.getParameter("carmodel");
 			String carbrand = req.getParameter("carbrand");
-			String startownershipstring = req.getParameter("startOwnership");
-			DateFormat startownershipfix = new SimpleDateFormat("dd-MM-YYYY");
-			Date startownership;
-			try {
-				startownership = startownershipfix.parse(startownershipstring);
-				CarTracker ct = new CarTracker(category, license, carmodel, carbrand, true);
-				cts.createCarTracker(ct);
-				req.setAttribute("CTs", cts.getAllCarTrackers());
-				CarOwner co = new CarOwner(ct, naw, startownership);
-				cos.createCarOwner(co);
-			} catch (ParseException ex) {
-				Logger.getLogger(DBServlet.class.getName()).log(Level.SEVERE, null, ex);
-			}
+			CarTracker ct = new CarTracker(category, license, carmodel, carbrand, true);
+			cts.createCarTracker(ct);
+			req.setAttribute("CTs", cts.getAllCarTrackers());
+			CarOwner co = new CarOwner(ct, naw);
+			cos.createCarOwner(co);
 
 			RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/manage.jsp");
 			view.forward(req, res);

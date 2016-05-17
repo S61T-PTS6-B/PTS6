@@ -34,13 +34,13 @@ public class CarOwnerDAOImp implements CarOwnerDAO {
 	@Override
 	public CarOwner getCarOwnerByNawId(NAW id) {
 		Query query;
-		query = em.createQuery("SELECT c FROM CAROWNER c WHERE nawid = :id").setParameter("id", id);
+		query = em.createQuery("SELECT c FROM CAROWNER c WHERE c.nawid = :id").setParameter("id", id);
 		return (CarOwner) query.getSingleResult(); //TODO
 	}
 
 	@Override
 	public CarOwner getCarOwnerByCarTrackerId(CarTracker id) {
-		return (CarOwner) em.createQuery("SELECT x FROM CAROWNER x WHERE ctid = :id").setParameter("id", id).getSingleResult();
+		return (CarOwner) em.createQuery("SELECT x FROM CarOwner x where x.carid = :id").setParameter("id", id).getSingleResult();
 	}
 
 }

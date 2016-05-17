@@ -25,6 +25,22 @@
 
                 window.onload = function () {
                     fixSize();
+                    document.getElementById("cartrackerList").innerHTML = "Cartrackers zijn leeg";
+                    document.getElementById("bsnshow").disabled = true;
+                    document.getElementById("firstnameshow").disabled = true;
+                    document.getElementById("lastnameshow").disabled = true;
+                    document.getElementById("addressshow").disabled = true;
+                    document.getElementById("housenumbershow").disabled = true;
+                    document.getElementById("zipcodeshow").disabled = true;
+                    document.getElementById("cityshow").disabled = true;
+                    document.getElementById("telephoneshow").disabled = true;
+                    document.getElementById("emailshow").disabled = true;
+
+
+                    document.getElementById("priceCategoryshow").disabled = true;
+                    document.getElementById("licensePlateshow").disabled = true;
+                    document.getElementById("brandshow").disabled = true;
+                    document.getElementById("modelshow").disabled = true;
                 };
                 $('form').submit(function (/*DOMEvent*/ e) {
                     e.preventDefault();
@@ -180,7 +196,11 @@
                             document.getElementById("cityshow").value = msg.city;
                             document.getElementById("telephoneshow").value = msg.telephone;
                             document.getElementById("emailshow").value = msg.email;
-			    document.getElementById("bsnhide").value = msg.bsn;
+                            document.getElementById("bsnhide").value = msg.bsn;
+                            document.getElementById("priceCategoryshow").value = " ";
+                            document.getElementById("licensePlateshow").value = " ";
+                            document.getElementById("brandshow").value = " ";
+                            document.getElementById("modelshow").value = " ";
 
                             document.getElementById("bsnshow").disabled = true;
                             document.getElementById("firstnameshow").disabled = true;
@@ -198,8 +218,22 @@
                                 data: {OptionBSN: strUser}, //Wat moet hier
                                 success: function (ctevt) {
                                     msg = JSON.parse(ctevt);
-                                    console.log("Dit is de output:" + msg.cartrackers[0].licensePlate);
+                                    var select = document.getElementById("cartrackerList");
+                                    jQuery.each(msg, function () {
 
+
+                                        var myNode = document.getElementById("cartrackerList");
+                                        myNode.innerHTML = '';
+                                        myNode.value = "";
+                                        var lengte = msg.cartrackers.length;
+                                        for (var i = 0; i < lengte; i++) {
+                                            var opt = document.createElement('option');
+                                            opt.value = msg.cartrackers[i].licensePlate;
+                                            opt.innerHTML = msg.cartrackers[i].licensePlate + ", " + msg.cartrackers[i].brandCar + ", " + msg.cartrackers[i].modelCar;
+                                            select.appendChild(opt);
+                                        }
+
+                                    });
                                 },
                                 error: function (xhr, status, error) {
                                     var err = eval("(" + xhr.responseText + ")");
@@ -215,8 +249,26 @@
                 }
 
                 function PopulateDataCT() {
-                    var e = document.getElementById("personList");
+                    var e = document.getElementById("cartrackerList");
                     var strUser = e.options[e.selectedIndex].value;
+                    $.ajax({
+                        type: "post",
+                        url: "FillFieldsCT", //this is my servlet
+                        data: {OptionBSN: strUser}, //Wat moet hier
+                        success: function (ctevt) {
+                            document.getElementById("priceCategoryshow").value = ctevt.pricecategory;
+                            document.getElementById("licensePlateshow").value = ctevt.licenseplate;
+                            document.getElementById("brandshow").value = ctevt.brandcar;
+                            document.getElementById("modelshow").value = ctevt.modelcar;
+
+                            document.getElementById("priceCategoryshow").disabled = true;
+                            document.getElementById("licensePlateshow").disabled = true;
+                            document.getElementById("brandshow").disabled = true;
+                            document.getElementById("modelshow").disabled = true;
+
+
+                        }
+                    });
 
                 }
 
@@ -318,7 +370,7 @@
                 function fixSize() {
                     $('#personList').attr('size', $('select option').length);
                     console.log("Fixed size!");
-		    console.log(document.getElementById("bsnhide").value);
+                    console.log(document.getElementById("bsnhide").value);
                 }
 
                 function getStreet() {
@@ -414,6 +466,27 @@
                         }
                     });
                 }
+
+                function ChangePriceCategory() {
+                    var newpricecategory = document.getElementById("pricecategory").value;
+                    $.ajax({
+                        type: "post",
+                        url: "ChangePriceCategory", //this is my servlet
+                        data: {LicensePlate: GlobalLP, NewPriceCategory: newpricecategory}, //Wat moet hier
+                        success: function (evt) {
+
+                            console.log(evt);
+                            msg = evt;
+                            document.getElementById("bsnshow").value = msg.bsn;
+                            GlobalLP = msg.licensePlate;
+                            document.getElementById("priceCategoryshow").value = msg.mail;
+
+                            document.getElementById("priceCategoryshow").disabled = true;
+
+                            location.reload();
+                        }
+                    });
+                }
                 //Function To Display Popup
                 function div_show() {
                     document.getElementById('abc').style.display = "block";
@@ -442,11 +515,9 @@
     <body>
         <div id="nav" class='balk'>
             <ul>
-                <li><a class="active" href="Manage">Manage</a></li>
-                <li><a href="ManageMileage">Manage mileage</a></li>
-                <li><a href="NawList">Personen</a></li>
-                <li><a href="CarTrackerList">Cartrackers</a></li>
-                <li><a href="MileageList">Mileages</a></li>
+                <li><a class="active" href="Manage">Beheer</a></li>
+		<!--                <li><a href="ManageMileage">Beheer kilometertarieven</a></li>
+				<li><a href="MileageList">Beheer kilometertarieven</a></li>-->
 
             </ul>
         </div>
@@ -460,13 +531,13 @@
 		    <h2 class="poph2">Persoon toevoegen</h2>
 		    <hr class="pophr">
 		    <p>Burger Service Nummer: <br /> <input class="popf" id="bsn" type="text" name="bsn"></p>
-		    <p>First name: <br /> <input class="popf"  id="firstname" type="text" name="firstname" /> </p> 
-		    <p>Last name: <br /> <input class="popf" id="lastname" type="text" name="lastname" /></p>
-		    <p >Street:  Housenumber: <br /><input  class="popf" id="address" type="text" name="address" />
+		    <p>Voornaam: <br /> <input class="popf"  id="firstname" type="text" name="firstname" /> </p> 
+		    <p>Achternaam: <br /> <input class="popf" id="lastname" type="text" name="lastname" /></p>
+		    <p >Straat: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nr: <br /><input  class="popf" id="address" type="text" name="address" />
 			<input class="popf"  id="housenumber" type="text" name="number" /></p>
-		    <p>Zipcode: <br /> <input class="popf"  id="zipcode" type="text" name="zipcode" /></p>
-		    <p>City: <br /> <input class="popf"  id="city" type="text" name="city" /></p>
-		    <p>Telephone: <br /> <input class="popf"  id="telephone" type="text" name="telephone" /></p>
+		    <p>Postcode: <br /> <input class="popf"  id="zipcode" type="text" name="zipcode" /></p>
+		    <p>Stad: <br /> <input class="popf"  id="city" type="text" name="city" /></p>
+		    <p>Telefoonnummer: <br /> <input class="popf"  id="telephone" type="text" name="telephone" /></p>
 		    <p>Email: <br /> <input class="popf"  id="email" type="text" name="email" /></p>
 		    <input class="popbutton" type="submit" onclick="fixSize();" href="#"/>
 		</form>
@@ -483,10 +554,10 @@
 		    <h2 class="poph2">CarTracker toevoegen</h2>
 		    <hr class="pophr">
 		    <input id="bsnhide" type="hidden" value="replace" name="bsnhide"/>
-		    <p>Prize Category: <br/><input id="priceCategory" type="text" name="category" /></p>
-		    <p>License plate: <br/><input id="licensePlate" type="text" name="license" /></p>
-		    <p>Car brand: <br/><input id="brand" type="text" name="carbrand" /> </p>		    
-		    <p>Car model: <br/><input id="model" type="text" name="carmodel" /> </p>
+		    <p>Tariefcategorie: <br/><input id="priceCategory" type="text" name="category" /></p>
+		    <p>Kenteken: <br/><input id="licensePlate" type="text" name="license" /></p>
+		    <p>Automerk: <br/><input id="brand" type="text" name="carbrand" /> </p>		    
+		    <p>Automodel: <br/><input id="model" type="text" name="carmodel" /> </p>
 		    <input class="popbutton" type="submit" onclick="fixSize();" href="#"/>
 		</form>
 	    </div>
@@ -507,17 +578,17 @@
 
 	    <div id="persoonWrapper">
 		<div id="divborder">
-		    <p><h1>NAW gegevens: </h1></p>
+		    <p><h1>NAW gegevens </h1></p>
 		    <img id="addico" onclick="div_show()" src="${pageContext.request.contextPath}/icons/add.png" href="#" width="5%" />
 		    <form id="persoonadd" class= "pure-form" action="AddPerson" method="POST" onsubmit="return nawvalidate();">
 			<p>Burger Service Nummer: <br /> <input id="bsnshow" type="text" name="bsn"></p>
-			<p>First name: <br /> <input id="firstnameshow" type="text" name="firstname" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('firstnameshow')" /> <img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeFirstname()" /> </p> 
-			<p>Last name: <br /> <input id="lastnameshow" type="text" name="lastname" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('lastnameshow')" /> <img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeLastname()" /></p>
-			<p class="street">Street:  Housenumber: <br /><input  id="addressshow" type="text" name="address" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('addressshow')" /> <img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeAddress()" />
+			<p>Voornaam: <br /> <input id="firstnameshow" type="text" name="firstname" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('firstnameshow')" /> <img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeFirstname()" /> </p> 
+			<p>Achternaam: <br /> <input id="lastnameshow" type="text" name="lastname" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('lastnameshow')" /> <img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeLastname()" /></p>
+			<p class="street">Straat:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nr: <br /><input  id="addressshow" type="text" name="address" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('addressshow')" /> <img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeAddress()" />
 			    <input  id="housenumbershow" type="text" name="number" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('housenumbershow')" /> <img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeNumber()" /></p>
-			<p>Zipcode: <br /> <input  id="zipcodeshow" type="text" name="zipcode" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('zipcodeshow')" /> <img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeZipcode()" /></p>
-			<p>City: <br /> <input  id="cityshow" type="text" name="city" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('cityshow')" /><img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeCity()" /></p>
-			<p>Telephone: <br /> <input  id="telephoneshow" type="text" name="telephone" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('telephoneshow')" /><img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeTelephone()" /></p>
+			<p>Postcode: <br /> <input  id="zipcodeshow" type="text" name="zipcode" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('zipcodeshow')" /> <img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeZipcode()" /></p>
+			<p>Stad: <br /> <input  id="cityshow" type="text" name="city" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('cityshow')" /><img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeCity()" /></p>
+			<p>Telefoonnummer: <br /> <input  id="telephoneshow" type="text" name="telephone" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('telephoneshow')" /><img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeTelephone()" /></p>
 			<p>Email: <br /> <input id="emailshow" type="text" name="email" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('emailshow')" /><img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeMail()" /></p>
 			<!--<input id="myBtn" onclick="showDiv()" type="submit" href="NawList"> -->
 		    </form>
@@ -526,22 +597,20 @@
 
 	    <div id="cartrackerWrapper">
 		<div id="divbordercar">
-		    <select id= "cartrackerList" name="cartrackerList" size="${countcartrackers}" onchange="populateDataCT()">
-			<c:forEach var="cartracker" items="${cartrackers}">
-				<option id="OptionBSN" name="${cartracker.id}" value="${cartracker.id}"><c:out  value="${cartracker.licenseplate}"/></c>, <c:out value="${cartracker.brandcar}"/></c>,  <c:out value="${cartracker.modelcar}"/></c></option> 
-			</c:forEach>
+		    <select id= "cartrackerList" name="cartrackerList" size="5" onchange="PopulateDataCT()">
+
 		    </select>
 		</div>
 	    </div>
 	    <div id="cartrackerWrapper2">
 		<div id="divbordercar2">
-		    <p><h1>CarTracker toevoegen: </h1></p>
+		    <p><h1>Cartracker gegevens</h1></p>
 		    <img id="addico" onclick="div_showct()" src="${pageContext.request.contextPath}/icons/car_add.png" href="#" width="5%" />
 		    <form class="pure-form">
-			<p>Prize Category: <br/><input id="priceCategoryshow" type="text" name="category" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('priceCategoryshow')" /> <img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangePriceCategory()" /> </p> </p>
-			<p>License plate: <br/><input id="licensePlateshow" type="text" name="license" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('licensePlateshow')" /> <img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeLicensePlate()" /> </p> </p>
-			<p>Car brand: <br/><input id="brandshow" type="text" name="carbrand" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('brandshow')" /> <img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeCarBrand()" /> </p> </p>		    
-			<p>Car model: <br/><input id="modelshow" type="text" name="carmodel" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('modelshow')" /> <img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeCarModel()" /> </p> </p>
+			<p>Tariefcategorie: <br/><input id="priceCategoryshow" type="text" name="category" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('priceCategoryshow')" /> <img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangePriceCategory()" /> </p> </p>
+			<p>Kenteken: <br/><input id="licensePlateshow" type="text" name="license" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('licensePlateshow')" /> <img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeLicensePlate()" /> </p> </p>
+			<p>Automerk: <br/><input id="brandshow" type="text" name="carbrand" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('brandshow')" /> <img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeCarBrand()" /> </p> </p>		    
+			<p>Automodel: <br/><input id="modelshow" type="text" name="carmodel" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('modelshow')" /> <img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeCarModel()" /> </p> </p>
 
 		    </form>
 		</div>
