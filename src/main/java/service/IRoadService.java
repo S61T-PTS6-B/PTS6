@@ -3,21 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dao;
+package service;
 
-import java.util.Date;
 import java.util.List;
 import model.Road;
 
 /**
  *
- * @author koenv
+ * @author Max
  */
-public interface RoadDAO {
-	public void createRoad(Road road);
-	
-	public List<Road> getAllRoads();
-	
-	public Road getRoad(String name);
-        
+public interface IRoadService {
+    
+    public List<Road> getAllRoads();
 }

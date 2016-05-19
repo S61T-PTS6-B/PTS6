@@ -23,4 +23,6 @@ public interface RoadRateDAO {
 	public List<RoadRate> getRoadRatesByEndTime(Date timeend);
 	
 	public List<RoadRate> getRoadRatesByName(String name);
+        
+        public double getRoadRateByDate(String roadName, Date date);
 }
