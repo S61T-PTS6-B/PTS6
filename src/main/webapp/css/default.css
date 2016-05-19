@@ -159,6 +159,7 @@ img {
     box-sizing: border-box;
 }
 
+
 #changeCar {
     width: 50%;
     margin-left: auto;
@@ -170,6 +171,12 @@ img {
 }
 
 #personList {
+    width: 10%;
+    height: 45.7em;
+    float: left;
+}
+
+#carList {
     width: 10%;
     height: 45.7em;
     float: left;

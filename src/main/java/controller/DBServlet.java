@@ -20,11 +20,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.RequestDispatcher;
 import model.CarOwner;
 import model.CarTracker;
-import model.MileageRate;
 import model.NAW;
 import service.ICarOwnerService;
 import service.ICarTrackerService;
-import service.IMileageRateService;
 import service.INAWService;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -37,13 +35,13 @@ import org.json.simple.JSONObject;
 	"/Manage",
 	"/FillCT",
 	"/FillFieldsCT",
-	"/ManageMileage",
+	"/ManageCartracker",
+	"/ManageNAW",
 	"/AddMileage",
 	"/AddPerson",
 	"/AddCarTracker",
 	"/CarTrackerList",
 	"/NawList",
-	"/MileageList",
 	"/PersonalData",
 	"/ChangeFirstname",
 	"/ChangeLastname",
@@ -58,11 +56,8 @@ import org.json.simple.JSONObject;
 	"/CarBrandChange",
 	"/CarModelChange",
 	"/LicenseChange",
-	"/PrizeCategoryChange",
-	"/MileageChange",
-	"/RegioChange",
-	"/CategoryChange",
-	"/IntervalChange"})
+	"/PrizeCategoryChange"
+})
 public class DBServlet extends HttpServlet {
 
 	@Inject
@@ -73,9 +68,6 @@ public class DBServlet extends HttpServlet {
 
 	@Inject
 	ICarOwnerService cos;
-
-	@Inject
-	IMileageRateService mrs;
 
 	private int bsn;
 	private String id;
@@ -100,8 +92,10 @@ public class DBServlet extends HttpServlet {
 				view.forward(req, res);
 				break;
 			}
-			case "/ManageMileage": {
-				RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/managemilage.jsp");
+			case "/ManageCartracker": {
+				req.setAttribute("cartrackers", cts.getAllCarTrackers());
+				req.setAttribute("countcartrackers", cts.getAllCarTrackers().size());
+				RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/managecartracker.jsp");
 				view.forward(req, res);
 				break;
 			}
@@ -120,13 +114,6 @@ public class DBServlet extends HttpServlet {
 			case "/NawList": {
 				req.setAttribute("naws", ns.getAllNaws());
 				RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/NawList.jsp");
-				view.forward(req, res);
-				break;
-			}
-			case "/MileageList": {
-				List<MileageRate> mars = mrs.getAllRates();
-				req.setAttribute("MAR", mars);
-				RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/mileagelist.jsp");
 				view.forward(req, res);
 				break;
 			}
@@ -173,6 +160,40 @@ public class DBServlet extends HttpServlet {
 				res.setContentType("application/json");
 				req.setAttribute("countcartrackers", cts.getCarTrackerById(fix).size());
 				List<CarTracker> lijst = cts.getCarTrackerById(fix);
+				req.setAttribute("cartrackers", lijst);
+				res.setCharacterEncoding("UTF-8");
+				res.getWriter().write(json);
+
+			}
+
+		}
+		if (userPath.equals("/ManageNAW")) {
+			String json = null;
+			String licenseplateReceive = req.getParameter("OptionKenteken").trim();
+			Map<String, String> jsonMap = new LinkedHashMap<String, String>();
+			CarTracker getCT;
+			CarOwner getOwner;
+			NAW persoon;
+			getCT = cts.getCarTrackerByLicensePlate(licenseplateReceive);
+			getOwner = cos.getCarOwnerByCarTracker(getCT);
+			persoon = getOwner.getNawid();
+			if (licenseplateReceive != null) {
+				jsonMap.put("bsn", Integer.toString(persoon.getBsn()));
+				jsonMap.put("firstname", persoon.getFirstname());
+				jsonMap.put("lastname", persoon.getLastname());
+				jsonMap.put("address", persoon.getAddress());
+				jsonMap.put("housenumber", persoon.getNumber());
+				jsonMap.put("zipcode", persoon.getZipcode());
+				jsonMap.put("city", persoon.getCity());
+				jsonMap.put("telephone", persoon.getTelephone());
+				jsonMap.put("email", persoon.getEmail());
+
+				json = new Gson().toJson(jsonMap, Map.class);
+
+				System.out.println("Dit is de json: " + json.toString());
+				res.setContentType("application/json");
+				req.setAttribute("countcartrackers", cts.getCarTrackerById(persoon).size());
+				List<CarTracker> lijst = cts.getCarTrackerById(persoon);
 				req.setAttribute("cartrackers", lijst);
 				res.setCharacterEncoding("UTF-8");
 				res.getWriter().write(json);
@@ -387,21 +408,6 @@ public class DBServlet extends HttpServlet {
 		}
 
 		if (userPath.equals(
-			"/AddMileage")) {
-			double rate = Double.parseDouble(req.getParameter("mar"));
-			String regio = req.getParameter("regio");
-			double category = Double.parseDouble(req.getParameter("pricecategory"));
-			double interval = Double.parseDouble(req.getParameter("interval"));
-
-			MileageRate mar = new MileageRate(rate, regio, category, interval);
-			mrs.createMileageRate(mar);
-
-			RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/managemilage.jsp");
-			view.forward(req, res);
-
-		}
-
-		if (userPath.equals(
 			"/AddPerson")) {
 			int bsn = Integer.parseInt(req.getParameter("bsn"));
 			String firstname = req.getParameter("firstname");
@@ -462,17 +468,6 @@ public class DBServlet extends HttpServlet {
 			RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/changecartracker.jsp");
 			view.forward(req, res);
 
-		}
-
-		if (userPath.equals(
-			"/ChangeMA")) {
-			String id = req.getParameter("id");
-
-			MileageRate mr = mrs.getRateById(id);
-
-			req.setAttribute("mar", mr);
-			RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/changemileage.jsp");
-			view.forward(req, res);
 		}
 
 		if (userPath.equals(
@@ -542,56 +537,6 @@ public class DBServlet extends HttpServlet {
 			req.setAttribute("theUser", naw);
 			ArrayList<CarTracker> ctList = cts.getCarTrackerById(naw);
 			req.setAttribute("theCTs", ctList);
-
-			RequestDispatcher viewResult = req.getRequestDispatcher("/WEB-INF/pages/personaldata.jsp");
-			viewResult.forward(req, res);
-		}
-
-		if (userPath.equals(
-			"/MileageChange")) {
-			String id = req.getParameter("id");
-			String mileageRate = req.getParameter("mileagerate");
-
-			MileageRate mr = mrs.getRateById(id);
-			mrs.changeMileageRate(mr, Double.parseDouble(mileageRate));
-
-			RequestDispatcher viewResult = req.getRequestDispatcher("/WEB-INF/pages/personaldata.jsp");
-			viewResult.forward(req, res);
-
-		}
-
-		if (userPath.equals(
-			"/RegioChange")) {
-			String id = req.getParameter("id");
-			String regio = req.getParameter("regio");
-
-			MileageRate mr = mrs.getRateById(id);
-			mrs.changeRegio(mr, regio);
-			req.setAttribute("mar", mr);
-
-			RequestDispatcher viewResult = req.getRequestDispatcher("/WEB-INF/pages/changemileage.jsp");
-			viewResult.forward(req, res);
-		}
-
-		if (userPath.equals(
-			"/CategoryChange")) {
-			String id = req.getParameter("id");
-			String pricecategory = req.getParameter("pricecategory");
-
-			MileageRate mr = mrs.getRateById(id);
-			mrs.changePrizeCategory(mr, Double.parseDouble(pricecategory));
-
-			RequestDispatcher viewResult = req.getRequestDispatcher("/WEB-INF/pages/personaldata.jsp");
-			viewResult.forward(req, res);
-		}
-
-		if (userPath.equals(
-			"/IntervalChange")) {
-			String id = req.getParameter("id");
-			String interval = req.getParameter("interval");
-
-			MileageRate mr = mrs.getRateById(id);
-			mrs.changeInterval(mr, Double.parseDouble(interval));
 
 			RequestDispatcher viewResult = req.getRequestDispatcher("/WEB-INF/pages/personaldata.jsp");
 			viewResult.forward(req, res);

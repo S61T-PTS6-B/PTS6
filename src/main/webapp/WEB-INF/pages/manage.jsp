@@ -516,6 +516,7 @@
         <div id="nav" class='balk'>
             <ul>
                 <li><a class="active" href="Manage">Beheer</a></li>
+		<li><a href="ManageCartracker">Beheer Cartrackers</a></li>
 		<!--                <li><a href="ManageMileage">Beheer kilometertarieven</a></li>
 				<li><a href="MileageList">Beheer kilometertarieven</a></li>-->
 
@@ -567,7 +568,6 @@
 	<!--<button onclick="getStreet()" >Test street</button>
 	<button onclick="clearData()" ></button> -->
         <div id="wrappercenter">
-
 	    <select id= "personList" name="personList" size="${countnaws}" onchange="populateData();
                         fixSize();">
 
