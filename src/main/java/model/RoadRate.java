@@ -25,7 +25,7 @@ public class RoadRate implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	private String roadname;
+	private Road road;
 
 	@Temporal(javax.persistence.TemporalType.TIMESTAMP)
 	private Date timestamp_in;
@@ -44,9 +44,9 @@ public class RoadRate implements Serializable {
 	public RoadRate() {
 	}
 
-	public RoadRate(Long id, String roadname, Date timestamp_in, Date timestamp_out, Date time_start, Date time_end, double rate) {
+	public RoadRate(Long id, Road road, Date timestamp_in, Date timestamp_out, Date time_start, Date time_end, double rate) {
 		this.id = id;
-		this.roadname = roadname;
+		this.road = road;
 		this.timestamp_in = timestamp_in;
 		this.timestamp_out = timestamp_out;
 		this.time_start = time_start;
@@ -54,12 +54,12 @@ public class RoadRate implements Serializable {
 		this.rate = rate;
 	}
 
-	public String getRoadname() {
-		return roadname;
+	public Road getRoad() {
+		return road;
 	}
 
-	public void setRoadname(String roadname) {
-		this.roadname = roadname;
+	public void setRoad(Road road) {
+		this.road = road;
 	}
 
 	public Date getTimestamp_in() {
