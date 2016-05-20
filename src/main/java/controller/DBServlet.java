@@ -21,11 +21,14 @@ import javax.servlet.RequestDispatcher;
 import model.CarOwner;
 import model.CarTracker;
 import model.NAW;
+import model.Road;
 import service.ICarOwnerService;
 import service.ICarTrackerService;
 import service.INAWService;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import service.IRoadRateService;
+import service.IRoadService;
 
 /**
  *
@@ -33,11 +36,12 @@ import org.json.simple.JSONObject;
  */
 @WebServlet(name = "CarTrackerAdm", urlPatterns = {"/CarTrackerAdm",
 	"/Manage",
+	"/ManageRoadRate",
 	"/FillCT",
 	"/FillFieldsCT",
 	"/ManageCartracker",
 	"/ManageNAW",
-	"/AddMileage",
+	"/AddRoad",
 	"/AddPerson",
 	"/AddCarTracker",
 	"/CarTrackerList",
@@ -68,6 +72,12 @@ public class DBServlet extends HttpServlet {
 
 	@Inject
 	ICarOwnerService cos;
+	
+	@Inject
+	IRoadService rs;
+	
+	@Inject
+	IRoadRateService rrs;
 
 	private int bsn;
 	private String id;
@@ -98,6 +108,14 @@ public class DBServlet extends HttpServlet {
 				RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/managecartracker.jsp");
 				view.forward(req, res);
 				break;
+			}
+			case "/ManageRoadRate": {
+				req.setAttribute("roads", rs.getAllRoads());
+				req.setAttribute("countroads", rs.getAllRoads().size());
+				RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/manageroadrate.jsp");
+				view.forward(req, res);
+				break;
+				
 			}
 			case "/AddPerson": {
 				req.setAttribute("naws", ns.getAllNaws());
@@ -422,6 +440,15 @@ public class DBServlet extends HttpServlet {
 			ns.createNAW(n);
 			req.setAttribute("naws", ns.getAllNaws());
 			RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/manage.jsp");
+			view.forward(req, res);
+		}
+		if(userPath.equals("/AddRoad")) {
+			String name = req.getParameter("roadname");
+			Road r = new Road(name);
+			
+			rs.createRoad(r);
+			req.setAttribute("roads", rs.getAllRoads());
+			RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/manageroadrate.jsp");
 			view.forward(req, res);
 		}
 

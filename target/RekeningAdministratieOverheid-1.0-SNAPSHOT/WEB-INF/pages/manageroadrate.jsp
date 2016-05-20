@@ -171,17 +171,20 @@
                 }
 
                 function populateData() {
-                    var e = document.getElementById("personList");
-
+                    var e = document.getElementById("roadList");
+		    var r = document.getElementById("roadrateList");
+		    
+		    var strRoadRate = e.options[r.selectedIndex].value;
                     var strUser = e.options[e.selectedIndex].value;
+		    
                     if (strUser === null) {
                         console.log("BSN IS LEEG");
                     }
                     console.log(strUser);
                     $.ajax({
                         type: "post",
-                        url: "Manage", //this is my servlet
-                        data: {OptionBSN: strUser}, //Wat moet hier
+                        url: "ManageRoad", //this is my servlet
+                        data: {OptionRoad: strUser}, //Wat moet hier
                         success: function (evt) {
 
                             console.log(evt);
@@ -368,7 +371,7 @@
                 }
 
                 function fixSize() {
-                    $('#personList').attr('size', $('select option').length);
+                    $('#roadList').attr('size', $('select option').length);
                     console.log("Fixed size!");
                     console.log(document.getElementById("bsnhide").value);
                 }
@@ -527,20 +530,12 @@
 	<div id="abc">
 	    <!-- Popup Div Starts Here -->
 	    <div id="popupContact">
-		<!-- Contact Us Form -->
+		<!-- Add road Form -->
 		<form action="AddRoad" id="popform" method="post" name="popform" class="popform">
 		    <img id="close" src="${pageContext.request.contextPath}/icons/close.png" onclick ="div_hide()">
 		    <h2 class="poph2">Weg toevoegen</h2>
 		    <hr class="pophr">
-		    <p>Naam: <br /> <input class="popf" id="bsn" type="text" name="bsn"></p>
-		    <p>Voornaam: <br /> <input class="popf"  id="firstname" type="text" name="firstname" /> </p> 
-		    <p>Achternaam: <br /> <input class="popf" id="lastname" type="text" name="lastname" /></p>
-		    <p >Straat: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nr: <br /><input  class="popf" id="address" type="text" name="address" />
-			<input class="popf"  id="housenumber" type="text" name="number" /></p>
-		    <p>Postcode: <br /> <input class="popf"  id="zipcode" type="text" name="zipcode" /></p>
-		    <p>Stad: <br /> <input class="popf"  id="city" type="text" name="city" /></p>
-		    <p>Telefoonnummer: <br /> <input class="popf"  id="telephone" type="text" name="telephone" /></p>
-		    <p>Email: <br /> <input class="popf"  id="email" type="text" name="email" /></p>
+		    <p>Naam: <br /> <input class="popf" id="roadname" type="text" name="roadname"></p>
 		    <input class="popbutton" type="submit" onclick="fixSize();" href="#"/>
 		</form>
 	    </div>
@@ -550,16 +545,16 @@
 	<div id="abct">
 	    <!-- Popup Div Starts Here -->
 	    <div id="popupContact">
-		<!-- Contact Us Form -->
-		<form action="AddCarTracker" id="popform" method="post" name="popform" class="popform">
+		<!-- Add roadrate Form -->
+		<form action="AddRoadRate" id="popform" method="post" name="popform" class="popform">
 		    <img id="close" src="${pageContext.request.contextPath}/icons/close.png" onclick ="div_hide()">
-		    <h2 class="poph2">CarTracker toevoegen</h2>
+		    <h2 class="poph2">Wegtarief toevoegen</h2>
 		    <hr class="pophr">
-		    <input id="bsnhide" type="hidden" value="replace" name="bsnhide"/>
-		    <p>Tariefcategorie: <br/><input id="priceCategory" type="text" name="category" /></p>
-		    <p>Kenteken: <br/><input id="licensePlate" type="text" name="license" /></p>
-		    <p>Automerk: <br/><input id="brand" type="text" name="carbrand" /> </p>		    
-		    <p>Automodel: <br/><input id="model" type="text" name="carmodel" /> </p>
+		    <input id="roadname" type="text" value="replace" name="roadname"/>
+		    <p>Datum invoer: <br/><input id="datein" type="text" name="datein" /></p>
+		    <p>Datum einde: <br/><input id="dateend" type="text" name="dateend" /></p>
+		    <p>Start tijd: <br/><input id="starttime" type="text" name="starttime" /> </p>		    
+		    <p>Eind tijd: <br/><input id="endtime" type="text" name="endtime" /> </p>
 		    <input class="popbutton" type="submit" onclick="fixSize();" href="#"/>
 		</form>
 	    </div>
@@ -569,54 +564,36 @@
 	<!--<button onclick="getStreet()" >Test street</button>
 	<button onclick="clearData()" ></button> -->
         <div id="wrappercenter">
-	    <select id= "personList" name="personList" size="${countnaws}" onchange="populateData();
+	    
+	    <select id= "roadList" name="roadList" size="${countroads}" onchange="populateData();
                         fixSize();">
 
-		<c:forEach var="naws" items="${naws}">
-			<option id="OptionBSN" name="${naws.bsn}" value="${naws.bsn}"><c:out value="${naws.firstname}"/></c> <c:out value="${naws.lastname}"/></c></option> 
+		<c:forEach var="roads" items="${roads}">
+			<option id="OptionBSN" name="${roads.id}" value="${roads.id}"><c:out value="${roads.id}"/></c> </option> 
 		</c:forEach>
+			
 	    </select>
-
-	    <div id="persoonWrapper">
-		<div id="divborder">
-		    <p><h1>NAW gegevens </h1></p>
-		    <img id="addico" onclick="div_show()" src="${pageContext.request.contextPath}/icons/add.png" href="#" width="5%" />
-		    <form id="persoonadd" class= "pure-form" action="AddPerson" method="POST" onsubmit="return nawvalidate();">
-			<p>Burger Service Nummer: <br /> <input id="bsnshow" type="text" name="bsn"></p>
-			<p>Voornaam: <br /> <input id="firstnameshow" type="text" name="firstname" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('firstnameshow')" /> <img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeFirstname()" /> </p> 
-			<p>Achternaam: <br /> <input id="lastnameshow" type="text" name="lastname" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('lastnameshow')" /> <img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeLastname()" /></p>
-			<p class="street">Straat:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nr: <br /><input  id="addressshow" type="text" name="address" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('addressshow')" /> <img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeAddress()" />
-			    <input  id="housenumbershow" type="text" name="number" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('housenumbershow')" /> <img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeNumber()" /></p>
-			<p>Postcode: <br /> <input  id="zipcodeshow" type="text" name="zipcode" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('zipcodeshow')" /> <img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeZipcode()" /></p>
-			<p>Stad: <br /> <input  id="cityshow" type="text" name="city" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('cityshow')" /><img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeCity()" /></p>
-			<p>Telefoonnummer: <br /> <input  id="telephoneshow" type="text" name="telephone" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('telephoneshow')" /><img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeTelephone()" /></p>
-			<p>Email: <br /> <input id="emailshow" type="text" name="email" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('emailshow')" /><img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeMail()" /></p>
-			<!--<input id="myBtn" onclick="showDiv()" type="submit" href="NawList"> -->
-		    </form>
-		</div>
+		<div id="roadrates">
+	    <img id="addico" onclick="div_show()" src="${pageContext.request.contextPath}/icons/road-add.png" href="#" width="150%" />
 	    </div>
-
-	    <div id="cartrackerWrapper">
-		<div id="divbordercar">
-		    <select id= "cartrackerList" name="cartrackerList" size="5" onchange="PopulateDataCT()">
+	    <div id="persoonWrapper">
+		
+		<div id="divborder">
+		    <select id= "roadrateList" name="roadrateList" size="5" onchange="PopulateDataCT()">
 
 		    </select>
-		</div>
-	    </div>
-	    <div id="cartrackerWrapper2">
-		<div id="divbordercar2">
-		    <p><h1>Cartracker gegevens</h1></p>
-		    <img id="addico" onclick="div_showct()" src="${pageContext.request.contextPath}/icons/car_add.png" href="#" width="5%" />
-		    <form class="pure-form">
-			<p>Tariefcategorie: <br/><input id="priceCategoryshow" type="text" name="category" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('priceCategoryshow')" /> <img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangePriceCategory()" /> </p> </p>
-			<p>Kenteken: <br/><input id="licensePlateshow" type="text" name="license" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('licensePlateshow')" /> <img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeLicensePlate()" /> </p> </p>
-			<p>Automerk: <br/><input id="brandshow" type="text" name="carbrand" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('brandshow')" /> <img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeCarBrand()" /> </p> </p>		    
-			<p>Automodel: <br/><input id="modelshow" type="text" name="carmodel" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('modelshow')" /> <img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeCarModel()" /> </p> </p>
-
+		    <p><h1>Weg gegevens </h1></p>
+		    <img id="addico" onclick="div_showct()" src="${pageContext.request.contextPath}/icons/time-add.png" href="#" width="5%" />
+		    <form id="persoonadd" class= "pure-form" action="AddPerson" method="POST" onsubmit="return nawvalidate();">
+			<p>Naam: <br /> <input id="roadnameshow" type="text" name="roadname"></p>
+			<p>Datum invoer: <br /> <input id="dateinshow" type="text" name="firstname" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('firstnameshow')" /> <img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeFirstname()" /> </p> 
+			<p>Datum uitvoer: <br /> <input id="dateoutshow" type="text" name="lastname" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('lastnameshow')" /> <img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeLastname()" /></p>
+			<p>Start tijd:<br /><input  id="starttimeshow" type="text" name="address" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('addressshow')" /> <img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeAddress()" />
+			<p>Eind tijd: <br /> <input  id="endtimeshow" type="text" name="zipcode" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('zipcodeshow')" /> <img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeZipcode()" /></p>
 		    </form>
 		</div>
-	    </div>
 
+	    </div>
 	</div>
     </body>
 </html>

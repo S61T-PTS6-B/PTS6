@@ -9,12 +9,14 @@ import dao.RoadRateDAO;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.ejb.Stateless;
 import model.RoadRate;
 
 /**
  *
  * @author koenv
  */
+@Stateless
 public class RoadRateService implements IRoadRateService {
 
 	@EJB

@@ -18,23 +18,32 @@ import javax.persistence.Id;
 @Entity
 public class Road implements Serializable {
 
-	private static final long serialVersionUID = 1L;
 	@Id
-        @GeneratedValue(strategy = GenerationType.AUTO)
-	private String name;
+	private String id;
+
+	public Road() {
+	}
+	
+	
+
+	public Road(String id) {
+		this.id = id;
+	}
+	
+	
 
 	public String getId() {
-		return name;
+		return id;
 	}
 
 	public void setId(String id) {
-		this.name = id;
+		this.id = id;
 	}
 
 	@Override
 	public int hashCode() {
 		int hash = 0;
-		hash += (name != null ? name.hashCode() : 0);
+		hash += (id != null ? id.hashCode() : 0);
 		return hash;
 	}
 
@@ -45,7 +54,7 @@ public class Road implements Serializable {
 			return false;
 		}
 		Road other = (Road) object;
-		if ((this.name == null && other.name != null) || (this.name != null && !this.name.equals(other.name))) {
+		if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
 			return false;
 		}
 		return true;
@@ -53,7 +62,7 @@ public class Road implements Serializable {
 
 	@Override
 	public String toString() {
-		return "model.Road[ id=" + name + " ]";
+		return "model.Road[ id=" + id + " ]";
 	}
 	
 }

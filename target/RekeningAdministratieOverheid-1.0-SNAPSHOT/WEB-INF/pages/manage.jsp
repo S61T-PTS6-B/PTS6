@@ -515,8 +515,9 @@
     <body>
         <div id="nav" class='balk'>
             <ul>
-                <li><a class="active" href="Manage">Beheer</a></li>
+                 <li><a class="active" href="Manage">Beheer</a></li>
 		<li><a href="ManageCartracker">Beheer Cartrackers</a></li>
+		<li><a href="ManageRoadRate">Beheer wegen</a></li>
 		<!--                <li><a href="ManageMileage">Beheer kilometertarieven</a></li>
 				<li><a href="MileageList">Beheer kilometertarieven</a></li>-->
 

@@ -7,6 +7,8 @@ package dao;
 
 import java.util.Date;
 import java.util.List;
+import javax.ejb.Local;
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -16,6 +18,8 @@ import model.RoadRate;
  *
  * @author koenv
  */
+@Local
+@Stateless
 public class RoadRateDAOImp implements RoadRateDAO {
 
 	@PersistenceContext(unitName = "com.PTS6B_RekeningAdministratieOverheid_war_1.0-SNAPSHOTPU")

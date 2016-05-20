@@ -138,8 +138,10 @@ img {
 
 #divbordercar {
     border-radius: 5px;
-    background-color: #f2f2f2;
+
     padding: 20px;
+    float: left;
+    width: 99%;
 }
 
 #divbordercar2 {
@@ -182,4 +184,14 @@ img {
     float: left;
 }
 
+#roadList {
+    width: 10%;
+    height: 45.7em;
+    float: left;
+}
 
+#roadrates {
+    width: 1%;
+    float: left;
+    margin-left: 1.1em;
+}
