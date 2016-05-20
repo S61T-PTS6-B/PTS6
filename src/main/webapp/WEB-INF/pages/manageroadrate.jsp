@@ -175,21 +175,21 @@
 		    var r = document.getElementById("roadrateList");
 		    
 		    var strRoadRate = e.options[r.selectedIndex].value;
-                    var strUser = e.options[e.selectedIndex].value;
+                    var strRoad = e.options[e.selectedIndex].value;
 		    
-                    if (strUser === null) {
+                    if (strRoad === null) {
                         console.log("BSN IS LEEG");
                     }
-                    console.log(strUser);
+                    console.log(strRoad);
                     $.ajax({
                         type: "post",
                         url: "ManageRoad", //this is my servlet
-                        data: {OptionRoad: strUser}, //Wat moet hier
+                        data: {OptionRoad: strRoad}, //Wat moet hier
                         success: function (evt) {
 
                             console.log(evt);
                             msg = evt;
-                            document.getElementById("bsnshow").value = msg.bsn;
+                            document.getElementById("roadnameshow").value = msg.road.id;
                             GlobalBSN = msg.bsn;
                             document.getElementById("firstnameshow").value = msg.firstname;
                             document.getElementById("lastnameshow").value = msg.lastname;
