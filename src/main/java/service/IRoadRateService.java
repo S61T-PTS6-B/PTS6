@@ -7,6 +7,7 @@ package service;
 
 import java.util.Date;
 import java.util.List;
+import model.Road;
 import model.RoadRate;
 
 /**
@@ -23,5 +24,9 @@ public interface IRoadRateService {
 
 	public List<RoadRate> getRoadRatesByEndTime(Date timeend);
 
-	public List<RoadRate> getRoadRatesByName(String name);
+	public List<RoadRate> getRoadRatesByName(Road name);
+        
+        public double getRoadRateByDate(String roadName, Date date);
+
+	public void AddDateOut(RoadRate rr, Date newdate);
 }

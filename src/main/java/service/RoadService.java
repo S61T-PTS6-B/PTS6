@@ -15,9 +15,11 @@ import javax.ejb.Stateless;
  *
  * @author koenv
  */
+
+
 @Stateless
-public class RoadService implements IRoadService{
-	
+public class RoadService implements IRoadService {
+
 	@EJB
 	RoadDAO rd;
 
@@ -35,5 +37,5 @@ public class RoadService implements IRoadService{
 	public Road getRoad(String name) {
 		return rd.getRoad(name);
 	}
-	
+
 }

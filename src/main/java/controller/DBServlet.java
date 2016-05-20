@@ -7,10 +7,16 @@ package controller;
 
 import com.google.gson.Gson;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,6 +28,7 @@ import model.CarOwner;
 import model.CarTracker;
 import model.NAW;
 import model.Road;
+import model.RoadRate;
 import service.ICarOwnerService;
 import service.ICarTrackerService;
 import service.INAWService;
@@ -39,6 +46,7 @@ import service.IRoadService;
 	"/ManageRoadRate",
 	"/FillCT",
 	"/FillFieldsCT",
+	"/FillFieldsRR",
 	"/ManageCartracker",
 	"/ManageNAW",
 	"/AddRoad",
@@ -72,10 +80,10 @@ public class DBServlet extends HttpServlet {
 
 	@Inject
 	ICarOwnerService cos;
-	
+
 	@Inject
 	IRoadService rs;
-	
+
 	@Inject
 	IRoadRateService rrs;
 
@@ -115,7 +123,7 @@ public class DBServlet extends HttpServlet {
 				RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/manageroadrate.jsp");
 				view.forward(req, res);
 				break;
-				
+
 			}
 			case "/AddPerson": {
 				req.setAttribute("naws", ns.getAllNaws());
@@ -264,7 +272,48 @@ public class DBServlet extends HttpServlet {
 
 			}
 		}
+		if (userPath.equals("/FillFieldsRR")) {
+			String json = null;
+			String roadname = req.getParameter("OptionRR").trim();
+			Map<String, String> jsonMap = new LinkedHashMap<String, String>();
+			Road r = rs.getRoad(roadname);
+			List<RoadRate> roadrates = rrs.getRoadRatesByName(r);
 
+			JSONObject container = new JSONObject();
+			JSONArray jsonArray = new JSONArray();
+			for (RoadRate rr : roadrates) {
+				JSONObject js = new JSONObject();
+				js.put("datein", rr.getTimestamp_in().toString());
+				js.put("timestart", rr.getTime_start().toString());
+				js.put("timeend", rr.getTime_end().toString());
+				jsonArray.add(js);
+			}
+			container.put("roadrates", jsonArray);
+			System.out.println("Dit is de RR json: " + container.toJSONString());
+			res.setCharacterEncoding("UTF-8");
+			res.getWriter().write(container.toJSONString());
+		}
+		if (userPath.equals("ChangeDateout")) {
+			try {
+				String json = null;
+				String newdatestr = req.getParameter("NewDate");
+				DateFormat format = new SimpleDateFormat("dd-MM-YYYY");
+				Date newdate = format.parse(newdatestr);
+				Date olddate = format.parse(req.getParameter("OldDate"));
+				String newroad = req.getParameter("Road");
+				Map<String, String> jsonMap = new LinkedHashMap<String, String>();
+				Road inc = rs.getRoad(newroad);
+				List<RoadRate> edit = rrs.getRoadRatesByName(inc);
+				for (RoadRate rr : edit) {
+					if (rr.getTimestamp_in() == olddate) {
+						rrs.AddDateOut(rr, newdate);
+					}
+				}
+			} catch (ParseException ex) {
+				Logger.getLogger(DBServlet.class.getName()).log(Level.SEVERE, null, ex);
+			}
+
+		}
 		if (userPath.equals(
 			"/ChangeFirstname")) {
 			String json = null;
@@ -442,10 +491,10 @@ public class DBServlet extends HttpServlet {
 			RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/manage.jsp");
 			view.forward(req, res);
 		}
-		if(userPath.equals("/AddRoad")) {
+		if (userPath.equals("/AddRoad")) {
 			String name = req.getParameter("roadname");
 			Road r = new Road(name);
-			
+
 			rs.createRoad(r);
 			req.setAttribute("roads", rs.getAllRoads());
 			RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/manageroadrate.jsp");

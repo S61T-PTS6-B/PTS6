@@ -38,5 +38,4 @@ public class RoadDAOImp implements RoadDAO {
 		Road road = em.find(Road.class, name);
 		return road;
 	}
-
 }

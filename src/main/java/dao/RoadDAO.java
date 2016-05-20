@@ -5,6 +5,7 @@
  */
 package dao;
 
+import java.util.Date;
 import java.util.List;
 import model.Road;
 
@@ -18,4 +19,5 @@ public interface RoadDAO {
 	public List<Road> getAllRoads();
 	
 	public Road getRoad(String name);
+        
 }

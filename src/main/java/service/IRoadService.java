@@ -19,5 +19,4 @@ public interface IRoadService {
 	public List<Road> getAllRoads();
 
 	public Road getRoad(String name);
-	
 }

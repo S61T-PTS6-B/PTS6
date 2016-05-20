@@ -25,22 +25,13 @@
 
                 window.onload = function () {
                     fixSize();
-                    document.getElementById("cartrackerList").innerHTML = "Cartrackers zijn leeg";
-                    document.getElementById("bsnshow").disabled = true;
-                    document.getElementById("firstnameshow").disabled = true;
-                    document.getElementById("lastnameshow").disabled = true;
-                    document.getElementById("addressshow").disabled = true;
-                    document.getElementById("housenumbershow").disabled = true;
-                    document.getElementById("zipcodeshow").disabled = true;
-                    document.getElementById("cityshow").disabled = true;
-                    document.getElementById("telephoneshow").disabled = true;
-                    document.getElementById("emailshow").disabled = true;
+                    document.getElementById("roadnameshow").disabled = true;
+                    document.getElementById("dateinshow").disabled = true;
+                    document.getElementById("dateoutshow").disabled = true;
+                    document.getElementById("starttimeshow").disabled = true;
+                    document.getElementById("endtimeshow").disabled = true;
 
-
-                    document.getElementById("priceCategoryshow").disabled = true;
-                    document.getElementById("licensePlateshow").disabled = true;
-                    document.getElementById("brandshow").disabled = true;
-                    document.getElementById("modelshow").disabled = true;
+                    document.getElementById("rateshow").disabled = true;
                 };
                 $('form').submit(function (/*DOMEvent*/ e) {
                     e.preventDefault();
@@ -170,13 +161,13 @@
                     document.getElementById("email").disabled = false;
                 }
 
-                function populateData() {
+                function PopulateData() {
                     var e = document.getElementById("roadList");
-		    var r = document.getElementById("roadrateList");
-		    
-		    var strRoadRate = e.options[r.selectedIndex].value;
+                    var r = document.getElementById("roadrateList");
+
+                    var strRoadRate = r.options[r.selectedIndex].value;
                     var strRoad = e.options[e.selectedIndex].value;
-		    
+
                     if (strRoad === null) {
                         console.log("BSN IS LEEG");
                     }
@@ -189,61 +180,20 @@
 
                             console.log(evt);
                             msg = evt;
+                            GlobalRoad = msg.road.id;
                             document.getElementById("roadnameshow").value = msg.road.id;
-                            GlobalBSN = msg.bsn;
-                            document.getElementById("firstnameshow").value = msg.firstname;
-                            document.getElementById("lastnameshow").value = msg.lastname;
-                            document.getElementById("addressshow").value = msg.address;
-                            document.getElementById("housenumbershow").value = msg.housenumber;
-                            document.getElementById("zipcodeshow").value = msg.zipcode;
-                            document.getElementById("cityshow").value = msg.city;
-                            document.getElementById("telephoneshow").value = msg.telephone;
-                            document.getElementById("emailshow").value = msg.email;
-                            document.getElementById("bsnhide").value = msg.bsn;
-                            document.getElementById("priceCategoryshow").value = " ";
-                            document.getElementById("licensePlateshow").value = " ";
-                            document.getElementById("brandshow").value = " ";
-                            document.getElementById("modelshow").value = " ";
+                            document.getElementById("dateinshow").value = msg.timestamp_in;
+                            document.getElementById("dateoutshow").value = msg.timestamp_out;
+                            document.getElementById("starttimeshow").value = msg.time_start;
+                            document.getElementById("endtimeshow").value = msg.time_end;
+                            document.getElementById("rateshow").value = msg.rate;
 
                             document.getElementById("bsnshow").disabled = true;
                             document.getElementById("firstnameshow").disabled = true;
                             document.getElementById("lastnameshow").disabled = true;
                             document.getElementById("addressshow").disabled = true;
                             document.getElementById("housenumbershow").disabled = true;
-                            document.getElementById("zipcodeshow").disabled = true;
-                            document.getElementById("cityshow").disabled = true;
-                            document.getElementById("telephoneshow").disabled = true;
-                            document.getElementById("emailshow").disabled = true;
                             e.size += +1;
-                            $.ajax({
-                                type: "post",
-                                url: "FillCT", //this is my servlet
-                                data: {OptionBSN: strUser}, //Wat moet hier
-                                success: function (ctevt) {
-                                    msg = JSON.parse(ctevt);
-                                    var select = document.getElementById("cartrackerList");
-                                    jQuery.each(msg, function () {
-
-
-                                        var myNode = document.getElementById("cartrackerList");
-                                        myNode.innerHTML = '';
-                                        myNode.value = "";
-                                        var lengte = msg.cartrackers.length;
-                                        for (var i = 0; i < lengte; i++) {
-                                            var opt = document.createElement('option');
-                                            opt.value = msg.cartrackers[i].licensePlate;
-                                            opt.innerHTML = msg.cartrackers[i].licensePlate + ", " + msg.cartrackers[i].brandCar + ", " + msg.cartrackers[i].modelCar;
-                                            select.appendChild(opt);
-                                        }
-
-                                    });
-                                },
-                                error: function (xhr, status, error) {
-                                    var err = eval("(" + xhr.responseText + ")");
-                                    alert(err.Message);
-                                }
-                            });
-
                         }
 
                     });
@@ -251,28 +201,41 @@
 
                 }
 
-                function PopulateDataCT() {
-                    var e = document.getElementById("cartrackerList");
-                    var strUser = e.options[e.selectedIndex].value;
+                $(function () {
+                    $("#dateoutshow").datepicker();
+                });
+
+                function PopulateDataRR() {
+                    var e = document.getElementById("roadList");
+                    var roadname = e.options[e.selectedIndex].value;
                     $.ajax({
                         type: "post",
-                        url: "FillFieldsCT", //this is my servlet
-                        data: {OptionBSN: strUser}, //Wat moet hier
+                        url: "FillFieldsRR", //this is my servlet
+                        data: {OptionRR: roadname}, //Wat moet hier
                         success: function (ctevt) {
-                            document.getElementById("priceCategoryshow").value = ctevt.pricecategory;
-                            document.getElementById("licensePlateshow").value = ctevt.licenseplate;
-                            document.getElementById("brandshow").value = ctevt.brandcar;
-                            document.getElementById("modelshow").value = ctevt.modelcar;
 
-                            document.getElementById("priceCategoryshow").disabled = true;
-                            document.getElementById("licensePlateshow").disabled = true;
-                            document.getElementById("brandshow").disabled = true;
-                            document.getElementById("modelshow").disabled = true;
+                            msg = JSON.parse(ctevt);
+                            var select = document.getElementById("roadrateList");
+                            jQuery.each(msg, function () {
 
 
+                                var myNode = document.getElementById("roadrateList");
+                                myNode.innerHTML = '';
+                                myNode.value = "";
+                                var lengte = msg.roadrates.length;
+                                for (var i = 0; i < lengte; i++) {
+                                    var opt = document.createElement('option');
+                                    opt.value = msg.roadrates[i].datein;
+                                    opt.innerHTML = msg.roadrates[i].timestart + ", " + msg.roadrates[i].timeend;
+                                    select.appendChild(opt);
+                                }
+
+
+
+                            })
                         }
-                    });
 
+                    });
                 }
 
                 function ChangeEnabler(fieldName) {
@@ -286,84 +249,18 @@
                     container.innerHTML = content;
                 }
 
-                function ChangeFirstname() {
-                    var newname = document.getElementById("firstnameshow").value;
+                function ChangeDateOut() {
+                    var newdate = document.getElementById("dateoutshow").value;
+                    var olddate = document.getElementById("dateinshow").value;
                     $.ajax({
                         type: "post",
-                        url: "ChangeFirstname", //this is my servlet
-                        data: {BSN: GlobalBSN, NewFirstname: newname}, //Wat moet hier
+                        url: "ChangeDateout",
+                        data: {Road: GlobalRoad, NewDate: newdate, OldDate: olddate},
                         success: function (evt) {
-
                             console.log(evt);
                             msg = evt;
-                            document.getElementById("bsnshow").value = msg.bsn;
-                            GlobalBSN = msg.bsn;
-                            document.getElementById("firstnameshow").value = msg.firstname;
-                            document.getElementById("firstnameshow").disabled = true;
-
-                            location.reload();
-                        }
-                    });
-
-                }
-
-                function ChangeLastname() {
-                    var newname = document.getElementById("lastnameshow").value;
-                    $.ajax({
-                        type: "post",
-                        url: "ChangeLastname", //this is my servlet
-                        data: {BSN: GlobalBSN, NewLastname: newname}, //Wat moet hier
-                        success: function (evt) {
-
-                            console.log(evt);
-                            msg = evt;
-                            document.getElementById("bsnshow").value = msg.bsn;
-                            GlobalBSN = msg.bsn;
-                            document.getElementById("lastnameshow").value = msg.lastname;
-
-                            document.getElementById("lastnameshow").disabled = true;
-
-                            location.reload();
-                        }
-                    });
-                }
-
-                function ChangeAddress() {
-                    var newstreet = document.getElementById("addressshow").value;
-                    $.ajax({
-                        type: "post",
-                        url: "ChangeAddress", //this is my servlet
-                        data: {BSN: GlobalBSN, NewAddress: newstreet}, //Wat moet hier
-                        success: function (evt) {
-
-                            console.log(evt);
-                            msg = evt;
-                            document.getElementById("bsnshow").value = msg.bsn;
-                            GlobalBSN = msg.bsn;
-                            document.getElementById("addressshow").value = msg.address;
-
-                            document.getElementById("addressshow").disabled = true;
-
-                            location.reload();
-                        }
-                    });
-                }
-
-                function ChangeNumber() {
-                    var newnumber = document.getElementById("housenumbershow").value;
-                    $.ajax({
-                        type: "post",
-                        url: "ChangeNumber", //this is my servlet
-                        data: {BSN: GlobalBSN, NewNumber: newnumber}, //Wat moet hier
-                        success: function (evt) {
-
-                            console.log(evt);
-                            msg = evt;
-                            document.getElementById("bsnshow").value = msg.bsn;
-                            GlobalBSN = msg.bsn;
-                            document.getElementById("housenumbershow").value = msg.housenumber;
-
-                            document.getElementById("housenumbershow").disabled = true;
+                            document.getElementById("dateoutshow").value = msg.dateout;
+                            document.getElementById("dateoutshow").disabled = true;
 
                             location.reload();
                         }
@@ -373,123 +270,8 @@
                 function fixSize() {
                     $('#roadList').attr('size', $('select option').length);
                     console.log("Fixed size!");
-                    console.log(document.getElementById("bsnhide").value);
                 }
 
-                function getStreet() {
-                    $.ajax({
-                        type: "get",
-                        url: "https://maps.googleapis.com/maps/api/geocode/json?address=Winnetka&key=AIzaSyBjg-pNlIXixNkFDELNvG0QOe-qD21XU_k",
-                        succes: function (response) {
-                            console.log(response);
-                        }
-                    });
-                }
-
-                function ChangeZipcode() {
-                    var newzipcode = document.getElementById("zipcodeshow").value;
-                    $.ajax({
-                        type: "post",
-                        url: "ChangeZipcode", //this is my servlet
-                        data: {BSN: GlobalBSN, NewZipcode: newzipcode}, //Wat moet hier
-                        success: function (evt) {
-
-                            console.log(evt);
-                            msg = evt;
-                            document.getElementById("bsnshow").value = msg.bsn;
-                            GlobalBSN = msg.bsn;
-                            document.getElementById("zipcodeshow").value = msg.zipcode;
-
-                            document.getElementById("zipcodeshow").disabled = true;
-
-                            location.reload();
-                        }
-                    });
-                }
-
-                function ChangeCity() {
-                    var newcity = document.getElementById("cityshow").value;
-                    $.ajax({
-                        type: "post",
-                        url: "ChangeCity", //this is my servlet
-                        data: {BSN: GlobalBSN, NewCity: newcity}, //Wat moet hier
-                        success: function (evt) {
-
-                            console.log(evt);
-                            msg = evt;
-                            document.getElementById("bsnshow").value = msg.bsn;
-                            GlobalBSN = msg.bsn;
-                            document.getElementById("cityshow").value = msg.city;
-
-                            document.getElementById("cityshow").disabled = true;
-
-                            location.reload();
-                        }
-                    });
-                }
-
-                function ChangeTelephone() {
-                    var newtelephone = document.getElementById("telephoneshow").value;
-                    $.ajax({
-                        type: "post",
-                        url: "ChangeTelephone", //this is my servlet
-                        data: {BSN: GlobalBSN, NewTelephone: newtelephone}, //Wat moet hier
-                        success: function (evt) {
-
-                            console.log(evt);
-                            msg = evt;
-                            document.getElementById("bsnshow").value = msg.bsn;
-                            GlobalBSN = msg.bsn;
-                            document.getElementById("telephoneshow").value = msg.telephone;
-
-                            document.getElementById("telephoneshow").disabled = true;
-
-                            location.reload();
-                        }
-                    });
-                }
-
-                function ChangeMail() {
-                    var newmail = document.getElementById("emailshow").value;
-                    $.ajax({
-                        type: "post",
-                        url: "ChangeMail", //this is my servlet
-                        data: {BSN: GlobalBSN, NewMail: newmail}, //Wat moet hier
-                        success: function (evt) {
-
-                            console.log(evt);
-                            msg = evt;
-                            document.getElementById("bsnshow").value = msg.bsn;
-                            GlobalBSN = msg.bsn;
-                            document.getElementById("emailshow").value = msg.mail;
-
-                            document.getElementById("emailshow").disabled = true;
-
-                            location.reload();
-                        }
-                    });
-                }
-
-                function ChangePriceCategory() {
-                    var newpricecategory = document.getElementById("pricecategory").value;
-                    $.ajax({
-                        type: "post",
-                        url: "ChangePriceCategory", //this is my servlet
-                        data: {LicensePlate: GlobalLP, NewPriceCategory: newpricecategory}, //Wat moet hier
-                        success: function (evt) {
-
-                            console.log(evt);
-                            msg = evt;
-                            document.getElementById("bsnshow").value = msg.bsn;
-                            GlobalLP = msg.licensePlate;
-                            document.getElementById("priceCategoryshow").value = msg.mail;
-
-                            document.getElementById("priceCategoryshow").disabled = true;
-
-                            location.reload();
-                        }
-                    });
-                }
                 //Function To Display Popup
                 function div_show() {
                     document.getElementById('abc').style.display = "block";
@@ -553,8 +335,9 @@
 		    <input id="roadname" type="text" value="replace" name="roadname"/>
 		    <p>Datum invoer: <br/><input id="datein" type="text" name="datein" /></p>
 		    <p>Datum einde: <br/><input id="dateend" type="text" name="dateend" /></p>
-		    <p>Start tijd: <br/><input id="starttime" type="text" name="starttime" /> </p>		    
+		    <p>Start tijd: <br/><input id="starttime" type="text" name="starttime" /> </p>
 		    <p>Eind tijd: <br/><input id="endtime" type="text" name="endtime" /> </p>
+		    <p>Tarief: <br/><input id="rate" type="text" name="rate" /></p>
 		    <input class="popbutton" type="submit" onclick="fixSize();" href="#"/>
 		</form>
 	    </div>
@@ -564,32 +347,33 @@
 	<!--<button onclick="getStreet()" >Test street</button>
 	<button onclick="clearData()" ></button> -->
         <div id="wrappercenter">
-	    
-	    <select id= "roadList" name="roadList" size="${countroads}" onchange="populateData();
+
+	    <select id= "roadList" name="roadList" size="${countroads}" onchange="PopulateDataRR();
                         fixSize();">
 
 		<c:forEach var="roads" items="${roads}">
 			<option id="OptionBSN" name="${roads.id}" value="${roads.id}"><c:out value="${roads.id}"/></c> </option> 
 		</c:forEach>
-			
+
 	    </select>
-		<div id="roadrates">
-	    <img id="addico" onclick="div_show()" src="${pageContext.request.contextPath}/icons/road-add.png" href="#" width="150%" />
+	    <div id="roadrates">
+		<img id="addico" onclick="div_show()" src="${pageContext.request.contextPath}/icons/road-add.png" href="#" width="150%" />
 	    </div>
 	    <div id="persoonWrapper">
-		
+
 		<div id="divborder">
-		    <select id= "roadrateList" name="roadrateList" size="5" onchange="PopulateDataCT()">
+		    <select id= "roadrateList" name="roadrateList" size="5" onchange="PopulateData()">
 
 		    </select>
 		    <p><h1>Weg gegevens </h1></p>
 		    <img id="addico" onclick="div_showct()" src="${pageContext.request.contextPath}/icons/time-add.png" href="#" width="5%" />
 		    <form id="persoonadd" class= "pure-form" action="AddPerson" method="POST" onsubmit="return nawvalidate();">
 			<p>Naam: <br /> <input id="roadnameshow" type="text" name="roadname"></p>
-			<p>Datum invoer: <br /> <input id="dateinshow" type="text" name="firstname" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('firstnameshow')" /> <img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeFirstname()" /> </p> 
-			<p>Datum uitvoer: <br /> <input id="dateoutshow" type="text" name="lastname" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('lastnameshow')" /> <img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeLastname()" /></p>
-			<p>Start tijd:<br /><input  id="starttimeshow" type="text" name="address" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('addressshow')" /> <img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeAddress()" />
-			<p>Eind tijd: <br /> <input  id="endtimeshow" type="text" name="zipcode" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('zipcodeshow')" /> <img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeZipcode()" /></p>
+			<p>Datum invoer: <br /> <input id="dateinshow" type="text" name="firstname" /></p> 
+			<p>Datum uitvoer: <br /> <input id="dateoutshow" type="datetime" name="lastname" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('dateoutshow')" /> <img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeDateOut()" /></p>
+			<p>Start tijd:<br /><input  id="starttimeshow" type="text" name="address" /> </p>
+			<p>Eind tijd: <br /> <input  id="endtimeshow" type="text" name="zipcode" /></p>
+			<p>Tarief: <br /> <input id="rateshow" type="text" name="rate" /> </p>
 		    </form>
 		</div>
 

@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import model.Road;
 import model.RoadRate;
 
 /**
@@ -21,7 +22,7 @@ public class RoadRateService implements IRoadRateService {
 
 	@EJB
 	RoadRateDAO rrd;
-	
+
 	@Override
 	public void createRoadRate(RoadRate rr) {
 		rrd.createRoadRate(rr);
@@ -43,8 +44,18 @@ public class RoadRateService implements IRoadRateService {
 	}
 
 	@Override
-	public List<RoadRate> getRoadRatesByName(String name) {
+	public List<RoadRate> getRoadRatesByName(Road name) {
 		return rrd.getRoadRatesByName(name);
+	}
+
+	@Override
+	public double getRoadRateByDate(String roadName, Date date) {
+		return rrd.getRoadRateByDate(roadName, date);
+	}
+
+	@Override
+	public void AddDateOut(RoadRate rr, Date newdate) {
+		rrd.AddDateOut(rr, newdate);
 	}
 
 }

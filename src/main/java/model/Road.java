@@ -6,31 +6,37 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Date;
+import javax.ejb.EJB;
+import javax.ejb.Stateless;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Transient;
+import service.IRoadRateService;
 
 /**
  *
  * @author koenv
  */
+@Stateless
 @Entity
 public class Road implements Serializable {
 
+	@Transient
+	@EJB
+	private IRoadRateService rrs;
+	
 	@Id
 	private String id;
 
 	public Road() {
 	}
-	
-	
 
 	public Road(String id) {
 		this.id = id;
 	}
-	
-	
 
 	public String getId() {
 		return id;
@@ -38,6 +44,10 @@ public class Road implements Serializable {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public double getRate(Date date) {
+		return rrs.getRoadRateByDate(id, date);
 	}
 
 	@Override
@@ -64,5 +74,5 @@ public class Road implements Serializable {
 	public String toString() {
 		return "model.Road[ id=" + id + " ]";
 	}
-	
+
 }
