@@ -7,18 +7,36 @@ package model;
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.TableGenerator;
 
 /**
  *
  * @author Max
  */
+@Entity
 public class Location implements Serializable, Comparable<Location> {
 
+	@TableGenerator(
+		name = "tableGen",
+		allocationSize = 1,
+		initialValue = 1)
+	@Id
+	@GeneratedValue(strategy = GenerationType.TABLE,
+		generator = "tableGen")
 	private double longitude;
 	private double latitude;
 	private String road;
 	private Date date;
 	private String city;
+
+	public Location() {
+	}
+	
+	
 
 	public Location(double latitude, double longitude) {
 		this.date = new Date();

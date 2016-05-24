@@ -1,5 +1,6 @@
 websocket\NAW\NAWEncoder.class
 websocket\NAW\INAWDecoder.class
+model\Location_.class
 websocket\CarOwner\CarOwnerDecoder.class
 websocket\CarTracker\CarTrackerEncoder.class
 websocket\CarTracker\ICarTrackerDecoder.class
@@ -16,6 +17,7 @@ model\CarOwner.class
 model\NAW_.class
 dao\CarOwnerDAOImp.class
 dao\RoadDAO.class
+model\Cordon_.class
 service\CarTrackerService.class
 service\ICarOwnerService.class
 service\NAWService.class
@@ -27,6 +29,7 @@ service\IRoadService.class
 dao\CarOwnerDAO.class
 dao\CarTrackerDAO.class
 dao\RoadRateDAO.class
+model\Invoice_.class
 model\RoadRate_.class
 model\Road_.class
 calculations\SeriesOfLocationsOnRoad.class

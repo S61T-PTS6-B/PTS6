@@ -26,6 +26,7 @@ public class Invoice {
 		this.cordonOccurrences = new ArrayList<>();
 	}
 	
+	
 	@TableGenerator(
 		name = "tableGen",
 		allocationSize = 1,
@@ -39,6 +40,7 @@ public class Invoice {
 	private double totalDistance;
 	private List<Cordon> cordonOccurrences;
 
+	
 	public double getTotalAmount() {
 		return totalAmount;
 	}
