@@ -1,4 +1,4 @@
-<%-- 
+<%--
     Document   : manage
     Created on : 28-mrt-2016, 15:14:25
     Author     : koenv
@@ -17,7 +17,7 @@
         <title>JSP Page</title>
         <script>
                 /*
-                 * 
+                 *
                  * Known bugs: Wanneer een form gecleared word is de data nog niet weg, wanneer dus een leeg veld wordt gevult en op de wijzig knop gedrukt word zal deze wijziging bij de laatst aangeklikte persoon worden volbracht.
                  */
 
@@ -175,17 +175,32 @@
                     $.ajax({
                         type: "post",
                         url: "ManageRoad", //this is my servlet
-                        data: {OptionRoad: strRoad}, //Wat moet hier
+                        data: {OptionRoad: strRoad, OptionRR: strRoadRate}, //Wat moet hier
                         success: function (evt) {
-
-                            console.log(evt);
                             msg = evt;
-                            GlobalRoad = msg.road.id;
-                            document.getElementById("roadnameshow").value = msg.road.id;
-                            document.getElementById("dateinshow").value = msg.timestamp_in;
-                            document.getElementById("dateoutshow").value = msg.timestamp_out;
-                            document.getElementById("starttimeshow").value = msg.time_start;
-                            document.getElementById("endtimeshow").value = msg.time_end;
+                            var correctstart = msg.timestart.substring(11, 16);
+                            var correctend = msg.timeend.substring(11, 16);
+
+
+                            var correctdatein = msg.date_in.substring(4, 10);
+                            var correctyearin = msg.date_in.substring(25, 29);
+                            var correctdateout = msg.date_out.substring(4, 10);
+                            var correctyearout = msg.date_out.substring(25, 29);
+			    var correctin = correctdatein + ", " + correctyearin;
+			    var correctout = correctdateout + ", " + correctyearout;
+			    console.log(correctin + correctyearin);
+			    console.log(correctout + " " + correctyearout);
+                            if (msg.correctout != "undefined")
+                            {
+                                correctout = msg.date_out.substring(5, 11);
+                            }
+                            console.log(correctstart);
+
+                            document.getElementById("roadnameshow").value = msg.naam;
+                            document.getElementById("dateinshow").value = correctin;
+                            document.getElementById("dateoutshow").value = correctout;
+                            document.getElementById("starttimeshow").value = correctstart;
+                            document.getElementById("endtimeshow").value = correctend;
                             document.getElementById("rateshow").value = msg.rate;
 
                             document.getElementById("bsnshow").disabled = true;
@@ -290,11 +305,11 @@
 
         </script>
         <style>
-            #progress { 
+            #progress {
                 display: none;
-                color: green; 
+                color: green;
             }
-        </style> 
+        </style>
     </head>
 
     <body>
@@ -352,7 +367,7 @@
                         fixSize();">
 
 		<c:forEach var="roads" items="${roads}">
-			<option id="OptionBSN" name="${roads.id}" value="${roads.id}"><c:out value="${roads.id}"/></c> </option> 
+			<option id="OptionBSN" name="${roads.id}" value="${roads.id}"><c:out value="${roads.id}"/></c> </option>
 		</c:forEach>
 
 	    </select>
@@ -369,8 +384,8 @@
 		    <img id="addico" onclick="div_showct()" src="${pageContext.request.contextPath}/icons/time-add.png" href="#" width="5%" />
 		    <form id="persoonadd" class= "pure-form" action="AddPerson" method="POST" onsubmit="return nawvalidate();">
 			<p>Naam: <br /> <input id="roadnameshow" type="text" name="roadname"></p>
-			<p>Datum invoer: <br /> <input id="dateinshow" type="text" name="firstname" /></p> 
-			<p>Datum uitvoer: <br /> <input id="dateoutshow" type="datetime" name="lastname" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('dateoutshow')" /> <img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeDateOut()" /></p>
+			<p>Datum invoer: <br /> <input id="dateinshow" type="text" name="firstname" /></p>
+			<p>Verloopdatum: <br /> <input id="dateoutshow" type="datetime" name="lastname" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('dateoutshow')" /> <img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeDateOut()" /></p>
 			<p>Start tijd:<br /><input  id="starttimeshow" type="text" name="address" /> </p>
 			<p>Eind tijd: <br /> <input  id="endtimeshow" type="text" name="zipcode" /></p>
 			<p>Tarief: <br /> <input id="rateshow" type="text" name="rate" /> </p>

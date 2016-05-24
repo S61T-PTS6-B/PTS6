@@ -7,6 +7,7 @@ package controller;
 
 import com.google.gson.Gson;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -49,6 +50,7 @@ import service.IRoadService;
 	"/FillFieldsRR",
 	"/ManageCartracker",
 	"/ManageNAW",
+	"/ManageRoad",
 	"/AddRoad",
 	"/AddPerson",
 	"/AddCarTracker",
@@ -225,6 +227,43 @@ public class DBServlet extends HttpServlet {
 				res.getWriter().write(json);
 
 			}
+
+		}
+		if (userPath.equals("/ManageRoad")) {
+
+			String json = null;
+			String roadnameReceive = req.getParameter("OptionRoad").trim();
+			String rrDatum = req.getParameter("OptionRR");
+			//SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+			//Date parsedDate = dateFormat.parse(rrDatum);
+			//Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
+			Map<String, String> jsonMap = new LinkedHashMap<String, String>();
+			Road weg;
+			List<RoadRate> km;
+			weg = rs.getRoad(roadnameReceive);
+			km = rrs.getRoadRatesByName(weg);
+			RoadRate goodrr = null;
+			for (RoadRate rr : km) {
+				if (rr.getTimestamp_in().toString().equals(rrDatum)) {
+					goodrr = rr;
+				}
+			}
+
+			jsonMap.put("naam", goodrr.getRoad().getId());
+			jsonMap.put("date_in", goodrr.getTimestamp_in().toString());
+			if (goodrr.getTimestamp_out().toString().equals("")) {
+				jsonMap.put("date_out", goodrr.getTimestamp_out().toString());
+			} else {
+				jsonMap.put("date_out", " ");
+			}
+			jsonMap.put("timestart", goodrr.getTime_start().toString());
+			jsonMap.put("timeend", goodrr.getTime_end().toString());
+			jsonMap.put("rate", String.valueOf(goodrr.getRate()));
+			json = new Gson().toJson(jsonMap, Map.class);
+			System.out.println("Dit is de json: " + json.toString());
+			res.setContentType("application/json");
+			res.setCharacterEncoding("UTF-8");
+			res.getWriter().write(json);
 
 		}
 		if (userPath.equals("/FillCT")) {
