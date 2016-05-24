@@ -5,38 +5,43 @@
  */
 package model;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
 /**
  *
  * @author Max
  */
+@Entity
 public class Cordon {
 
-    private String placeName;
-    private double amount;
-  
-    public Cordon(String placeName, double amount) {
-        this.placeName = placeName;
-        this.amount = amount;
-    }
-      
-    public String getPlaceName() {
-        return placeName;
-    }
+	@Id
+	private String placeName;
+	private double amount;
 
-    public void setPlaceName(String placeName) {
-        this.placeName = placeName;
-    }
+	public Cordon(String placeName, double amount) {
+		this.placeName = placeName;
+		this.amount = amount;
+	}
 
-    public double getAmount() {
-        return amount;
-    }
+	public String getPlaceName() {
+		return placeName;
+	}
 
-    public void setAmount(double amount) {
-        this.amount = amount;
-    }
-    
-    @Override
-    public String toString() {
-        return "Place : " + this.getPlaceName() + ", amount: " + this.amount;
-    }
+	public void setPlaceName(String placeName) {
+		this.placeName = placeName;
+	}
+
+	public double getAmount() {
+		return amount;
+	}
+
+	public void setAmount(double amount) {
+		this.amount = amount;
+	}
+
+	@Override
+	public String toString() {
+		return "Place : " + this.getPlaceName() + ", amount: " + this.amount;
+	}
 }
