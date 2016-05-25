@@ -57,7 +57,7 @@ import service.IRoadService;
 	"/CarTrackerList",
 	"/NawList",
 	"/PersonalData",
-	"/ChangeFirstname",
+	"/ChangeDateout",
 	"/ChangeLastname",
 	"/ChangeAddress",
 	"/ChangeNumber",
@@ -332,25 +332,25 @@ public class DBServlet extends HttpServlet {
 			res.setCharacterEncoding("UTF-8");
 			res.getWriter().write(container.toJSONString());
 		}
-		if (userPath.equals("ChangeDateout")) {
-			try {
-				String json = null;
-				String newdatestr = req.getParameter("NewDate");
-				DateFormat format = new SimpleDateFormat("dd-MM-YYYY");
-				Date newdate = format.parse(newdatestr);
-				Date olddate = format.parse(req.getParameter("OldDate"));
-				String newroad = req.getParameter("Road");
-				Map<String, String> jsonMap = new LinkedHashMap<String, String>();
-				Road inc = rs.getRoad(newroad);
-				List<RoadRate> edit = rrs.getRoadRatesByName(inc);
-				for (RoadRate rr : edit) {
-					if (rr.getTimestamp_in() == olddate) {
-						rrs.AddDateOut(rr, newdate);
-					}
+		if (userPath.equals("/ChangeDateout")) {
+			String json = null;
+			String newdatestr = req.getParameter("OutDate").toString();
+			String olddate = req.getParameter("InDate").toString();
+			String newroad = req.getParameter("Road").toString();
+			Map<String, String> jsonMap = new LinkedHashMap<String, String>();
+			Road inc = rs.getRoad(newroad);
+			List<RoadRate> edit = rrs.getRoadRatesByName(inc);
+			for (RoadRate rr : edit) {
+				if (rr.getTimestamp_in().toString().equals(olddate)) {
+					rrs.AddDateOut(rr, Timestamp.valueOf(newdatestr));
 				}
-			} catch (ParseException ex) {
-				Logger.getLogger(DBServlet.class.getName()).log(Level.SEVERE, null, ex);
 			}
+			jsonMap.put("dateout", newdatestr);
+			json = new Gson().toJson(jsonMap, Map.class);
+			System.out.println("Dit is de veranderde json: " + json.toString());
+			res.setContentType("application/json");
+			res.setCharacterEncoding("UTF-8");
+			res.getWriter().write(json);
 
 		}
 		if (userPath.equals(

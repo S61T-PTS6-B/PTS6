@@ -21,6 +21,11 @@ import javax.persistence.TableGenerator;
 @Entity
 public class Invoice {
 
+	public Invoice() {
+		this.seriesOfLocationsOnRoad = new ArrayList<>();
+		this.cordonOccurrences = new ArrayList<>();
+	}
+	
 	@TableGenerator(
 		name = "tableGen",
 		allocationSize = 1,

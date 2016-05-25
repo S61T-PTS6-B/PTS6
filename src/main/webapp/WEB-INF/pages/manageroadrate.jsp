@@ -22,6 +22,8 @@
                  */
 
                 var GlobalBSN = "";
+                var GlobalRoad = "";
+                var dateinuse = "";
 
                 window.onload = function () {
                     fixSize();
@@ -180,16 +182,16 @@
                             msg = evt;
                             var correctstart = msg.timestart.substring(11, 16);
                             var correctend = msg.timeend.substring(11, 16);
-
+                            dateinuse = msg.date_in;
 
                             var correctdatein = msg.date_in.substring(4, 10);
                             var correctyearin = msg.date_in.substring(25, 29);
                             var correctdateout = msg.date_out.substring(4, 10);
                             var correctyearout = msg.date_out.substring(25, 29);
-			    var correctin = correctdatein + ", " + correctyearin;
-			    var correctout = correctdateout + ", " + correctyearout;
-			    console.log(correctin + correctyearin);
-			    console.log(correctout + " " + correctyearout);
+                            var correctin = correctdatein + ", " + correctyearin;
+                            var correctout = correctdateout + ", " + correctyearout;
+                            console.log(correctin + correctyearin);
+                            console.log(correctout + " " + correctyearout);
                             if (msg.correctout != "undefined")
                             {
                                 correctout = msg.date_out.substring(5, 11);
@@ -217,7 +219,11 @@
                 }
 
                 $(function () {
-                    $("#dateoutshow").datepicker();
+                    $(function () {
+                        $("#dateoutshow").datepicker({
+                            dateFormat: "yy-mm-dd 00:00:00"
+                        });
+                    });
                 });
 
                 function PopulateDataRR() {
@@ -228,7 +234,7 @@
                         url: "FillFieldsRR", //this is my servlet
                         data: {OptionRR: roadname}, //Wat moet hier
                         success: function (ctevt) {
-
+                            GlobalRoad = roadname;
                             msg = JSON.parse(ctevt);
                             var select = document.getElementById("roadrateList");
                             jQuery.each(msg, function () {
@@ -267,10 +273,13 @@
                 function ChangeDateOut() {
                     var newdate = document.getElementById("dateoutshow").value;
                     var olddate = document.getElementById("dateinshow").value;
+                    var from = newdate.split("/");
+                    var f = new Date(from[2], from[0] - 1, from[1]);
+                    console.log(newdate + dateinuse + GlobalRoad);
                     $.ajax({
                         type: "post",
                         url: "ChangeDateout",
-                        data: {Road: GlobalRoad, NewDate: newdate, OldDate: olddate},
+                        data: {Road: GlobalRoad, OutDate: newdate, InDate: dateinuse},
                         success: function (evt) {
                             console.log(evt);
                             msg = evt;

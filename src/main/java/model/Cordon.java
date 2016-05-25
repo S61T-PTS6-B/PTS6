@@ -19,6 +19,9 @@ public class Cordon {
 	private String placeName;
 	private double amount;
 
+	public Cordon() {
+	}
+
 	public Cordon(String placeName, double amount) {
 		this.placeName = placeName;
 		this.amount = amount;
