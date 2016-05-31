@@ -8,16 +8,10 @@ package controller;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -127,34 +121,6 @@ public class DBServlet extends HttpServlet {
 				break;
 
 			}
-			case "/AddPerson": {
-				req.setAttribute("naws", ns.getAllNaws());
-				RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/manage.jsp");
-				view.forward(req, res);
-				break;
-			}
-			case "/CarTrackerList": {
-				req.setAttribute("CTs", cts.getAllCarTrackers());
-				RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/cartrackerlist.jsp");
-				view.forward(req, res);
-				break;
-			}
-			case "/NawList": {
-				req.setAttribute("naws", ns.getAllNaws());
-				RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/NawList.jsp");
-				view.forward(req, res);
-				break;
-			}
-			case "/ChangeCT": {
-				RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/changecartracker.jsp");
-				view.forward(req, res);
-				break;
-			}
-			case "/ChangeMA": {
-				RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/changemileage.jsp");
-				view.forward(req, res);
-				break;
-			}
 
 		}
 
@@ -251,10 +217,10 @@ public class DBServlet extends HttpServlet {
 
 			jsonMap.put("naam", goodrr.getRoad().getId());
 			jsonMap.put("date_in", goodrr.getTimestamp_in().toString());
-			if (goodrr.getTimestamp_out().toString().equals("")) {
-				jsonMap.put("date_out", goodrr.getTimestamp_out().toString());
+			if (!goodrr.getTimestamp_out().toString().equals("")) {
+				jsonMap.put("dateout", goodrr.getTimestamp_out().toString());
 			} else {
-				jsonMap.put("date_out", " ");
+				jsonMap.put("dateout", " ");
 			}
 			jsonMap.put("timestart", goodrr.getTime_start().toString());
 			jsonMap.put("timeend", goodrr.getTime_end().toString());
@@ -323,6 +289,14 @@ public class DBServlet extends HttpServlet {
 			for (RoadRate rr : roadrates) {
 				JSONObject js = new JSONObject();
 				js.put("datein", rr.getTimestamp_in().toString());
+				if(!rr.getTimestamp_out().toString().equals(""))
+				{
+					js.put("dateout", rr.getTimestamp_out().toString());
+				}
+				else
+				{
+					js.put("dateout", "");
+				}
 				js.put("timestart", rr.getTime_start().toString());
 				js.put("timeend", rr.getTime_end().toString());
 				jsonArray.add(js);

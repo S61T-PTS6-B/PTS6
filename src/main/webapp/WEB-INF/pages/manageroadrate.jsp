@@ -186,20 +186,17 @@
 
                             var correctdatein = msg.date_in.substring(4, 10);
                             var correctyearin = msg.date_in.substring(25, 29);
-                            var correctdateout = msg.date_out.substring(4, 10);
-                            var correctyearout = msg.date_out.substring(25, 29);
+                            var correctdateout = msg.dateout.substring(4, 10);
+                            var correctyearout = msg.dateout.substring(25, 29);
                             var correctin = correctdatein + ", " + correctyearin;
                             var correctout = correctdateout + ", " + correctyearout;
-                            console.log(correctin + correctyearin);
-                            console.log(correctout + " " + correctyearout);
-                            if (msg.correctout != "undefined")
-                            {
-                                correctout = msg.date_out.substring(5, 11);
-                            }
+                            console.log(correctin);
+                            console.log(correctout);
                             console.log(correctstart);
 
                             document.getElementById("roadnameshow").value = msg.naam;
                             document.getElementById("dateinshow").value = correctin;
+                            console.log("Goede outdate: " + correctout);
                             document.getElementById("dateoutshow").value = correctout;
                             document.getElementById("starttimeshow").value = correctstart;
                             document.getElementById("endtimeshow").value = correctend;
@@ -220,6 +217,18 @@
 
                 $(function () {
                     $(function () {
+                        $("#dateoutshow").datepicker({
+                            dateFormat: "yy-mm-dd 00:00:00"
+                        });
+                        $("#dateoutshow").datepicker({
+                            dateFormat: "yy-mm-dd 00:00:00"
+                        });
+                        $("#dateoutshow").datepicker({
+                            dateFormat: "yy-mm-dd 00:00:00"
+                        });
+                        $("#dateoutshow").datepicker({
+                            dateFormat: "yy-mm-dd 00:00:00"
+                        });
                         $("#dateoutshow").datepicker({
                             dateFormat: "yy-mm-dd 00:00:00"
                         });
@@ -298,17 +307,32 @@
 
                 //Function To Display Popup
                 function div_show() {
+
                     document.getElementById('abc').style.display = "block";
                 }
                 function div_showct() {
                     document.getElementById('abct').style.display = "block";
+                    fillRoad();
+		    fillAddRR();
+                }
+
+                function fillRoad() {
+                    var roadElement = document.getElementById('roadname').value;
+                    roadElement = GlobalRoad;
+                    document.getElementById('roadname').innerHTML = GlobalRoad;
+                    console.log("Dit is de vervanging:" + roadElement);
                 }
 //Function to Hide Popup
                 function div_hide() {
                     document.getElementById('abc').style.display = "none";
                     document.getElementById('abct').style.display = "none";
                 }
-
+                function fillAddRR() {
+                    var roadelement = document.getElementById('roadname');
+                    roadelement.value = GlobalRoad;
+                    console.log("Dit is de weg:" + roadelement.value);
+                    roadelement.placeholder = GlobalRoad;
+                }
 
 
 
@@ -356,7 +380,7 @@
 		    <img id="close" src="${pageContext.request.contextPath}/icons/close.png" onclick ="div_hide()">
 		    <h2 class="poph2">Wegtarief toevoegen</h2>
 		    <hr class="pophr">
-		    <input id="roadname" type="text" value="replace" name="roadname"/>
+		    <p>Wegnaam: <input id="roadname" type="text" name="roadname" value="Hallo?"/></p>
 		    <p>Datum invoer: <br/><input id="datein" type="text" name="datein" /></p>
 		    <p>Datum einde: <br/><input id="dateend" type="text" name="dateend" /></p>
 		    <p>Start tijd: <br/><input id="starttime" type="text" name="starttime" /> </p>
@@ -390,11 +414,12 @@
 
 		    </select>
 		    <p><h1>Weg gegevens </h1></p>
-		    <img id="addico" onclick="div_showct()" src="${pageContext.request.contextPath}/icons/time-add.png" href="#" width="5%" />
+		    <img id="addico" onclick="div_showct();
+                                    fillAddRR()" src="${pageContext.request.contextPath}/icons/time-add.png" href="#" width="5%" />
 		    <form id="persoonadd" class= "pure-form" action="AddPerson" method="POST" onsubmit="return nawvalidate();">
 			<p>Naam: <br /> <input id="roadnameshow" type="text" name="roadname"></p>
 			<p>Datum invoer: <br /> <input id="dateinshow" type="text" name="firstname" /></p>
-			<p>Verloopdatum: <br /> <input id="dateoutshow" type="datetime" name="lastname" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('dateoutshow')" /> <img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeDateOut()" /></p>
+			<p>Verloopdatum: <br /> <input id="dateoutshow" type="text" name="lastname" /><img href="#" src="${pageContext.request.contextPath}/icons/change.png" width="3%" onclick ="ChangeEnabler('dateoutshow')" /> <img href="#" src="${pageContext.request.contextPath}/icons/check.png" width="3%" onclick ="ChangeDateOut()" /></p>
 			<p>Start tijd:<br /><input  id="starttimeshow" type="text" name="address" /> </p>
 			<p>Eind tijd: <br /> <input  id="endtimeshow" type="text" name="zipcode" /></p>
 			<p>Tarief: <br /> <input id="rateshow" type="text" name="rate" /> </p>
