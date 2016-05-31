@@ -44,6 +44,12 @@ public class Location implements Serializable, Comparable<Location> {
 		this.latitude = latitude;
 	}
 
+        public Location(double latitude, double longitude, Date date) {
+            this.date = date;
+            this.longitude = longitude;
+            this.latitude = latitude;
+        }
+
 	public String getCity() {
 		return city;
 	}

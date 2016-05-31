@@ -25,8 +25,7 @@ public class Invoice {
 		this.seriesOfLocationsOnRoad = new ArrayList<>();
 		this.cordonOccurrences = new ArrayList<>();
 	}
-	
-	
+
 	@TableGenerator(
 		name = "tableGen",
 		allocationSize = 1,
@@ -34,6 +33,7 @@ public class Invoice {
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE,
 		generator = "tableGen")
+	private CarTracker car;
 	private Long id;
 	private double totalAmount;
 	private int month;
@@ -43,14 +43,26 @@ public class Invoice {
 	private double totalDistance;
 	private List<Cordon> cordonOccurrences;
 
-	
+	public Invoice(CarTracker car) {
+		this.car = car;
+		this.seriesOfLocationsOnRoad = new ArrayList<>();
+		this.cordonOccurrences = new ArrayList<>();
+	}
+
+	public CarTracker getCar() {
+		return car;
+	}
+
+	public void setCar(CarTracker car) {
+		this.car = car;
+	}
+
 	public double getTotalAmount() {
 		return totalAmount;
 	}
 
 	public void addToTotalAmount(double kilometers, double rate) {
 		this.totalAmount += kilometers * rate;
-		System.out.println("The rate was " + rate + "| " + kilometers + " kilometers * " + rate + " euro's = " + (kilometers * rate) + " euro's, which brings the total to " + this.totalAmount);
 	}
 
 	public List<SeriesOfLocationsOnRoad> getSeriesOfLocationsOnRoad() {
@@ -78,6 +90,14 @@ public class Invoice {
 		this.cordonOccurrences.add(cordon);
 	}
 
+	public String cordonOccurrencesString() {
+		String result = "Cordons: \n\n";
+		for (Cordon c : this.cordonOccurrences) {
+			result += c.getPlaceName() + " - " + c.getAmount() + "euro\n";
+		}
+		return result;
+	}
+
 	public int getMonth() {
 		return month;
 	}
@@ -101,6 +121,4 @@ public class Invoice {
 	public void setPaid(boolean paid) {
 		this.paid = paid;
 	}
-	
-	
 }

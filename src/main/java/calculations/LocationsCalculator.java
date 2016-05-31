@@ -16,6 +16,7 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
+import model.CarTracker;
 import model.Cordon;
 import model.Invoice;
 import model.Location;
@@ -40,7 +41,6 @@ public class LocationsCalculator {
     private IRoadService roadservice;
 
     public LocationsCalculator() {
-        invoice = new Invoice();
 
         this.roads = roadservice.getAllRoads();
 
@@ -50,9 +50,9 @@ public class LocationsCalculator {
         this.existingCordons.add(new Cordon("Boxtel", 8));
     }
 
-    public Invoice getInvoice(List<Location> locations) throws ParseException {
+    public Invoice getInvoice(List<Location> locations, CarTracker car) throws ParseException {
 
-        this.invoice = new Invoice();
+        this.invoice = new Invoice(car);
 
         //Stap 1: Sorteren op datum
         Collections.sort(locations);
@@ -260,47 +260,47 @@ public class LocationsCalculator {
         return (rad * 180 / Math.PI);
     }
 
-    public void testGetInvoice() throws ParseException {
-        List<Location> testLocations = new ArrayList<>();
-        //Rijksweg Den Bosch-Eindhoven
-        testLocations.add(new Location(51.535578, 5.380974));
-        testLocations.add(new Location(51.536472, 5.380069));
-        testLocations.add(new Location(51.536996, 5.379535));
-        testLocations.add(new Location(51.537636, 5.378877));
-        testLocations.add(new Location(51.539757, 5.376781));
-        testLocations.add(new Location(51.541150, 5.375425));
-        testLocations.add(new Location(51.545815, 5.370720));
-        testLocations.add(new Location(51.548651, 5.367822));
-        testLocations.add(new Location(51.550926, 5.365583));
-        //E25
-        testLocations.add(new Location(51.519691, 5.397518));
-        //geen snelweg
-        testLocations.add(new Location(51.521286, 5.399769));
-        testLocations.add(new Location(51.520895, 5.391893));
-
-        //PRECIES HETZELFDE NOG EEN KEER, OM TE KIJKEN OF HIJ EEN OPEENVOLGENDE REEKS VAN LOCATIES BIJ EEN WEG ERUIT FILTERT
-        //Rijksweg Den Bosch-Eindhoven
-        testLocations.add(new Location(51.535578, 5.380974));
-        testLocations.add(new Location(51.536472, 5.380069));
-        testLocations.add(new Location(51.536996, 5.379535));
-        testLocations.add(new Location(51.537636, 5.378877));
-        testLocations.add(new Location(51.539757, 5.376781));
-        testLocations.add(new Location(51.541150, 5.375425));
-        testLocations.add(new Location(51.545815, 5.370720));
-        testLocations.add(new Location(51.548651, 5.367822));
-        testLocations.add(new Location(51.550926, 5.365583));
-        //E25
-        testLocations.add(new Location(51.519691, 5.397518));
-        //geen snelweg
-        testLocations.add(new Location(51.521286, 5.399769));
-
-        this.getInvoice(testLocations);
-
-        /**
-         * ******************************************************************
-         * TESTCODE 
-         *******************************************************************
-         */
+//    public void testGetInvoice() throws ParseException {
+//        List<Location> testLocations = new ArrayList<>();
+//        //Rijksweg Den Bosch-Eindhoven
+//        testLocations.add(new Location(51.535578, 5.380974));
+//        testLocations.add(new Location(51.536472, 5.380069));
+//        testLocations.add(new Location(51.536996, 5.379535));
+//        testLocations.add(new Location(51.537636, 5.378877));
+//        testLocations.add(new Location(51.539757, 5.376781));
+//        testLocations.add(new Location(51.541150, 5.375425));
+//        testLocations.add(new Location(51.545815, 5.370720));
+//        testLocations.add(new Location(51.548651, 5.367822));
+//        testLocations.add(new Location(51.550926, 5.365583));
+//        //E25
+//        testLocations.add(new Location(51.519691, 5.397518));
+//        //geen snelweg
+//        testLocations.add(new Location(51.521286, 5.399769));
+//        testLocations.add(new Location(51.520895, 5.391893));
+//
+//        //PRECIES HETZELFDE NOG EEN KEER, OM TE KIJKEN OF HIJ EEN OPEENVOLGENDE REEKS VAN LOCATIES BIJ EEN WEG ERUIT FILTERT
+//        //Rijksweg Den Bosch-Eindhoven
+//        testLocations.add(new Location(51.535578, 5.380974));
+//        testLocations.add(new Location(51.536472, 5.380069));
+//        testLocations.add(new Location(51.536996, 5.379535));
+//        testLocations.add(new Location(51.537636, 5.378877));
+//        testLocations.add(new Location(51.539757, 5.376781));
+//        testLocations.add(new Location(51.541150, 5.375425));
+//        testLocations.add(new Location(51.545815, 5.370720));
+//        testLocations.add(new Location(51.548651, 5.367822));
+//        testLocations.add(new Location(51.550926, 5.365583));
+//        //E25
+//        testLocations.add(new Location(51.519691, 5.397518));
+//        //geen snelweg
+//        testLocations.add(new Location(51.521286, 5.399769));
+//
+//        this.getInvoice(testLocations);
+//
+//        /**
+//         * ******************************************************************
+//         * TESTCODE 
+//         *******************************************************************
+//         */
 //        double distanceResult = 0;
 //
 //        List<SeriesOfLocationsOnRoad> seriesOfLocationsOnRoad = new ArrayList<>();
@@ -334,10 +334,10 @@ public class LocationsCalculator {
 //        System.out.println("The total disctance of the list should be " + results.getTotalDistance());
 //        
 //        this.invoice = new Invoice();
-        /**
-         * ******************************************************************
-         * EINDE TESTCODE 
-         *******************************************************************
-         */
-    }
+//        /**
+//         * ******************************************************************
+//         * EINDE TESTCODE 
+//         *******************************************************************
+//         */
+//    }
 }
