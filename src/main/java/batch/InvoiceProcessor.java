@@ -1,39 +1,37 @@
-package batch;
-
-import calculations.LocationsCalculator;
-import model.Invoice;
-import model.Location;
-import static java.lang.System.out;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import javax.ejb.EJB;
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-import javax.inject.Named;
-import model.CarTracker;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import service.CarTrackerService;
-import javax.batch.api.chunk.ItemProcessor;
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+package batch;
+
+import calculations.LocationsCalculator;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import javax.batch.api.chunk.ItemProcessor;
+import javax.ejb.EJB;
+import javax.enterprise.context.Dependent;
+import javax.inject.Named;
+import model.CarTracker;
+import model.Invoice;
+import model.Location;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import service.CarTrackerService;
+
 /**
  *
- * @author Max
+ * @author koenv
  */
 @Dependent
 @Named("InvoiceProcessor")
 public class InvoiceProcessor implements ItemProcessor {
-	
+
 	@EJB
 	CarTrackerService cts;
-	
+
 	public InvoiceProcessor() {
 	}
 
@@ -58,4 +56,5 @@ public class InvoiceProcessor implements ItemProcessor {
 
 		return newInvoice;
 	}
+
 }

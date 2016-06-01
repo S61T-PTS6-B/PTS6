@@ -6,7 +6,7 @@ import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 import model.Road;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2016-06-01T12:17:38")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2016-06-01T13:00:24")
 @StaticMetamodel(RoadRate.class)
 public class RoadRate_ { 
 

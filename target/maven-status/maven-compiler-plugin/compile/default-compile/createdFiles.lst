@@ -42,6 +42,7 @@ websocket\Politie\PolitieDecoder.class
 batch\MyCheckpoint.class
 dao\NawDAO.class
 websocket\NAW\NAWSocket.class
+batch\MyProcessor.class
 controller\DBServlet.class
 service\IRoadRateService.class
 dao\NawDAOImp.class
