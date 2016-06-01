@@ -73,4 +73,9 @@ public class InvoiceDAOImp implements InvoiceDAO {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
+	@Override
+	public void saveInvoice(Invoice in) {
+		em.merge(in);
+	}
+
 }

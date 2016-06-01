@@ -24,5 +24,7 @@ public interface InvoiceDAO {
 	public void payInvoice(Long id);
 
 	public List<Invoice> getPaidInvoicesByNAW(NAW naw);
+
+	public void saveInvoice(Invoice in);
 	
 }

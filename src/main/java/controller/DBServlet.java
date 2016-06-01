@@ -9,9 +9,13 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
+import javax.batch.operations.JobOperator;
+import javax.batch.runtime.BatchRuntime;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -65,7 +69,8 @@ import service.IRoadService;
 	"/CarBrandChange",
 	"/CarModelChange",
 	"/LicenseChange",
-	"/PrizeCategoryChange"
+	"/PrizeCategoryChange",
+	"/runBatchJob"
 })
 public class DBServlet extends HttpServlet {
 
@@ -83,7 +88,7 @@ public class DBServlet extends HttpServlet {
 
 	@Inject
 	IRoadRateService rrs;
-	
+
 	@Inject
 	IInvoiceService iis;
 	private int bsn;
@@ -123,6 +128,14 @@ public class DBServlet extends HttpServlet {
 				view.forward(req, res);
 				break;
 
+			}
+			case "/runBatchJob": {
+				JobOperator jobOperator = BatchRuntime.getJobOperator();
+				Properties props = new Properties();
+				
+				props.put("year", Integer.toString(Calendar.getInstance().get(Calendar.YEAR)));
+				props.put("month", Integer.toString(Calendar.getInstance().get(Calendar.MONTH)));
+				long execID = jobOperator.start("invoiceBatchJob", props);
 			}
 
 		}
@@ -292,12 +305,9 @@ public class DBServlet extends HttpServlet {
 			for (RoadRate rr : roadrates) {
 				JSONObject js = new JSONObject();
 				js.put("datein", rr.getTimestamp_in().toString());
-				if(!rr.getTimestamp_out().toString().equals(""))
-				{
+				if (!rr.getTimestamp_out().toString().equals("")) {
 					js.put("dateout", rr.getTimestamp_out().toString());
-				}
-				else
-				{
+				} else {
 					js.put("dateout", "");
 				}
 				js.put("timestart", rr.getTime_start().toString());

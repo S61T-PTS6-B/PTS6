@@ -47,5 +47,10 @@ public class InvoiceService implements IInvoiceService{
 	public List<Invoice> getPaidInvoicesByNAW(NAW naw) {
 		return ida.getPaidInvoicesByNAW(naw);
 	}
+
+	@Override
+	public void saveInvoice(Invoice in) {
+		ida.saveInvoice(in);
+	}
 	
 }

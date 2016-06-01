@@ -44,6 +44,7 @@ public class Invoice implements Serializable{
 	private int month;
 	private int year;
 	private boolean paid;
+	private String URLToDownload;
 	transient List<SeriesOfLocationsOnRoad> seriesOfLocationsOnRoad;
 	private double totalDistance;
 	private transient List<Cordon> cordonOccurrences;
@@ -125,5 +126,13 @@ public class Invoice implements Serializable{
 
 	public void setPaid(boolean paid) {
 		this.paid = paid;
+	}
+
+	public String getURLToDownload() {
+		return URLToDownload;
+	}
+
+	public void setURLToDownload(String URLToDownload) {
+		this.URLToDownload = URLToDownload;
 	}
 }

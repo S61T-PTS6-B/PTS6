@@ -11,6 +11,8 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/default.css" />
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/nav.css" />
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/elements.css" />
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  
         <script src="//code.jquery.com/jquery-1.10.2.js"></script>
         <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -220,12 +222,28 @@
                         $("#dateoutshow").datepicker({
                             dateFormat: "yy-mm-dd 00:00:00"
                         });
-                        $("#dateoutshow").datepicker({
+                        $("#datein").datepicker({
+                            dateFormat: "dd-mm-yy",
+                            defaultDate: "+1w",
+                            changeMonth: true,
+                            numberOfMonths: 3,
+                            onClose: function (selectedDate) {
+                                $("#dateout").datepicker("option", "minDate", selectedDate);
+                            }
+                        });
+                        $("#dateend").datepicker({
+                            dateFormat: "dd-mm-yy",
+                            defaultDate: "+1w",
+                            changeMonth: true,
+                            numberOfMonths: 3,
+                            onClose: function (selectedDate) {
+                                $("#datein").datepicker("option", "maxDate", selectedDate);
+                            }
+                        });
+                        $("#dateend").datepicker({
                             dateFormat: "yy-mm-dd 00:00:00"
                         });
-                        $("#dateoutshow").datepicker({
-                            dateFormat: "yy-mm-dd 00:00:00"
-                        });
+
                         $("#dateoutshow").datepicker({
                             dateFormat: "yy-mm-dd 00:00:00"
                         });
@@ -313,7 +331,7 @@
                 function div_showct() {
                     document.getElementById('abct').style.display = "block";
                     fillRoad();
-		    fillAddRR();
+                    fillAddRR();
                 }
 
                 function fillRoad() {
@@ -415,7 +433,7 @@
 		    </select>
 		    <p><h1>Weg gegevens </h1></p>
 		    <img id="addico" onclick="div_showct();
-                                    fillAddRR()" src="${pageContext.request.contextPath}/icons/time-add.png" href="#" width="5%" />
+                                fillAddRR()" src="${pageContext.request.contextPath}/icons/time-add.png" href="#" width="5%" />
 		    <form id="persoonadd" class= "pure-form" action="AddPerson" method="POST" onsubmit="return nawvalidate();">
 			<p>Naam: <br /> <input id="roadnameshow" type="text" name="roadname"></p>
 			<p>Datum invoer: <br /> <input id="dateinshow" type="text" name="firstname" /></p>
