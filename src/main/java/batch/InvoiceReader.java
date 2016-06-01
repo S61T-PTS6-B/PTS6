@@ -40,8 +40,8 @@ public class InvoiceReader implements javax.batch.api.chunk.ItemReader {
         }
 
         JSONParser parser = new JSONParser();
-        JSONObject jsonobj = //TODO GET JSONOBJECT CONTAINER FROM DATABASE
-        jsonarr = (JSONArray) jsonobj.get("Invoices");
+        //JSONObject jsonobj = //TODO GET JSONOBJECT CONTAINER FROM DATABASE
+        //jsonarr = (JSONArray) jsonobj.get("Invoices");
     }
 
     @Override

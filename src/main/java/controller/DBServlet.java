@@ -29,6 +29,7 @@ import service.ICarTrackerService;
 import service.INAWService;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import service.IInvoiceService;
 import service.IRoadRateService;
 import service.IRoadService;
 
@@ -82,7 +83,9 @@ public class DBServlet extends HttpServlet {
 
 	@Inject
 	IRoadRateService rrs;
-
+	
+	@Inject
+	IInvoiceService iis;
 	private int bsn;
 	private String id;
 

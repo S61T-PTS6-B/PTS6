@@ -5,10 +5,24 @@
  */
 package dao;
 
+import java.util.List;
+import model.Invoice;
+import model.NAW;
+
 /**
  *
  * @author koenv
  */
 public interface InvoiceDAO {
+
+	public void createInvoice(Invoice i);
+
+	public List<Invoice> getAllInvoices();
+
+	public List<Invoice> getInvoiceByNAW(NAW naw);
+
+	public void payInvoice(Long id);
+
+	public List<Invoice> getPaidInvoicesByNAW(NAW naw);
 	
 }

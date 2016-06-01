@@ -6,6 +6,7 @@
 package model;
 
 import calculations.SeriesOfLocationsOnRoad;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
@@ -18,13 +19,17 @@ import javax.persistence.TableGenerator;
  *
  * @author Max
  */
-@Entity
-public class Invoice {
-
+@Entity(name="INVOICE")
+public class Invoice implements Serializable{
+	private static final long serialVersionUID = 1L;
 	public Invoice() {
-		this.seriesOfLocationsOnRoad = new ArrayList<>();
-		this.cordonOccurrences = new ArrayList<>();
+		
 	}
+//
+//	public Invoice() {
+//		this.seriesOfLocationsOnRoad = new ArrayList<>();
+//		this.cordonOccurrences = new ArrayList<>();
+//	}
 
 	@TableGenerator(
 		name = "tableGen",
@@ -39,9 +44,9 @@ public class Invoice {
 	private int month;
 	private int year;
 	private boolean paid;
-	List<SeriesOfLocationsOnRoad> seriesOfLocationsOnRoad;
+	transient List<SeriesOfLocationsOnRoad> seriesOfLocationsOnRoad;
 	private double totalDistance;
-	private List<Cordon> cordonOccurrences;
+	private transient List<Cordon> cordonOccurrences;
 
 	public Invoice(CarTracker car) {
 		this.car = car;

@@ -23,16 +23,13 @@ service\ICarOwnerService.class
 service\NAWService.class
 service\CarOwnerService.class
 websocket\CarOwner\CarOwnerSocket.class
-calculations\LocationsCalculator.class
 model\NAW.class
 service\IRoadService.class
 dao\CarOwnerDAO.class
 dao\CarTrackerDAO.class
 dao\RoadRateDAO.class
-model\Invoice_.class
 model\RoadRate_.class
 model\Road_.class
-calculations\SeriesOfLocationsOnRoad.class
 websocket\Politie\IPolitieDecoder.class
 websocket\Politie\PolitieDecoder.class
 dao\NawDAO.class
@@ -45,7 +42,6 @@ service\INAWService.class
 model\CarTracker.class
 websocket\Politie\PolitieSocket.class
 service\RoadRateService.class
-model\Invoice.class
 websocket\Politie\PolitieEncoder.class
 dao\CarTrackerDAOImp.class
 service\RoadService.class

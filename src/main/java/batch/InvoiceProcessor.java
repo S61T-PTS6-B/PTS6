@@ -46,8 +46,8 @@ public class InvoiceProcessor implements javax.batch.api.chunk.ItemProcessor {
             locList.add(newLocation);
         }
         LocationsCalculator lc = new LocationsCalculator();
-        Invoice newInvoice = lc.getInvoice(locList);
+       // Invoice newInvoice = lc.getInvoice(locList);
         
-        return newInvoice;
+        return null;
     }
 }

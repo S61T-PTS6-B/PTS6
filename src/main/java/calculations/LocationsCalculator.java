@@ -37,7 +37,7 @@ public class LocationsCalculator {
     private Invoice invoice;
     private List<Cordon> existingCordons;
     
-    @Inject
+    @EJB
     private IRoadService roadservice;
 
     public LocationsCalculator() {

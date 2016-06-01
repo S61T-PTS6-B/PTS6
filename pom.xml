@@ -57,11 +57,6 @@
             <version>1.0.0.Final</version>
         </dependency>
         <dependency>
-            <groupId>unknown.binary</groupId>
-            <artifactId>postgresql-9.2-1002.jdbc4</artifactId>
-            <version>SNAPSHOT</version>
-        </dependency>
-        <dependency>
             <groupId>com.googlecode.json-simple</groupId>
             <artifactId>json-simple</artifactId>
             <version>1.1</version>
@@ -76,12 +71,6 @@
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.6.2</version>
-            <type>jar</type>
-        </dependency>
-        <dependency>
-            <groupId>org.mapfish.print</groupId>
-            <artifactId>print-standalone</artifactId>
-            <version>2.1-SNAPSHOT</version>
             <type>jar</type>
         </dependency>
         <dependency>

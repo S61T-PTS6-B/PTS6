@@ -42,7 +42,7 @@ public class InvoiceWriter implements javax.batch.api.chunk.ItemWriter {
             Invoice invoice = (Invoice) i;
             PdfBuilder pdfb = new PdfBuilder();
             String urltodownload = pdfb.createPdf(invoice);
-            let op ->//TODO OPSLAAN IN DE DATABASE
+           // let op ->//TODO OPSLAAN IN DE DATABASE
         }
     }
 

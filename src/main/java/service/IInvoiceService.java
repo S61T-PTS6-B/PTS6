@@ -8,17 +8,22 @@ package service;
 import java.util.List;
 import javax.ejb.Stateless;
 import model.Invoice;
+import model.NAW;
 
 /**
  *
  * @author koenv
  */
-@Stateless
 public interface IInvoiceService {
 
 	public void createInvoice(Invoice i);
 	
 	public List<Invoice> getAllInvoices();
 		
-	public List<Invoice> getInvoiceByNAW();
+	public List<Invoice> getInvoiceByNAW(NAW naw);
+	
+	public void payInvoice(Long id);
+	
+	public List<Invoice> getPaidInvoicesByNAW(NAW naw);
+	
 }

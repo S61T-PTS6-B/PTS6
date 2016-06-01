@@ -8,29 +8,44 @@ package service;
 import dao.InvoiceDAO;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.ejb.Stateless;
+import javax.inject.Inject;
 import model.Invoice;
+import model.NAW;
 
 /**
  *
  * @author koenv
  */
+@Stateless
 public class InvoiceService implements IInvoiceService{
-		@EJB
+	@EJB
 	InvoiceDAO ida;
+	
 
 	@Override
 	public void createInvoice(Invoice i) {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		ida.createInvoice(i);
 	}
 
 	@Override
 	public List<Invoice> getAllInvoices() {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		return ida.getAllInvoices();
 	}
 
 	@Override
-	public List<Invoice> getInvoiceByNAW() {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	public List<Invoice> getInvoiceByNAW(NAW naw) {
+		return ida.getInvoiceByNAW(naw);
+	}
+
+	@Override
+	public void payInvoice(Long id) {
+		ida.payInvoice(id);
+	}
+
+	@Override
+	public List<Invoice> getPaidInvoicesByNAW(NAW naw) {
+		return ida.getPaidInvoicesByNAW(naw);
 	}
 	
 }
