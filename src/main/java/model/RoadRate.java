@@ -44,8 +44,7 @@ public class RoadRate implements Serializable {
 	public RoadRate() {
 	}
 
-	public RoadRate(Long id, Road road, Date timestamp_in, Date timestamp_out, Date time_start, Date time_end, double rate) {
-		this.id = id;
+	public RoadRate(Road road, Date timestamp_in, Date timestamp_out, Date time_start, Date time_end, double rate) {
 		this.road = road;
 		this.timestamp_in = timestamp_in;
 		this.timestamp_out = timestamp_out;

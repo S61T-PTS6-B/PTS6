@@ -8,8 +8,10 @@ package controller;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,6 +53,7 @@ import service.IRoadService;
 	"/ManageNAW",
 	"/ManageRoad",
 	"/AddRoad",
+	"/AddRoadRate",
 	"/AddPerson",
 	"/AddCarTracker",
 	"/CarTrackerList",
@@ -132,7 +135,7 @@ public class DBServlet extends HttpServlet {
 			case "/runBatchJob": {
 				JobOperator jobOperator = BatchRuntime.getJobOperator();
 				Properties props = new Properties();
-				
+
 				props.put("year", Integer.toString(Calendar.getInstance().get(Calendar.YEAR)));
 				props.put("month", Integer.toString(Calendar.getInstance().get(Calendar.MONTH)));
 				long execID = jobOperator.start("invoiceBatchJob", props);
@@ -545,7 +548,77 @@ public class DBServlet extends HttpServlet {
 			RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/manage.jsp");
 			view.forward(req, res);
 		}
+		if (userPath.equals("/AddRoadRate")) {
+			String roadname = req.getParameter("roadname");
+			String datein = req.getParameter("datein");
+			String dateend = req.getParameter("dateend");
+			String starttime = req.getParameter("starttime");
+			String endtime = req.getParameter("endtime");
+			String tarief = req.getParameter("rate");
+			Road r = rs.getRoad(roadname);
 
+			String[] startdateArray = datein.split("-");
+			String[] starttimeArray = starttime.split(":");
+			String[] endtimeArray = endtime.split(":");
+			if (dateend != null) {
+				String[] enddateArray = dateend.split("-");
+				
+
+				try {
+					int startday = Integer.parseInt(startdateArray[0]);
+					int startmonth = Integer.parseInt(startdateArray[1]) - 1;
+					int starthours = Integer.parseInt(starttimeArray[0]);
+					int startminutes = Integer.parseInt(starttimeArray[1]);
+					int startseconds = 00;
+
+					int endday = Integer.parseInt(enddateArray[0]);
+					int endmonth = Integer.parseInt(enddateArray[1]) - 1;
+					int endhours = Integer.parseInt(endtimeArray[0]);
+					int endminutes = Integer.parseInt(endtimeArray[1]);
+					int endseconds = 00;
+
+					//parseInt is bugged and transforms 2016 into 3916
+					int year = Integer.parseInt(startdateArray[2]) - 1900;
+					Date datein_date = new Date(year, startmonth, startday);
+					System.out.println(datein_date.toString());
+					Date starttime_date = new Date(year, startmonth, startday, starthours, startminutes, startseconds);
+					Date dateend_date = new Date(year, endmonth, endday);
+					Date endtime_date = new Date(year, endmonth, endday, endhours, endminutes, endseconds);
+					Double rate = Double.parseDouble(tarief);
+					RoadRate rr = new RoadRate(r, datein_date, dateend_date, starttime_date, endtime_date, rate);
+					System.out.println(rr.toString());
+					rrs.createRoadRate(rr);
+				} catch (Exception e) {
+					System.out.println(e.toString());
+				}
+			} else {
+				try {
+					int startday = Integer.parseInt(startdateArray[0]);
+					int startmonth = Integer.parseInt(startdateArray[1]) - 1;
+					int starthours = Integer.parseInt(starttimeArray[0]);
+					int startminutes = Integer.parseInt(starttimeArray[1]);
+					int startseconds = 00;
+					int endhours = Integer.parseInt(endtimeArray[0]);
+					int endminutes = Integer.parseInt(endtimeArray[1]);
+					int endseconds = 00;
+
+					//parseInt is bugged and transforms 2016 into 3916
+					int year = Integer.parseInt(startdateArray[2]) - 1900;
+					Date datein_date = new Date(year, startmonth, startday);
+					System.out.println(datein_date.toString());
+					Date starttime_date = new Date(year, startmonth, startday, starthours, startminutes, startseconds);
+					Date dateend_date = null;
+					Date endtime_date = new Date(year, startmonth, startday, endhours, endminutes, endseconds);
+					Double rate = Double.parseDouble(tarief);
+					RoadRate rr = new RoadRate(r, datein_date, dateend_date, starttime_date, endtime_date, rate);
+					System.out.println(rr.toString());
+					rrs.createRoadRate(rr);
+				} catch (Exception e) {
+					System.out.println(e.toString());
+				}
+			}
+
+		}
 		if (userPath.equals(
 			"/PersonalData")) {
 			bsn = Integer.parseInt(req.getParameter("bsn"));

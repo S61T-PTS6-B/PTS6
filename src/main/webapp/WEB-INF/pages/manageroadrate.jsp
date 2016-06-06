@@ -11,10 +11,14 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/default.css" />
         <link rel="stylesheet" href="${pageContext.request.contextPath}/css/nav.css" />
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/elements.css" />
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/elements.css" />
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-  
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/jquery.timepicker.css" />
+
+
         <script src="//code.jquery.com/jquery-1.10.2.js"></script>
         <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+	<script src="${pageContext.request.contextPath}/js/jquery.timepicker.min.js"></script>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
         <script>
@@ -219,6 +223,8 @@
 
                 $(function () {
                     $(function () {
+                        $('#starttime').timepicker('show');
+			$('#endtime').timepicker('show');
                         $("#dateoutshow").datepicker({
                             dateFormat: "yy-mm-dd 00:00:00"
                         });
@@ -334,6 +340,7 @@
                     fillAddRR();
                 }
 
+
                 function fillRoad() {
                     var roadElement = document.getElementById('roadname').value;
                     roadElement = GlobalRoad;
@@ -398,13 +405,13 @@
 		    <img id="close" src="${pageContext.request.contextPath}/icons/close.png" onclick ="div_hide()">
 		    <h2 class="poph2">Wegtarief toevoegen</h2>
 		    <hr class="pophr">
-		    <p>Wegnaam: <input id="roadname" type="text" name="roadname" value="Hallo?"/></p>
+		    <p>Wegnaam: <input id="roadname" type="text" name="roadname" /></p>
 		    <p>Datum invoer: <br/><input id="datein" type="text" name="datein" /></p>
 		    <p>Datum einde: <br/><input id="dateend" type="text" name="dateend" /></p>
 		    <p>Start tijd: <br/><input id="starttime" type="text" name="starttime" /> </p>
 		    <p>Eind tijd: <br/><input id="endtime" type="text" name="endtime" /> </p>
 		    <p>Tarief: <br/><input id="rate" type="text" name="rate" /></p>
-		    <input class="popbutton" type="submit" onclick="fixSize();" href="#"/>
+		    <input class="popbutton" type="submit" onclick="fixSize(); PopulateDataRR();" href="#"/>
 		</form>
 	    </div>
 	    <!-- Popup Div Ends Here -->
