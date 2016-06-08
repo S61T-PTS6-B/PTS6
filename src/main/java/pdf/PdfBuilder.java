@@ -45,6 +45,7 @@ public class PdfBuilder {
      * @throws DocumentException
      */
     public String createPdf(Invoice invoice) throws IOException, DocumentException {
+        DEST = "C://temp/";
         SimpleDateFormat sdf = new SimpleDateFormat("MM");
         DEST += invoice.getCar().getId() + "month" + sdf.format(invoice.getSeriesOfLocationsOnRoad().get(0).getLocations().get(0).getDate()) + ".pdf";
        

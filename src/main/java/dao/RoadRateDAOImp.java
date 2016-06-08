@@ -5,6 +5,7 @@
  */
 package dao;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
@@ -67,21 +68,21 @@ public class RoadRateDAOImp implements RoadRateDAO {
 	}
 
 	@Override
-	public double getRoadRateByDate(String roadName, Date date) {
+	public double getRoadRateByDate(Road road, Date date) {
 		try {
-			SimpleDateFormat dateFormatTimestamp = new SimpleDateFormat("dd/MM/yyyy");
-			SimpleDateFormat dateFormatTime = new SimpleDateFormat("hh/mm");
-			double rate = (double) em.createQuery("SELECT r.rate FROM RoadRate r "
-				+ "WHERE r.timestamp_in >= :timestamp_in"
-				+ "AND (r.timestamp_out < :timestamp_out OR r.timestamp_out IS NULL )"
-				+ "AND r.time_start >= :time_start"
-				+ "AND r.time_end < :time_end"
-				+ "AND r.roadName = :roadname")
-				.setParameter("timestamp_in", dateFormatTimestamp.format(date))
-				.setParameter("timestamp_out", dateFormatTimestamp.format(date))
-				.setParameter("time_start", dateFormatTime.format(date))
-				.setParameter("time_end", dateFormatTime.format(date))
-				.setParameter("roadname", roadName)
+//			SimpleDateFormat dateFormatTimestamp = new SimpleDateFormat("dd/MM/yyyy");
+//			SimpleDateFormat dateFormatTime = new SimpleDateFormat("hh/mm");
+			double rate = (double) em.createQuery("SELECT r.rate FROM RoadRate r"
+				+ " WHERE r.timestamp_in >= :timestamp_in"
+				+ " AND (r.timestamp_out < :timestamp_out OR r.timestamp_out IS NULL )"
+				+ " AND r.time_start >= :time_start"
+				+ " AND r.time_end < :time_end"
+				+ " AND r.road = :road")
+				.setParameter("timestamp_in", new Timestamp(date.getTime()))
+				.setParameter("timestamp_out", new Timestamp(date.getTime()))
+				.setParameter("time_start", new Timestamp(date.getTime()))
+				.setParameter("time_end", new Timestamp(date.getTime()))
+				.setParameter("road", road)
 				.getSingleResult();
 			return rate;
 		} catch (NoResultException ex) {

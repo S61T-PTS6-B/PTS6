@@ -26,7 +26,7 @@ public interface IRoadRateService {
 
 	public List<RoadRate> getRoadRatesByName(Road name);
         
-        public double getRoadRateByDate(String roadName, Date date);
+        public double getRoadRateByDate(Road road, Date date);
 
 	public void AddDateOut(RoadRate rr, Date newdate);
 }

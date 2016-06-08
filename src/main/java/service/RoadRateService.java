@@ -49,8 +49,8 @@ public class RoadRateService implements IRoadRateService {
 	}
 
 	@Override
-	public double getRoadRateByDate(String roadName, Date date) {
-		return rrd.getRoadRateByDate(roadName, date);
+	public double getRoadRateByDate(Road road, Date date) {
+		return rrd.getRoadRateByDate(road, date);
 	}
 
 	@Override

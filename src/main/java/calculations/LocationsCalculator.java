@@ -170,7 +170,7 @@ public class LocationsCalculator {
     }
    
     public double getRate(Date date, Road road) {
-            Double rate = rrs.getRoadRateByDate(road.getId(), date);
+            Double rate = rrs.getRoadRateByDate(road, date);
         if (rate == null) {
                     return 0.05;
                 }

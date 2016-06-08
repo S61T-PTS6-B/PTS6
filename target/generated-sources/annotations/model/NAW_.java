@@ -6,7 +6,7 @@ import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 import model.CarOwner;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2016-06-08T11:47:08")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2016-06-08T14:04:09")
 @StaticMetamodel(NAW.class)
 public class NAW_ { 
 
