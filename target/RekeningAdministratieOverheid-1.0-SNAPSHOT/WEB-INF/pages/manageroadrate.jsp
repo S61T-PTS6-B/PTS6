@@ -171,7 +171,7 @@
 
                 function PopulateData() {
                     var e = document.getElementById("roadList");
-                    var r = document.getElementById("roadrateList");
+                    var r = document.getElementById("activeroadrateList");
 
                     var strRoadRate = r.options[r.selectedIndex].value;
                     var strRoad = e.options[e.selectedIndex].value;
@@ -207,12 +207,6 @@
                             document.getElementById("starttimeshow").value = correctstart;
                             document.getElementById("endtimeshow").value = correctend;
                             document.getElementById("rateshow").value = msg.rate;
-
-                            document.getElementById("bsnshow").disabled = true;
-                            document.getElementById("firstnameshow").disabled = true;
-                            document.getElementById("lastnameshow").disabled = true;
-                            document.getElementById("addressshow").disabled = true;
-                            document.getElementById("housenumbershow").disabled = true;
                             e.size += +1;
                         }
 
@@ -224,12 +218,12 @@
                 $(function () {
                     $(function () {
                         $('#starttime').timepicker('show');
-			$('#endtime').timepicker('show');
+                        $('#endtime').timepicker('show');
                         $("#dateoutshow").datepicker({
                             dateFormat: "yy-mm-dd 00:00:00"
                         });
                         $("#datein").datepicker({
-                            dateFormat: "dd-mm-yy",
+                            dateFormat: "yy-mm-dd 00:00:00",
                             defaultDate: "+1w",
                             changeMonth: true,
                             numberOfMonths: 3,
@@ -238,7 +232,7 @@
                             }
                         });
                         $("#dateend").datepicker({
-                            dateFormat: "dd-mm-yy",
+                            dateFormat: "yy-mm-dd 00:00:00",
                             defaultDate: "+1w",
                             changeMonth: true,
                             numberOfMonths: 3,
@@ -258,6 +252,40 @@
                         });
                     });
                 });
+
+                function PopulateDataActive() {
+                    var e = document.getElementById("roadList");
+                    var roadname = e.options[e.selectedIndex].value;
+                    $.ajax({
+                        type: "post",
+                        url: "FillFieldsActiveRR", //this is my servlet
+                        data: {OptionRR: roadname}, //Wat moet hier
+                        success: function (ctevt) {
+                            GlobalRoad = roadname;
+                            msg = JSON.parse(ctevt);
+                            var select = document.getElementById("activeroadrateList");
+                            jQuery.each(msg, function () {
+
+
+                                var myNode = document.getElementById("activeroadrateList");
+                                myNode.innerHTML = '';
+                                myNode.value = "";
+                                var lengte = msg.roadrates.length;
+                                for (var i = 0; i < lengte; i++) {
+                                    var opt = document.createElement('option');
+                                    opt.value = msg.roadrates[i].id;
+                                    opt.innerHTML = "Begindatum: " + msg.roadrates[i].datein.substring(4, 10) + ", Einddatum: " + msg.roadrates[i].dateout.substring(4, 10) + " van " + msg.roadrates[i].timestart.substring(11, 16) + " tot " + msg.roadrates[i].timeend.substring(11, 16) ;
+                                    select.appendChild(opt);
+                                }
+
+
+
+                            })
+                        }
+
+                    });
+
+                }
 
                 function PopulateDataRR() {
                     var e = document.getElementById("roadList");
@@ -279,8 +307,8 @@
                                 var lengte = msg.roadrates.length;
                                 for (var i = 0; i < lengte; i++) {
                                     var opt = document.createElement('option');
-                                    opt.value = msg.roadrates[i].datein;
-                                    opt.innerHTML = msg.roadrates[i].timestart + ", " + msg.roadrates[i].timeend;
+                                    opt.value = msg.roadrates[i].id;
+                                    opt.innerHTML = "Begindatum: " + msg.roadrates[i].datein.substring(4, 10) + ", Einddatum: " + msg.roadrates[i].dateout.substring(4, 10) + " van " + msg.roadrates[i].timestart.substring(11, 16) + " tot " + msg.roadrates[i].timeend.substring(11, 16) ;
                                     select.appendChild(opt);
                                 }
 
@@ -421,7 +449,7 @@
 	<button onclick="clearData()" ></button> -->
         <div id="wrappercenter">
 
-	    <select id= "roadList" name="roadList" size="${countroads}" onchange="PopulateDataRR();
+	    <select id= "roadList" name="roadList" size="${countroads}" onchange="PopulateDataRR(); PopulateDataActive();
                         fixSize();">
 
 		<c:forEach var="roads" items="${roads}">
@@ -435,10 +463,12 @@
 	    <div id="persoonWrapper">
 
 		<div id="divborder">
-		    <select id= "roadrateList" name="roadrateList" size="5" onchange="PopulateData()">
+		    <h2>Actieve kilometertarieven</h2>
+		    <select id= "activeroadrateList" name="roadrateList" size="5" onchange="PopulateData()">
 
-		    </select>
-		    <p><h1>Weg gegevens </h1></p>
+		</select>
+		    
+		    <p><h2>Weg gegevens </h1></p>
 		    <img id="addico" onclick="div_showct();
                                 fillAddRR()" src="${pageContext.request.contextPath}/icons/time-add.png" href="#" width="5%" />
 		    <form id="persoonadd" class= "pure-form" action="AddPerson" method="POST" onsubmit="return nawvalidate();">
@@ -451,6 +481,12 @@
 		    </form>
 		</div>
 
+	    </div>
+	    <div id="roadratesInactive">
+		<h2>Inactieve kilometertarieven</h2>
+		<select id= "roadrateList" name="roadrateList" size="37" onchange="PopulateData()">
+
+		</select>
 	    </div>
 	</div>
     </body>

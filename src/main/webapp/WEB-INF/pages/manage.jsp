@@ -212,40 +212,44 @@
                             document.getElementById("telephoneshow").disabled = true;
                             document.getElementById("emailshow").disabled = true;
                             e.size += +1;
-                            $.ajax({
-                                type: "post",
-                                url: "FillCT", //this is my servlet
-                                data: {OptionBSN: strUser}, //Wat moet hier
-                                success: function (ctevt) {
-                                    msg = JSON.parse(ctevt);
-                                    var select = document.getElementById("cartrackerList");
-                                    jQuery.each(msg, function () {
-
-
-                                        var myNode = document.getElementById("cartrackerList");
-                                        myNode.innerHTML = '';
-                                        myNode.value = "";
-                                        var lengte = msg.cartrackers.length;
-                                        for (var i = 0; i < lengte; i++) {
-                                            var opt = document.createElement('option');
-                                            opt.value = msg.cartrackers[i].licensePlate;
-                                            opt.innerHTML = msg.cartrackers[i].licensePlate + ", " + msg.cartrackers[i].brandCar + ", " + msg.cartrackers[i].modelCar;
-                                            select.appendChild(opt);
-                                        }
-
-                                    });
-                                },
-                                error: function (xhr, status, error) {
-                                    var err = eval("(" + xhr.responseText + ")");
-                                    alert(err.Message);
-                                }
-                            });
+                            getCT(strUser);
 
                         }
 
                     });
 
 
+                }
+
+                function getCT(strUser) {
+                    $.ajax({
+                        type: "post",
+                        url: "FillCT", //this is my servlet
+                        data: {OptionBSN: strUser}, //Wat moet hier
+                        success: function (ctevt) {
+                            msg = JSON.parse(ctevt);
+                            var select = document.getElementById("cartrackerList");
+                            jQuery.each(msg, function () {
+
+
+                                var myNode = document.getElementById("cartrackerList");
+                                myNode.innerHTML = '';
+                                myNode.value = "";
+                                var lengte = msg.cartrackers.length;
+                                for (var i = 0; i < lengte; i++) {
+                                    var opt = document.createElement('option');
+                                    opt.value = msg.cartrackers[i].licensePlate;
+                                    opt.innerHTML = msg.cartrackers[i].licensePlate + ", " + msg.cartrackers[i].brandCar + ", " + msg.cartrackers[i].modelCar;
+                                    select.appendChild(opt);
+                                }
+
+                            });
+                        },
+                        error: function (xhr, status, error) {
+                            var err = eval("(" + xhr.responseText + ")");
+                            alert(err.Message);
+                        }
+                    });
                 }
 
                 function PopulateDataCT() {
@@ -467,6 +471,16 @@
                     });
                 }
 
+                function Post() {
+                    $.ajax({
+                        type: "post",
+                        url: "Error",
+                        succes: function () {
+                            Alert("Doorgegeven");
+                        }
+                    });
+                }
+
                 function ChangePriceCategory() {
                     var newpricecategory = document.getElementById("pricecategory").value;
                     $.ajax({
@@ -500,7 +514,52 @@
                     document.getElementById('abct').style.display = "none";
                 }
 
+                function SearchNAW() {
+                    var s = document.getElementById('searchNAW').value;
+                    $.ajax({
+                        type: "post",
+                        url: "SearchNAW", //this is my servlet
+                        data: {NAW: s}, //Wat moet hier
+                        success: function (evt) {
+                            if (evt === "")
+                            {
+				alert("Persoon niet gevonden.");
+                            } else
+                            {
+                                msg = evt;
+                                document.getElementById("bsnshow").value = msg.bsn;
+                                GlobalBSN = msg.bsn;
+                                document.getElementById("firstnameshow").value = msg.firstname;
+                                document.getElementById("lastnameshow").value = msg.lastname;
+                                document.getElementById("addressshow").value = msg.address;
+                                document.getElementById("housenumbershow").value = msg.housenumber;
+                                document.getElementById("zipcodeshow").value = msg.zipcode;
+                                document.getElementById("cityshow").value = msg.city;
+                                document.getElementById("telephoneshow").value = msg.telephone;
+                                document.getElementById("emailshow").value = msg.email;
+                                document.getElementById("bsnhide").value = msg.bsn;
+                                document.getElementById("priceCategoryshow").value = " ";
+                                document.getElementById("licensePlateshow").value = " ";
+                                document.getElementById("brandshow").value = " ";
+                                document.getElementById("modelshow").value = " ";
 
+
+                                document.getElementById("bsnshow").disabled = true;
+                                document.getElementById("firstnameshow").disabled = true;
+                                document.getElementById("lastnameshow").disabled = true;
+                                document.getElementById("addressshow").disabled = true;
+                                document.getElementById("housenumbershow").disabled = true;
+                                document.getElementById("zipcodeshow").disabled = true;
+                                document.getElementById("cityshow").disabled = true;
+                                document.getElementById("telephoneshow").disabled = true;
+                                document.getElementById("emailshow").disabled = true;
+
+                                getCT(s);
+                            }
+
+                        }
+                    });
+                }
 
 
         </script>
@@ -515,7 +574,7 @@
     <body>
         <div id="nav" class='balk'>
             <ul>
-                 <li><a class="active" href="Manage">Beheer</a></li>
+		<li><a class="active" href="Manage">Beheer</a></li>
 		<li><a href="ManageCartracker">Beheer Cartrackers</a></li>
 		<li><a href="ManageRoadRate">Beheer wegen</a></li>
 		<!--                <li><a href="ManageMileage">Beheer kilometertarieven</a></li>
@@ -565,7 +624,7 @@
 	    </div>
 	    <!-- Popup Div Ends Here -->
 	</div>
-
+<input type="text" id="searchNAW"/><button onclick="SearchNAW()">Zoeken</button>
 	<!--<button onclick="getStreet()" >Test street</button>
 	<button onclick="clearData()" ></button> -->
         <div id="wrappercenter">
@@ -576,7 +635,7 @@
 			<option id="OptionBSN" name="${naws.bsn}" value="${naws.bsn}"><c:out value="${naws.firstname}"/></c> <c:out value="${naws.lastname}"/></c></option> 
 		</c:forEach>
 	    </select>
-
+	    
 	    <div id="persoonWrapper">
 		<div id="divborder">
 		    <p><h1>NAW gegevens </h1></p>
@@ -618,5 +677,7 @@
 	    </div>
 
 	</div>
+			
+	<button href="#" onclick="Post()">ERROR!</button>
     </body>
 </html>

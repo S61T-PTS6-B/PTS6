@@ -519,7 +519,86 @@
                     document.getElementById('abct').style.display = "none";
                 }
 
+                function SearchNAW() {
+                    var s = document.getElementById('searchNAW').value;
+                    $.ajax({
+                        type: "post",
+                        url: "SearchNAW", //this is my servlet
+                        data: {NAW: s}, //Wat moet hier
+                        success: function (evt) {
+                            if (evt === "")
+                            {
+                                alert("Persoon niet gevonden.");
+                            } else
+                            {
+                                msg = evt;
+                                document.getElementById("bsnshow").value = msg.bsn;
+                                GlobalBSN = msg.bsn;
+                                document.getElementById("firstnameshow").value = msg.firstname;
+                                document.getElementById("lastnameshow").value = msg.lastname;
+                                document.getElementById("addressshow").value = msg.address;
+                                document.getElementById("housenumbershow").value = msg.housenumber;
+                                document.getElementById("zipcodeshow").value = msg.zipcode;
+                                document.getElementById("cityshow").value = msg.city;
+                                document.getElementById("telephoneshow").value = msg.telephone;
+                                document.getElementById("emailshow").value = msg.email;
+                                document.getElementById("bsnhide").value = msg.bsn;
+                                document.getElementById("priceCategoryshow").value = " ";
+                                document.getElementById("licensePlateshow").value = " ";
+                                document.getElementById("brandshow").value = " ";
+                                document.getElementById("modelshow").value = " ";
 
+
+                                document.getElementById("bsnshow").disabled = true;
+                                document.getElementById("firstnameshow").disabled = true;
+                                document.getElementById("lastnameshow").disabled = true;
+                                document.getElementById("addressshow").disabled = true;
+                                document.getElementById("housenumbershow").disabled = true;
+                                document.getElementById("zipcodeshow").disabled = true;
+                                document.getElementById("cityshow").disabled = true;
+                                document.getElementById("telephoneshow").disabled = true;
+                                document.getElementById("emailshow").disabled = true;
+
+                                getCT(s);
+                            }
+
+                        }
+                    });
+                }
+
+                function SearchCT() {
+                    var s = document.getElementById('searchCT').value;
+                    $.ajax({
+                        type: "post",
+                        url: "SearchCT", //this is my servlet
+                        data: {CT: s}, //Wat moet hier
+                        success: function (evt) {
+                            if (evt === "")
+                            {
+                                alert("Cartracker niet gevonden.");
+                            } else
+                            {
+                                ctevt = evt;
+                                document.getElementById("priceCategoryshow").value = ctevt.pricecategory;
+                                document.getElementById("licensePlateshow").value = ctevt.licenseplate;
+                                document.getElementById("brandshow").value = ctevt.brandcar;
+                                document.getElementById("modelshow").value = ctevt.modelcar;
+
+
+                                document.getElementById("bsnshow").disabled = true;
+                                document.getElementById("firstnameshow").disabled = true;
+                                document.getElementById("lastnameshow").disabled = true;
+                                document.getElementById("addressshow").disabled = true;
+                                document.getElementById("housenumbershow").disabled = true;
+                                document.getElementById("zipcodeshow").disabled = true;
+                                document.getElementById("cityshow").disabled = true;
+                                document.getElementById("telephoneshow").disabled = true;
+                                document.getElementById("emailshow").disabled = true;
+                            }
+
+                        }
+                    });
+                }
 
 
         </script>
@@ -565,7 +644,7 @@
 	    </div>
 	    <!-- Popup Div Ends Here -->
 	</div>
-
+	<input type="text" id="searchCT"/><button onclick="SearchCT()">Zoeken</button>
 	<div id="abct">
 	    <!-- Popup Div Starts Here -->
 	    <div id="popupContact">

@@ -19,11 +19,13 @@ import javax.persistence.TableGenerator;
  *
  * @author Max
  */
-@Entity(name="INVOICE")
-public class Invoice implements Serializable{
+@Entity(name = "INVOICE")
+public class Invoice implements Serializable {
+
 	private static final long serialVersionUID = 1L;
+
 	public Invoice() {
-		
+
 	}
 //
 //	public Invoice() {
@@ -38,8 +40,9 @@ public class Invoice implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE,
 		generator = "tableGen")
-	private CarTracker car;
 	private Long id;
+	private CarTracker car;
+
 	private double totalAmount;
 	private int month;
 	private int year;

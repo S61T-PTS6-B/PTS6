@@ -24,10 +24,6 @@ import service.IRoadRateService;
 @Entity
 public class Road implements Serializable {
 
-	@Transient
-	@EJB
-	private IRoadRateService rrs;
-	
 	@Id
 	private String id;
 
@@ -45,11 +41,7 @@ public class Road implements Serializable {
 	public void setId(String id) {
 		this.id = id;
 	}
-
-	public double getRate(Date date) {
-		return rrs.getRoadRateByDate(id, date);
-	}
-
+	
 	@Override
 	public int hashCode() {
 		int hash = 0;

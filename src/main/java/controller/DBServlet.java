@@ -6,7 +6,12 @@
 package controller;
 
 import com.google.gson.Gson;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -44,11 +49,13 @@ import service.IRoadService;
  * @author koenv
  */
 @WebServlet(name = "CarTrackerAdm", urlPatterns = {"/CarTrackerAdm",
+	"/Error",
 	"/Manage",
 	"/ManageRoadRate",
 	"/FillCT",
 	"/FillFieldsCT",
 	"/FillFieldsRR",
+	"/FillFieldsActiveRR",
 	"/ManageCartracker",
 	"/ManageNAW",
 	"/ManageRoad",
@@ -73,7 +80,9 @@ import service.IRoadService;
 	"/CarModelChange",
 	"/LicenseChange",
 	"/PrizeCategoryChange",
-	"/runBatchJob"
+	"/runBatchJob",
+	"/SearchNAW",
+	"/SearchCT"
 })
 public class DBServlet extends HttpServlet {
 
@@ -218,7 +227,7 @@ public class DBServlet extends HttpServlet {
 
 			String json = null;
 			String roadnameReceive = req.getParameter("OptionRoad").trim();
-			String rrDatum = req.getParameter("OptionRR");
+			String rrID = req.getParameter("OptionRR");
 			//SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
 			//Date parsedDate = dateFormat.parse(rrDatum);
 			//Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
@@ -228,18 +237,19 @@ public class DBServlet extends HttpServlet {
 			weg = rs.getRoad(roadnameReceive);
 			km = rrs.getRoadRatesByName(weg);
 			RoadRate goodrr = null;
+
 			for (RoadRate rr : km) {
-				if (rr.getTimestamp_in().toString().equals(rrDatum)) {
+				if (rr.getId() == Long.parseLong(rrID)) {
 					goodrr = rr;
 				}
 			}
 
 			jsonMap.put("naam", goodrr.getRoad().getId());
 			jsonMap.put("date_in", goodrr.getTimestamp_in().toString());
-			if (!goodrr.getTimestamp_out().toString().equals("")) {
+			if (goodrr.getTimestamp_out() != null) {
 				jsonMap.put("dateout", goodrr.getTimestamp_out().toString());
 			} else {
-				jsonMap.put("dateout", " ");
+				jsonMap.put("dateout", "");
 			}
 			jsonMap.put("timestart", goodrr.getTime_start().toString());
 			jsonMap.put("timeend", goodrr.getTime_end().toString());
@@ -307,8 +317,9 @@ public class DBServlet extends HttpServlet {
 			JSONArray jsonArray = new JSONArray();
 			for (RoadRate rr : roadrates) {
 				JSONObject js = new JSONObject();
+				js.put("id", rr.getId().toString());
 				js.put("datein", rr.getTimestamp_in().toString());
-				if (!rr.getTimestamp_out().toString().equals("")) {
+				if (rr.getTimestamp_out() != null) {
 					js.put("dateout", rr.getTimestamp_out().toString());
 				} else {
 					js.put("dateout", "");
@@ -316,6 +327,43 @@ public class DBServlet extends HttpServlet {
 				js.put("timestart", rr.getTime_start().toString());
 				js.put("timeend", rr.getTime_end().toString());
 				jsonArray.add(js);
+			}
+			container.put("roadrates", jsonArray);
+			System.out.println("Dit is de RR json: " + container.toJSONString());
+			res.setCharacterEncoding("UTF-8");
+			res.getWriter().write(container.toJSONString());
+		}
+		if (userPath.equals("/FillFieldsActiveRR")) {
+			String json = null;
+			String roadname = req.getParameter("OptionRR").trim();
+			Map<String, String> jsonMap = new LinkedHashMap<String, String>();
+			Road r = rs.getRoad(roadname);
+			List<RoadRate> roadrates = rrs.getRoadRatesByName(r);
+			Date now = new Date();
+			JSONObject container = new JSONObject();
+			JSONArray jsonArray = new JSONArray();
+			for (RoadRate rr : roadrates) {
+				JSONObject js = new JSONObject();
+				if (rr.getTimestamp_out() != null) {
+
+					if (rr.getTimestamp_out().after(now)) {
+						js.put("id", rr.getId().toString());
+						js.put("datein", rr.getTimestamp_in().toString());
+						js.put("dateout", rr.getTimestamp_out().toString());
+						js.put("timestart", rr.getTime_start().toString());
+						js.put("timeend", rr.getTime_end().toString());
+						jsonArray.add(js);
+
+					}
+				} else {
+					js.put("id", rr.getId().toString());
+					js.put("datein", rr.getTimestamp_in().toString());
+					js.put("dateout", "");
+					js.put("timestart", rr.getTime_start().toString());
+					js.put("timeend", rr.getTime_end().toString());
+					jsonArray.add(js);
+				}
+
 			}
 			container.put("roadrates", jsonArray);
 			System.out.println("Dit is de RR json: " + container.toJSONString());
@@ -560,9 +608,8 @@ public class DBServlet extends HttpServlet {
 			String[] startdateArray = datein.split("-");
 			String[] starttimeArray = starttime.split(":");
 			String[] endtimeArray = endtime.split(":");
-			if (dateend != null) {
+			if (!dateend.isEmpty()) {
 				String[] enddateArray = dateend.split("-");
-				
 
 				try {
 					int startday = Integer.parseInt(startdateArray[0]);
@@ -588,6 +635,8 @@ public class DBServlet extends HttpServlet {
 					RoadRate rr = new RoadRate(r, datein_date, dateend_date, starttime_date, endtime_date, rate);
 					System.out.println(rr.toString());
 					rrs.createRoadRate(rr);
+					RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/manage.jsp");
+					view.forward(req, res);
 				} catch (Exception e) {
 					System.out.println(e.toString());
 				}
@@ -613,6 +662,8 @@ public class DBServlet extends HttpServlet {
 					RoadRate rr = new RoadRate(r, datein_date, dateend_date, starttime_date, endtime_date, rate);
 					System.out.println(rr.toString());
 					rrs.createRoadRate(rr);
+					RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/manage.jsp");
+					view.forward(req, res);
 				} catch (Exception e) {
 					System.out.println(e.toString());
 				}
@@ -716,6 +767,91 @@ public class DBServlet extends HttpServlet {
 			RequestDispatcher viewResult = req.getRequestDispatcher("/WEB-INF/pages/personaldata.jsp");
 			viewResult.forward(req, res);
 		}
-	}
+		if (userPath.equals("/SearchNAW")) {
+			String searchNAW = req.getParameter("NAW");
 
+			NAW getNAW = ns.getNAWByBsn(Integer.parseInt(searchNAW));
+
+			String json = null;
+			Map<String, String> jsonMap = new LinkedHashMap<String, String>();
+			
+			if(getNAW != null)
+			{
+				jsonMap.put("bsn", searchNAW);
+				jsonMap.put("firstname", getNAW.getFirstname());
+				jsonMap.put("lastname", getNAW.getLastname());
+				jsonMap.put("address", getNAW.getAddress());
+				jsonMap.put("housenumber", getNAW.getNumber());
+				jsonMap.put("zipcode", getNAW.getZipcode());
+				jsonMap.put("city", getNAW.getCity());
+				jsonMap.put("telephone", getNAW.getTelephone());
+				jsonMap.put("email", getNAW.getEmail());
+				json = new Gson().toJson(jsonMap, Map.class);
+
+				System.out.println("Dit is de veranderde json: " + json.toString());
+				res.setContentType("application/json");
+				res.setCharacterEncoding("UTF-8");
+				res.getWriter().write(json);
+			}
+			else
+			{
+				//error
+			}
+
+		}
+		if (userPath.equals("/SearchCT")) {
+			String searchCT = req.getParameter("CT");
+
+			CarTracker getCT = cts.getCarTrackerByLicensePlate(searchCT);
+
+			String json = null;
+			Map<String, String> jsonMap = new LinkedHashMap<String, String>();
+			
+			if(getCT != null)
+			{
+				jsonMap.put("pricecategory", String.valueOf(getCT.getPriceCategory()));
+				jsonMap.put("licenseplate", getCT.getLicensePlate());
+				jsonMap.put("carbrand", getCT.getBrandCar());
+				jsonMap.put("carmodel", getCT.getModelCar());
+				json = new Gson().toJson(jsonMap, Map.class);
+
+				System.out.println("Dit is de veranderde json: " + json.toString());
+				res.setContentType("application/json");
+				res.setCharacterEncoding("UTF-8");
+				res.getWriter().write(json);
+			}
+			else
+			{
+				//error
+			}
+
+		}
+		if (userPath.equals("/Error")) {
+			URL url = new URL("http://145.93.165.43:9233/MonitoringSysteem/Rest/statusmessages/postmessage");
+
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setDoOutput(true);
+			conn.setRequestMethod("POST");
+			conn.setRequestProperty("Content-Type", "application/json");
+
+			//Dit is het object zelf
+			String input = null;
+			Map<String, String> jsonMap = new LinkedHashMap<String, String>();
+			jsonMap.put("systeemnaam", "RekeningAdministratieOverheid");
+			jsonMap.put("message", "RekeningAdministratieOverheid is down");
+			input = new Gson().toJson(jsonMap, Map.class).toString();
+
+			OutputStream os = conn.getOutputStream();
+			os.write(input.getBytes());
+			os.flush();
+			BufferedReader br = new BufferedReader(new InputStreamReader(
+				(conn.getInputStream())));
+			String output;
+			System.out.println("Output from Server .... \n");
+			while ((output = br.readLine()) != null) {
+				System.out.println(output);
+			}
+			conn.disconnect();
+		}
+	}
 }

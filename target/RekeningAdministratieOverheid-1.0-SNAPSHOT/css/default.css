@@ -134,6 +134,7 @@ img {
     border-radius: 5px;
     background-color: #f2f2f2;
     padding: 20px;
+    
 }
 
 #divbordercar {
@@ -194,4 +195,21 @@ img {
     width: 1%;
     float: left;
     margin-left: 1.1em;
+}
+/*
+#activeroadrateList {
+    width: 30%;
+    float:left;
+    margin-left: 1.1em;
+}
+*/
+#roadratesInactive {
+    width: 30%;
+    float: left;
+    margin-left: 1.1em;
+}
+
+#searchNAW {
+    width: 11.9%;
+    margin-right: 5px;
 }
