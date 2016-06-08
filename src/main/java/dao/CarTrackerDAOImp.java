@@ -118,7 +118,15 @@ public class CarTrackerDAOImp implements CarTrackerDAO {
 
 	@Override
 	public CarTracker getCarTrackerByLicensePlate(String licenseplateReceive) {
-		return (CarTracker) em.createQuery("SELECT x FROM CARTRACKER x WHERE x.licensePlate = :lp").setParameter("lp", licenseplateReceive).getSingleResult();
+		try 
+		{
+			return (CarTracker) em.createQuery("SELECT x FROM CARTRACKER x WHERE x.licensePlate = :lp").setParameter("lp", licenseplateReceive).getSingleResult();
+		}
+		catch(Exception e)
+		{
+			return null;
+		}
+		
 	}
 
 }

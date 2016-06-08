@@ -12,6 +12,7 @@ import java.util.List;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import model.Road;
@@ -65,29 +66,33 @@ public class RoadRateDAOImp implements RoadRateDAO {
 		return roads;
 	}
 
-    @Override
-    public double getRoadRateByDate(String roadName, Date date) {
-        SimpleDateFormat dateFormatTimestamp = new SimpleDateFormat("dd/MM/yyyy");
-        SimpleDateFormat dateFormatTime = new SimpleDateFormat("hh/mm");
-        double rate = (double) em.createQuery("SELECT r.rate FROM RoadRate r "
-                + "WHERE r.timestamp_in >= :timestamp_in"
-                + "AND (r.timestamp_out < :timestamp_out OR r.timestamp_out IS NULL )"
-                + "AND r.time_start >= :time_start"
-                + "AND r.time_end < :time_end"
-                + "AND r.roadName = :roadname")
-                .setParameter("timestamp_in", dateFormatTimestamp.format(date))
-                .setParameter("timestamp_out", dateFormatTimestamp.format(date))
-                .setParameter("time_start", dateFormatTime.format(date))
-                .setParameter("time_end", dateFormatTime.format(date))
-                .setParameter("roadname", roadName)
-                .getSingleResult();
-        return rate;
-    }
+	@Override
+	public double getRoadRateByDate(String roadName, Date date) {
+		try {
+			SimpleDateFormat dateFormatTimestamp = new SimpleDateFormat("dd/MM/yyyy");
+			SimpleDateFormat dateFormatTime = new SimpleDateFormat("hh/mm");
+			double rate = (double) em.createQuery("SELECT r.rate FROM RoadRate r "
+				+ "WHERE r.timestamp_in >= :timestamp_in"
+				+ "AND (r.timestamp_out < :timestamp_out OR r.timestamp_out IS NULL )"
+				+ "AND r.time_start >= :time_start"
+				+ "AND r.time_end < :time_end"
+				+ "AND r.roadName = :roadname")
+				.setParameter("timestamp_in", dateFormatTimestamp.format(date))
+				.setParameter("timestamp_out", dateFormatTimestamp.format(date))
+				.setParameter("time_start", dateFormatTime.format(date))
+				.setParameter("time_end", dateFormatTime.format(date))
+				.setParameter("roadname", roadName)
+				.getSingleResult();
+			return rate;
+		} catch (NoResultException ex) {
+			return 0.06;
+		}
+	}
 
 	@Override
 	public void AddDateOut(RoadRate rr, Date newdate) {
 		rr.setTimestamp_out(newdate);
 		em.merge(rr);
-		
+
 	}
 }
