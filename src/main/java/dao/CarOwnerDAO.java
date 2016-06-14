@@ -5,6 +5,7 @@
  */
 package dao;
 
+import java.util.List;
 import model.CarOwner;
 import model.CarTracker;
 import model.NAW;
@@ -14,9 +15,15 @@ import model.NAW;
  * @author koenv
  */
 public interface CarOwnerDAO {
-    public void createCarOwner(CarOwner co);
 
-    public CarOwner getCarOwnerByNawId(NAW id);
+	public void createCarOwner(CarOwner co);
+
+	public CarOwner getCarOwnerByNawId(NAW id);
+	
+	public List<CarTracker> getCarHistory(CarOwner co);
 
 	public CarOwner getCarOwnerByCarTrackerId(CarTracker id);
+
+	public void setEndownership(CarOwner co);
+	public List<CarOwner> getActiveCarOwners();
 }

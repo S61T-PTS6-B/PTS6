@@ -30,6 +30,25 @@ public class CarOwnerDAOImp implements CarOwnerDAO {
 	public void createCarOwner(CarOwner co) {
 		em.persist(co);
 	}
+	
+	@Override
+	public void setEndownership(CarOwner co) {
+		em.merge(co);
+	}
+	
+	@Override
+	public List<CarOwner> getActiveCarOwners() {
+		Query query;
+		query = em.createQuery("SELECT c FROM CAROWNER c WHERE c.active = true");
+		return (List<CarOwner>) query.getResultList();
+	}
+	
+	@Override 
+	public List<CarTracker> getCarHistory(CarOwner co) {
+		Query query;
+		query = em.createQuery("SELECT c FROM CARTRACKER ");
+		return (List<CarTracker>) query.getResultList(); //TODO
+	}
 
 	@Override
 	public CarOwner getCarOwnerByNawId(NAW id) {

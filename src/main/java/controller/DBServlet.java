@@ -11,7 +11,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -21,6 +23,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.batch.operations.JobOperator;
 import javax.batch.runtime.BatchRuntime;
 import javax.inject.Inject;
@@ -35,6 +39,7 @@ import model.CarTracker;
 import model.NAW;
 import model.Road;
 import model.RoadRate;
+import org.json.JSONException;
 import service.ICarOwnerService;
 import service.ICarTrackerService;
 import service.INAWService;
@@ -56,7 +61,6 @@ import service.IRoadService;
 	"/FillFieldsCT",
 	"/FillFieldsRR",
 	"/FillFieldsActiveRR",
-	"/ManageCartracker",
 	"/ManageNAW",
 	"/ManageRoad",
 	"/AddRoad",
@@ -123,13 +127,6 @@ public class DBServlet extends HttpServlet {
 				req.setAttribute("naws", ns.getAllNaws());
 				req.setAttribute("countnaws", ns.getAllNaws().size());
 				RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/manage.jsp");
-				view.forward(req, res);
-				break;
-			}
-			case "/ManageCartracker": {
-				req.setAttribute("cartrackers", cts.getAllCarTrackers());
-				req.setAttribute("countcartrackers", cts.getAllCarTrackers().size());
-				RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/managecartracker.jsp");
 				view.forward(req, res);
 				break;
 			}
@@ -590,7 +587,8 @@ public class DBServlet extends HttpServlet {
 			CarTracker ct = new CarTracker(category, license, carmodel, carbrand, true);
 			cts.createCarTracker(ct);
 			req.setAttribute("CTs", cts.getAllCarTrackers());
-			CarOwner co = new CarOwner(ct, naw);
+			Date startdate = new Date();
+			CarOwner co = new CarOwner(ct, naw, startdate);
 			cos.createCarOwner(co);
 
 			RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/manage.jsp");
@@ -774,9 +772,8 @@ public class DBServlet extends HttpServlet {
 
 			String json = null;
 			Map<String, String> jsonMap = new LinkedHashMap<String, String>();
-			
-			if(getNAW != null)
-			{
+
+			if (getNAW != null) {
 				jsonMap.put("bsn", searchNAW);
 				jsonMap.put("firstname", getNAW.getFirstname());
 				jsonMap.put("lastname", getNAW.getLastname());
@@ -792,9 +789,7 @@ public class DBServlet extends HttpServlet {
 				res.setContentType("application/json");
 				res.setCharacterEncoding("UTF-8");
 				res.getWriter().write(json);
-			}
-			else
-			{
+			} else {
 				//error
 			}
 
@@ -806,22 +801,19 @@ public class DBServlet extends HttpServlet {
 
 			String json = null;
 			Map<String, String> jsonMap = new LinkedHashMap<String, String>();
-			
-			if(getCT != null)
-			{
+
+			if (getCT != null) {
 				jsonMap.put("pricecategory", String.valueOf(getCT.getPriceCategory()));
 				jsonMap.put("licenseplate", getCT.getLicensePlate());
-				jsonMap.put("carbrand", getCT.getBrandCar());
-				jsonMap.put("carmodel", getCT.getModelCar());
+				jsonMap.put("brandcar", getCT.getBrandCar());
+				jsonMap.put("modelcar", getCT.getModelCar());
 				json = new Gson().toJson(jsonMap, Map.class);
 
 				System.out.println("Dit is de veranderde json: " + json.toString());
 				res.setContentType("application/json");
 				res.setCharacterEncoding("UTF-8");
 				res.getWriter().write(json);
-			}
-			else
-			{
+			} else {
 				//error
 			}
 
@@ -853,5 +845,40 @@ public class DBServlet extends HttpServlet {
 			}
 			conn.disconnect();
 		}
+
 	}
+
+	public boolean checkIfOnlineUsingAJAX(String channel) throws IOException, JSONException {
+		String channelURL = "https://api.twitch.tv/kraken/streams/" + channel;
+
+		String jsonText = readFromUrl(channelURL);// reads text from URL
+		org.json.JSONObject json = new org.json.JSONObject(jsonText);
+
+		if (json.isNull("stream")) {
+			System.out.println(channel + " is not live at this moment.");
+			return false;
+		} else {
+			org.json.JSONObject online = new org.json.JSONObject(json.get("stream").toString());
+			System.out.println(online.get("game").toString());
+			int maxlength = online.getString("created_at").length() - 1;
+			String timestart = online.getString("created_at").substring(11, maxlength);
+			String game = online.getString("game");
+			String viewercount = Integer.toString(online.getInt("viewers"));
+			System.out.println(channel + " is live since: " + timestart);
+			System.out.println(channel + " is playing " + game + " at the moment.");
+			System.out.println("Stream has " + viewercount + " viewers at this moment.");
+			return true;
+		}
+
+	}
+
+	private static String readFromUrl(String url) throws MalformedURLException, IOException {
+		URL page = new URL(url);
+		try (Stream<String> stream = new BufferedReader(new InputStreamReader(
+			page.openStream(), StandardCharsets.UTF_8)).lines()) {
+			return stream.collect(Collectors.joining(System.lineSeparator()));
+		}
+
+	}
+
 }

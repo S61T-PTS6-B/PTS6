@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.TableGenerator;
 import javax.persistence.Temporal;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -35,28 +36,25 @@ public class CarOwner implements Serializable {
 	private CarTracker carid;
 
 	private NAW nawid;
-//
-//	@Temporal(javax.persistence.TemporalType.TIMESTAMP)
-//	private Date startOwnership;
-//
-//	@Temporal(javax.persistence.TemporalType.TIMESTAMP)
-//	private Date endOwnership;
+
+	@NotNull
+	@Temporal(javax.persistence.TemporalType.TIMESTAMP)
+	private Date startOwnership;
+
+	@Temporal(javax.persistence.TemporalType.TIMESTAMP)
+	private Date endOwnership;
 
 	private boolean active;
 
 	public CarOwner() {
 	}
 
-	public CarOwner(CarTracker ct, NAW n) {
+	public CarOwner(CarTracker ct, NAW n, Date startOwnership) {
 		this.carid = ct;
 		this.nawid = n;
-//		this.startOwnership = startOwnership;
-//
-//		active = false;
-//
-//		if (endOwnership == null) {
-//			active = true;
-//		}
+		this.startOwnership = startOwnership;
+
+		active = true;
 	}
 
 	public Long getId() {
@@ -91,4 +89,22 @@ public class CarOwner implements Serializable {
 		this.active = active;
 	}
 
+	public Date getStartOwnership() {
+		return startOwnership;
+	}
+
+	public void setStartOwnership(Date startOwnership) {
+		this.startOwnership = startOwnership;
+	}
+
+	public Date getEndOwnership() {
+		return endOwnership;
+	}
+
+	public void setEndOwnership(Date endOwnership) {
+		this.endOwnership = endOwnership;
+		this.active = false;
+	}
+
+	
 }
