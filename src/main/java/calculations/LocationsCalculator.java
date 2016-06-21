@@ -4,7 +4,8 @@
  * and open the template in the editor.
  */
 package calculations;
- 
+
+import static java.lang.Double.isNaN;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -30,123 +31,124 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import service.IRoadRateService;
 import service.IRoadService;
- 
+
 /**
  *
  * @author Max
  */
 @Stateless
 public class LocationsCalculator {
- 
-    private List<Road> roads;
-    private Invoice invoice;
-    private List<Cordon> existingCordons;
-   
-    @EJB
-    private IRoadRateService rrs;
-   
-    @EJB
-    private IRoadService roadservice;
- 
-    public LocationsCalculator() {
- 
-        this.existingCordons = new ArrayList<>();
-        this.existingCordons.add(new Cordon("Weert", 10));
-        this.existingCordons.add(new Cordon("Best", 5));
-        this.existingCordons.add(new Cordon("Boxtel", 8));
-    }
- 
-    public Invoice getInvoice(List<Location> locations, CarTracker car) throws ParseException {
- 
-        this.roads = roadservice.getAllRoads();
-        this.invoice = new Invoice(car);
- 
-        //Stap 1: Sorteren op datum
-        Collections.sort(locations);
-   
-        //Stap 2: Naam van de locatie opvragen en in het locatie object zetten
-        for (Location loc : locations) {
-            calculateAdress(loc);
-        }
- 
-        //Stap 3: Kijken of er een cordongebied ingereden is (disctinct of per keer dat je het binnenrijdt?)
-        List<Cordon> cordons = new ArrayList<>();
-        String lastCordonName = "NO_CORDON";
-       
-        for (Location loc : locations) {
-            boolean hasCordon = false;
-            for (Cordon c : existingCordons) {
-               
-                //Als de stad van de locatie een specifiek cordongebied is
-                if (c.getPlaceName().equals(loc.getCity())) {
-                    hasCordon = true;
-                   
-                    //Als de vorige locatie nog niet in dit cordongebied was
-                    if (loc.getCity().equals(lastCordonName) == false) {
-                        cordons.add(new Cordon(c.getPlaceName(), c.getAmount()));
-                        lastCordonName = c.getPlaceName();
-                    }
-                }
-            }
-            if (hasCordon == false) {
-                lastCordonName = "NO_CORDON";
-            }
-        }
-        for (Cordon c : cordons) {
-            invoice.addCordonOccurrence(c);
-            System.out.println("Cordon area entered: " + c.toString() + ". Which brings the total amount to " + invoice.getTotalAmount() + "euros");
-        }
- 
-        //Stap 4: Kijken welke locaties op een snelweg liggen
-        // - Lijst van snelweg namen hebben
-        // - Als de naam van de locatie een snelweg is, maak een lijst aan van die snelweg
-        //      en gooi die locatie erin. verwijder de locatie uit de originele lijst
-        List<SeriesOfLocationsOnRoad> seriesOfLocationsOnRoad = new ArrayList<>();
-        String lastRoadName = "";
- 
-        for (Location loc : locations) {
-            boolean hasSpecialRoad = false;
- 
-            for (Road r : roads) {
- 
-                //Als de weg van de locatie een specifieke weg is
-                if (loc.getRoad().equals(r.getId())) {
-                    hasSpecialRoad = true;
- 
-                    //Als de wegnaam van de vorige locatie hetzelfde is als die van de huidige locatie
-                    if (loc.getRoad().equals(lastRoadName)) {
- 
-                        //Get de laatste serie locaties (waar deze locatie dus bij hoort)
-                        SeriesOfLocationsOnRoad currentSerie = seriesOfLocationsOnRoad.get(seriesOfLocationsOnRoad.size() - 1);
-                        currentSerie.getLocations().add(loc);
-                    } //Als de wegnaam van de vorige locatie anders is dan die van de huidige locatie
-                    else {
-                        //Start dan een nieuwe serie locaties op de weg
-                        SeriesOfLocationsOnRoad newSerie = new SeriesOfLocationsOnRoad(r);
-                        newSerie.getLocations().add(loc);
-                        seriesOfLocationsOnRoad.add(newSerie);
-                    }
-                    lastRoadName = loc.getRoad();
-                }
-            }
-            if (hasSpecialRoad == false) {
-                if (lastRoadName.equals("NO_SPECIAL_ROAD")) {
-                    //Get de laatste serie locaties (waar deze locatie dus bij hoort)
-                    SeriesOfLocationsOnRoad currentSerie = seriesOfLocationsOnRoad.get(seriesOfLocationsOnRoad.size() - 1);
-                    currentSerie.getLocations().add(loc);
-                } //Als de wegnaam van de vorige locatie anders is dan NO_SPECIAL_ROAD
-                else {
-                    //Start dan een nieuwe serie locaties op de weg
-                    SeriesOfLocationsOnRoad newSerie = new SeriesOfLocationsOnRoad(roads.get(0));
-                    newSerie.getLocations().add(loc);
-                    seriesOfLocationsOnRoad.add(newSerie);
-                }
-                lastRoadName = "NO_SPECIAL_ROAD";
-            }
-        }
-       
-        invoice.setSeriesOfLocationsOnRoad(seriesOfLocationsOnRoad);
- 
+
+	private List<Road> roads;
+	private Invoice invoice;
+	private List<Cordon> existingCordons;
+	int i = 0;
+
+	@EJB
+	private IRoadRateService rrs;
+
+	@EJB
+	private IRoadService roadservice;
+
+	public LocationsCalculator() {
+
+		this.existingCordons = new ArrayList<>();
+		this.existingCordons.add(new Cordon("Weert", 10));
+		this.existingCordons.add(new Cordon("Best", 5));
+		this.existingCordons.add(new Cordon("Boxtel", 8));
+	}
+
+	public Invoice getInvoice(List<Location> locations, CarTracker car) throws ParseException {
+
+		this.roads = roadservice.getAllRoads();
+		this.invoice = new Invoice(car);
+
+		//Stap 1: Sorteren op datum
+		Collections.sort(locations);
+
+		//Stap 2: Naam van de locatie opvragen en in het locatie object zetten
+		for (Location loc : locations) {
+			calculateAdress(loc);
+		}
+
+		//Stap 3: Kijken of er een cordongebied ingereden is (disctinct of per keer dat je het binnenrijdt?)
+		List<Cordon> cordons = new ArrayList<>();
+		String lastCordonName = "NO_CORDON";
+
+		for (Location loc : locations) {
+			boolean hasCordon = false;
+			for (Cordon c : existingCordons) {
+
+				//Als de stad van de locatie een specifiek cordongebied is
+				if (c.getPlaceName().equals(loc.getCity())) {
+					hasCordon = true;
+
+					//Als de vorige locatie nog niet in dit cordongebied was
+					if (loc.getCity().equals(lastCordonName) == false) {
+						cordons.add(new Cordon(c.getPlaceName(), c.getAmount()));
+						lastCordonName = c.getPlaceName();
+					}
+				}
+			}
+			if (hasCordon == false) {
+				lastCordonName = "NO_CORDON";
+			}
+		}
+		for (Cordon c : cordons) {
+			invoice.addCordonOccurrence(c);
+			System.out.println("Cordon area entered: " + c.toString() + ". Which brings the total amount to " + invoice.getTotalAmount() + "euros");
+		}
+
+		//Stap 4: Kijken welke locaties op een snelweg liggen
+		// - Lijst van snelweg namen hebben
+		// - Als de naam van de locatie een snelweg is, maak een lijst aan van die snelweg
+		//      en gooi die locatie erin. verwijder de locatie uit de originele lijst
+		List<SeriesOfLocationsOnRoad> seriesOfLocationsOnRoad = new ArrayList<>();
+		String lastRoadName = "";
+
+		for (Location loc : locations) {
+			boolean hasSpecialRoad = false;
+
+			for (Road r : roads) {
+
+				//Als de weg van de locatie een specifieke weg is
+				if (loc.getRoad().equals(r.getId())) {
+					hasSpecialRoad = true;
+
+					//Als de wegnaam van de vorige locatie hetzelfde is als die van de huidige locatie
+					if (loc.getRoad().equals(lastRoadName)) {
+
+						//Get de laatste serie locaties (waar deze locatie dus bij hoort)
+						SeriesOfLocationsOnRoad currentSerie = seriesOfLocationsOnRoad.get(seriesOfLocationsOnRoad.size() - 1);
+						currentSerie.getLocations().add(loc);
+					} //Als de wegnaam van de vorige locatie anders is dan die van de huidige locatie
+					else {
+						//Start dan een nieuwe serie locaties op de weg
+						SeriesOfLocationsOnRoad newSerie = new SeriesOfLocationsOnRoad(r);
+						newSerie.getLocations().add(loc);
+						seriesOfLocationsOnRoad.add(newSerie);
+					}
+					lastRoadName = loc.getRoad();
+				}
+			}
+			if (hasSpecialRoad == false) {
+				if (lastRoadName.equals("NO_SPECIAL_ROAD")) {
+					//Get de laatste serie locaties (waar deze locatie dus bij hoort)
+					SeriesOfLocationsOnRoad currentSerie = seriesOfLocationsOnRoad.get(seriesOfLocationsOnRoad.size() - 1);
+					currentSerie.getLocations().add(loc);
+				} //Als de wegnaam van de vorige locatie anders is dan NO_SPECIAL_ROAD
+				else {
+					//Start dan een nieuwe serie locaties op de weg
+					SeriesOfLocationsOnRoad newSerie = new SeriesOfLocationsOnRoad(roads.get(0));
+					newSerie.getLocations().add(loc);
+					seriesOfLocationsOnRoad.add(newSerie);
+				}
+				lastRoadName = "NO_SPECIAL_ROAD";
+			}
+		}
+
+		invoice.setSeriesOfLocationsOnRoad(seriesOfLocationsOnRoad);
+
 //        //Tussenstap: Print alle locaties uit alle serie lijsten op het scherm
 //        for (int i = 0; i < seriesOfLocationsOnRoad.size(); i++) {
 //            SeriesOfLocationsOnRoad serie = seriesOfLocationsOnRoad.get(i);
@@ -154,127 +156,145 @@ public class LocationsCalculator {
 //                System.out.println("List nr: " + i + ", " + l.toString() + ", rate per kilometer: " + serie.getRoad().getRate());
 //            }
 //        }
-        //Stap 5: Bereken van die lijst welke locaties er op een bepaald tarieftijd zijn gelogd
-        // - scheid die locaties in lijsten
-        // - bereken de afstand van die locaties, en het bedrag dat daarover betaald moet worden
-        // - HOU REKENING MET AFSTAND TUSSEN DE LAATSTE IN DE LIJST, EN DE EERSTE IN DE VOLGENDE LIJST!
-        this.processSeriesToTotalAmount(seriesOfLocationsOnRoad);
- 
-        System.out.println("");
-        System.out.println("RESULTS:");
-        System.out.println("The total amount of the list is " + invoice.getTotalAmount() + " euro's");
-        System.out.println("The total disctance of the list is " + invoice.getTotalDistance() + " kilometers");
- 
-        //Stap 6: Return het Invoice object
-        return this.invoice;
-    }
-   
-    public double getRate(Date date, Road road) {
-            Double rate = rrs.getRoadRateByDate(road, date);
-        if (rate == null) {
-                    return 0.05;
-                }
-                return rate;
-    }
- 
-    public void calculateAdress(Location loc) throws ParseException {
-        double latitude = loc.getLatitude();
-        double longitude = loc.getLongitude();
-        Client client = ClientBuilder.newClient();
-        WebTarget myResource = client.target("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + latitude + "," + longitude + "&key=AIzaSyDSR66C1DixiI6wv_Fv3kTVUQYwMQ0VPIY");
-        String response = myResource.request(MediaType.APPLICATION_JSON).get(String.class);
- 
-        JSONParser parser = new JSONParser();
-        JSONObject jsonobj = (JSONObject) parser.parse(response);
-        JSONArray resultslist = (JSONArray) jsonobj.get("results");
-        JSONObject result = (JSONObject) resultslist.get(0);
-        String resultroad = (String) result.get("formatted_address");
-        resultroad = resultroad.substring(0, resultroad.indexOf(","));
-       
-        loc.setRoad(resultroad);
-       
-        try {
-            result = (JSONObject) resultslist.get(resultslist.size() - 3);
-            String resultcity = (String) result.get("formatted_address");
-            resultcity = resultcity.substring(0, resultcity.indexOf(","));
-            loc.setCity(resultcity);
-        } catch (Exception e) {
-           
-        }
-    }
- 
-    private Invoice processSeriesToTotalAmount(List<SeriesOfLocationsOnRoad> seriesOfLocationsOnRoad) {
-        //Stap 5: Bereken van die lijst welke locaties er op een bepaald tarieftijd zijn gelogd
-        // - scheid die locaties in lijsten
-        // - bereken de afstand van die locaties, en het bedrag dat daarover betaald moet worden
-        // - HOU REKENING MET AFSTAND TUSSEN DE LAATSTE IN DE LIJST, EN DE EERSTE IN DE VOLGENDE LIJST!
- 
-        Location lastLocationOfList = null;
-        Double rateOfLastList = null;
- 
-        for (SeriesOfLocationsOnRoad serie : seriesOfLocationsOnRoad) {
- 
-            if (lastLocationOfList != null) {
-                Location firstLocationOfList = serie.getLocations().get(0);
-                double kilometers = calculateDistance(lastLocationOfList, firstLocationOfList);
- 
-                //Als het kilometertarief van de laatste lijst kleiner is dan die van de huidige lijst
-                if (rateOfLastList != null && rateOfLastList < this.getRate(firstLocationOfList.getDate(), serie.getRoad())) {
-                    invoice.addToTotalAmount(kilometers, rateOfLastList);
-                } else {
-                    invoice.addToTotalAmount(kilometers, this.getRate(firstLocationOfList.getDate(), serie.getRoad()));
-                }
-            }
- 
-            for (int i = 0; i < serie.getLocations().size(); i++) {
-                Location loc1 = serie.getLocations().get(i);
-                Location loc2;
-                try {
-                    loc2 = serie.getLocations().get(i + 1);
-                } catch (Exception e) {
-                    loc2 = null;
-                }
- 
-                if (loc2 != null) {
-                    double kilometers = calculateDistance(loc1, loc2);
-                    //Houdt nu geen rekening met welke Rate het voordeligste is, die van loc1 of die van loc2.
-                    invoice.addToTotalAmount(kilometers, this.getRate(loc1.getDate(), serie.getRoad()));
-                } else {
-                    lastLocationOfList = loc1;
-                    rateOfLastList = this.getRate(loc1.getDate(), serie.getRoad());
-                }
-            }
-        }
-        return this.invoice;
-    }
- 
-    private double calculateDistance(Location loc1, Location loc2) {
-        double lat1, lon1, lat2, lon2;
-        lat1 = loc1.getLatitude();
-        lon1 = loc1.getLongitude();
-        lat2 = loc2.getLatitude();
-        lon2 = loc2.getLongitude();
-        double theta = lon1 - lon2;
-        double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
-        dist = Math.acos(dist);
-        dist = rad2deg(dist);
-        dist = dist * 60 * 1.1515 * 1.609344;
- 
-        invoice.addToTotalDistance(dist);
- 
-        System.out.println("The distance from " + loc1.toString() + " to " + loc2.toString() + " was " + dist + " kilometer, which brings the total distance to " + invoice.getTotalDistance());
- 
-        return (dist);
-    }
- 
-    private static double deg2rad(double deg) {
-        return (deg * Math.PI / 180.0);
-    }
- 
-    private static double rad2deg(double rad) {
-        return (rad * 180 / Math.PI);
-    }
- 
+		//Stap 5: Bereken van die lijst welke locaties er op een bepaald tarieftijd zijn gelogd
+		// - scheid die locaties in lijsten
+		// - bereken de afstand van die locaties, en het bedrag dat daarover betaald moet worden
+		// - HOU REKENING MET AFSTAND TUSSEN DE LAATSTE IN DE LIJST, EN DE EERSTE IN DE VOLGENDE LIJST!
+		this.processSeriesToTotalAmount(seriesOfLocationsOnRoad);
+
+		System.out.println("");
+		System.out.println("RESULTS:");
+		System.out.println("The total amount of the list is " + invoice.getTotalAmount() + " euro's");
+		System.out.println("The total disctance of the list is " + invoice.getTotalDistance() + " kilometers");
+
+		//Stap 6: Return het Invoice object
+		return this.invoice;
+	}
+
+	public double getRate(Date date, Road road) {
+		try {
+			Double rate;
+			rate = rrs.getRoadRateByDate(road, date);
+			if (rate == null) {
+				return 0.05;
+			}
+			return rate;
+		} catch (Exception e) {
+			return 0.06;
+		}
+
+	}
+
+	public void calculateAdress(Location loc) throws ParseException {
+		double latitude = loc.getLatitude();
+		double longitude = loc.getLongitude();
+		Client client = ClientBuilder.newClient();
+		WebTarget myResource = client.target("https://maps.googleapis.com/maps/api/geocode/json?latlng=" + latitude + "," + longitude + "&key=AIzaSyBB2uNVD9t8XgY_bvdV8AATWpdmAQzs-V0");
+		String response = myResource.request(MediaType.APPLICATION_JSON).get(String.class);
+
+		JSONParser parser = new JSONParser();
+		JSONObject jsonobj = (JSONObject) parser.parse(response);
+		JSONArray resultslist = (JSONArray) jsonobj.get("results");
+
+		if (resultslist.isEmpty()) {
+			loc.setRoad("No road");
+			loc.setCity("No city");
+			System.out.println("Lijst " + i++);
+		} else {
+			JSONObject result = (JSONObject) resultslist.get(0);
+
+			String resultroad = (String) result.get("formatted_address");
+			resultroad = resultroad.substring(0, resultroad.indexOf(","));
+
+			loc.setRoad(resultroad);
+
+			try {
+				result = (JSONObject) resultslist.get(resultslist.size() - 3);
+				String resultcity = (String) result.get("formatted_address");
+				resultcity = resultcity.substring(0, resultcity.indexOf(","));
+				loc.setCity(resultcity);
+			} catch (Exception e) {
+
+			}
+		}
+
+	}
+
+	private Invoice processSeriesToTotalAmount(List<SeriesOfLocationsOnRoad> seriesOfLocationsOnRoad) {
+		//Stap 5: Bereken van die lijst welke locaties er op een bepaald tarieftijd zijn gelogd
+		// - scheid die locaties in lijsten
+		// - bereken de afstand van die locaties, en het bedrag dat daarover betaald moet worden
+		// - HOU REKENING MET AFSTAND TUSSEN DE LAATSTE IN DE LIJST, EN DE EERSTE IN DE VOLGENDE LIJST!
+
+		Location lastLocationOfList = null;
+		Double rateOfLastList = null;
+
+		for (SeriesOfLocationsOnRoad serie : seriesOfLocationsOnRoad) {
+
+			if (lastLocationOfList != null) {
+				Location firstLocationOfList = serie.getLocations().get(0);
+				double kilometers = calculateDistance(lastLocationOfList, firstLocationOfList);
+
+				//Als het kilometertarief van de laatste lijst kleiner is dan die van de huidige lijst
+				if (rateOfLastList != null && rateOfLastList < this.getRate(firstLocationOfList.getDate(), serie.getRoad())) {
+					invoice.addToTotalAmount(kilometers, rateOfLastList);
+				} else {
+					invoice.addToTotalAmount(kilometers, this.getRate(firstLocationOfList.getDate(), serie.getRoad()));
+				}
+			}
+
+			for (int i = 0; i < serie.getLocations().size(); i++) {
+				Location loc1 = serie.getLocations().get(i);
+				Location loc2;
+				try {
+					loc2 = serie.getLocations().get(i + 1);
+				} catch (Exception e) {
+					loc2 = null;
+				}
+
+				if (loc2 != null) {
+					double kilometers = calculateDistance(loc1, loc2);
+					//Houdt nu geen rekening met welke Rate het voordeligste is, die van loc1 of die van loc2.
+					invoice.addToTotalAmount(kilometers, this.getRate(loc1.getDate(), serie.getRoad()));
+				} else {
+					lastLocationOfList = loc1;
+					rateOfLastList = this.getRate(loc1.getDate(), serie.getRoad());
+				}
+			}
+		}
+		return this.invoice;
+	}
+
+	private double calculateDistance(Location loc1, Location loc2) {
+		double lat1, lon1, lat2, lon2;
+		lat1 = loc1.getLatitude();
+		lon1 = loc1.getLongitude();
+		lat2 = loc2.getLatitude();
+		lon2 = loc2.getLongitude();
+		double theta = lon1 - lon2;
+		double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
+		dist = Math.acos(dist);
+		dist = rad2deg(dist);
+		dist = dist * 60 * 1.1515 * 1.609344;
+		if(isNaN(dist))
+		{
+			dist = 0;
+		}
+		invoice.addToTotalDistance(dist);
+
+		System.out.println("The distance from " + loc1.toString() + " to " + loc2.toString() + " was " + dist + " kilometer, which brings the total distance to " + invoice.getTotalDistance());
+
+		return (dist);
+	}
+
+	private static double deg2rad(double deg) {
+		return (deg * Math.PI / 180.0);
+	}
+
+	private static double rad2deg(double rad) {
+		return (rad * 180 / Math.PI);
+	}
+
 //    public void testGetInvoice() throws ParseException {
 //        List<Location> testLocations = new ArrayList<>();
 //        //Rijksweg Den Bosch-Eindhoven

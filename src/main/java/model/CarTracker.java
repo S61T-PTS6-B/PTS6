@@ -34,7 +34,7 @@ public class CarTracker implements Serializable {
     
     @OneToMany
     private List<CarOwner> carowners;
-    private double priceCategory;
+    private String priceCategory;
     private String licensePlate;
     private String modelCar;
     private String brandCar;
@@ -44,7 +44,7 @@ public class CarTracker implements Serializable {
     } 
     
 
-    public CarTracker(double prizeCategory, String licensePlate, String modelCar, String brandCar, boolean websiteSubscription) {
+    public CarTracker(String prizeCategory, String licensePlate, String modelCar, String brandCar, boolean websiteSubscription) {
         this.priceCategory = prizeCategory;
         this.licensePlate = licensePlate;
         this.modelCar = modelCar;
@@ -52,11 +52,11 @@ public class CarTracker implements Serializable {
         this.websiteSubscription = websiteSubscription;
     }
 
-    public double getPriceCategory() {
+    public String getPriceCategory() {
         return priceCategory;
     }
 
-    public void setPriceCategory(double tariefCategorie) {
+    public void setPriceCategory(String tariefCategorie) {
         this.priceCategory = tariefCategorie;
     }
 

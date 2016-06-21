@@ -5,16 +5,11 @@
  */
 package dao;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
-import javax.persistence.Entity;
 import javax.persistence.EntityManager;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import model.CarTracker;
@@ -75,7 +70,7 @@ public class CarTrackerDAOImp implements CarTrackerDAO {
 	}
 
 	@Override
-	public void changePrizeCategory(CarTracker ct, double prizecategory) {
+	public void changePrizeCategory(CarTracker ct, String prizecategory) {
 		ct.setPriceCategory(prizecategory);
 		em.merge(ct);
 
@@ -118,15 +113,22 @@ public class CarTrackerDAOImp implements CarTrackerDAO {
 
 	@Override
 	public CarTracker getCarTrackerByLicensePlate(String licenseplateReceive) {
-		try 
-		{
+		try {
 			return (CarTracker) em.createQuery("SELECT x FROM CARTRACKER x WHERE x.licensePlate = :lp").setParameter("lp", licenseplateReceive).getSingleResult();
-		}
-		catch(Exception e)
-		{
+		} catch (Exception e) {
 			return null;
 		}
-		
+
 	}
 
+	@Override
+	public boolean DatabaseIsOnline() {
+		try {
+			em.createQuery("SELECT x FROM CARTRACKER x");
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+
+	}
 }

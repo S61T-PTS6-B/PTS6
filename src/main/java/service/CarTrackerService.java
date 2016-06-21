@@ -64,13 +64,18 @@ public class CarTrackerService implements ICarTrackerService {
 	}
 
 	@Override
-	public void changePrizeCategory(CarTracker ct, double category) {
+	public void changePrizeCategory(CarTracker ct, String category) {
 		ctd.changePrizeCategory(ct, category);
 	}
 
 	@Override
 	public CarTracker getCarTrackerByLicensePlate(String licenseplateReceive) {
 		return ctd.getCarTrackerByLicensePlate(licenseplateReceive);
+	}
+
+	@Override
+	public boolean DatabaseIsOnline() {
+		return ctd.DatabaseIsOnline();
 	}
 
 }

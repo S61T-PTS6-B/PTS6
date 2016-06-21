@@ -16,23 +16,25 @@ import model.NAW;
  */
 public interface ICarTrackerService {
 
-    public void createCarTracker(CarTracker c);
+	public void createCarTracker(CarTracker c);
 
-    public List<CarTracker> getAllCarTrackers();
+	public List<CarTracker> getAllCarTrackers();
 
-    public ArrayList<CarTracker> getCarTrackerById(NAW naw);
+	public ArrayList<CarTracker> getCarTrackerById(NAW naw);
 
-    public CarTracker getSingleCarTrackerByNaw(NAW naw);
+	public CarTracker getSingleCarTrackerByNaw(NAW naw);
 
-    public CarTracker getSingleCarTrackerById(long id);
+	public CarTracker getSingleCarTrackerById(long id);
 
-    public void changeBrandCar(CarTracker ct, String brand);
+	public void changeBrandCar(CarTracker ct, String brand);
 
-    public void changeModelCar(CarTracker ct, String model);
+	public void changeModelCar(CarTracker ct, String model);
 
-    public void changeLicense(CarTracker ct, String license);
+	public void changeLicense(CarTracker ct, String license);
 
-    public void changePrizeCategory(CarTracker ct, double category);
+	public void changePrizeCategory(CarTracker ct, String category);
 
 	public CarTracker getCarTrackerByLicensePlate(String licenseplateReceive);
+
+	public boolean DatabaseIsOnline();
 }

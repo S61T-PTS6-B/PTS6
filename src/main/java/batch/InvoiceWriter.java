@@ -1,5 +1,6 @@
 package batch;
  
+import SendQueue.InvoiceQueueSend;
 import model.Invoice;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -12,6 +13,8 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import pdf.PdfBuilder;
+import service.CarOwnerService;
+import service.ICarOwnerService;
 import service.IInvoiceService;
  
 /*
@@ -32,6 +35,9 @@ public class InvoiceWriter implements javax.batch.api.chunk.ItemWriter {
    
     @EJB
     private IInvoiceService iis;
+    
+    @Inject 
+    private ICarOwnerService cos;
  
     @Override
     public void open(Serializable ckpt) throws Exception {
@@ -46,6 +52,7 @@ public class InvoiceWriter implements javax.batch.api.chunk.ItemWriter {
             String urltodownload = pdfb.createPdf(invoice);
             invoice.setURLToDownload(urltodownload);
             iis.createInvoice(invoice);
+	    InvoiceQueueSend.sendMessage(invoice, String.valueOf(cos.getCarOwnerByCarTracker(invoice.getCar()).getNawid().getBsn()));
         }
     }
  

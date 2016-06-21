@@ -29,7 +29,7 @@ public interface CarTrackerDAO {
     
     public void changeOwner(CarTracker ct, NAW naw);
     
-    public void changePrizeCategory(CarTracker ct, double prizecategory);
+    public void changePrizeCategory(CarTracker ct, String prizecategory);
     
     public void changeLicensePlate(CarTracker ct, String licenseplate);
     
@@ -44,4 +44,6 @@ public interface CarTrackerDAO {
     public CarTracker getSingleCarTrackerById(long id);
 
 	public CarTracker getCarTrackerByLicensePlate(String licenseplateReceive);
+
+	public boolean DatabaseIsOnline();
 }

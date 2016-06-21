@@ -52,6 +52,7 @@ public class Invoice implements Serializable {
 	private double totalDistance;
 	private transient List<Cordon> cordonOccurrences;
 
+	
 	public Invoice(CarTracker car) {
 		this.car = car;
 		this.seriesOfLocationsOnRoad = new ArrayList<>();
@@ -138,4 +139,14 @@ public class Invoice implements Serializable {
 	public void setURLToDownload(String URLToDownload) {
 		this.URLToDownload = URLToDownload;
 	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
+	
 }

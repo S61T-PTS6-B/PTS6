@@ -20,7 +20,7 @@ import service.ICarTrackerService;
  *
  * @author koenv
  */
-@WebServlet(name = "CarTrackerServlet", urlPatterns = {"/CarTrackerServlet", "/ManageCartracker"})
+@WebServlet(name = "CarTrackerServlet", urlPatterns = {"/CarTrackerServlet", ""})
 public class CarTrackerServlet extends HttpServlet {
 
 	@Inject
@@ -53,13 +53,7 @@ public class CarTrackerServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse res)
 		throws ServletException, IOException {
 		String userPath = req.getServletPath();
-		if (userPath.equals("/ManageCartracker")) {
-			req.setAttribute("cartrackers", cts.getAllCarTrackers());
-			req.setAttribute("countcartrackers", cts.getAllCarTrackers().size());
-			RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/managecartracker.jsp");
-			view.forward(req, res);
-
-		}
+		
 	}
 
 	/**

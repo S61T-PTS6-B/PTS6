@@ -36,6 +36,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.RequestDispatcher;
 import model.CarOwner;
 import model.CarTracker;
+import model.Invoice;
 import model.NAW;
 import model.Road;
 import model.RoadRate;
@@ -54,6 +55,7 @@ import service.IRoadService;
  * @author koenv
  */
 @WebServlet(name = "CarTrackerAdm", urlPatterns = {"/CarTrackerAdm",
+	"/ManageCartracker",
 	"/Error",
 	"/Manage",
 	"/ManageRoadRate",
@@ -123,7 +125,6 @@ public class DBServlet extends HttpServlet {
 
 		switch (userPath) {
 			case "/Manage": {
-
 				req.setAttribute("naws", ns.getAllNaws());
 				req.setAttribute("countnaws", ns.getAllNaws().size());
 				RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/manage.jsp");
@@ -137,6 +138,13 @@ public class DBServlet extends HttpServlet {
 				view.forward(req, res);
 				break;
 
+			}
+			case "/ManageCartracker": {
+				req.setAttribute("cartrackers", cts.getAllCarTrackers());
+				req.setAttribute("countcartrackers", cts.getAllCarTrackers().size());
+				RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/managecartracker.jsp");
+				view.forward(req, res);
+				break;
 			}
 			case "/runBatchJob": {
 				JobOperator jobOperator = BatchRuntime.getJobOperator();
@@ -286,10 +294,10 @@ public class DBServlet extends HttpServlet {
 			String Kenteken = req.getParameter("OptionBSN").trim();
 			Map<String, String> jsonMap = new LinkedHashMap<String, String>();
 			CarTracker ct = cts.getCarTrackerByLicensePlate(Kenteken);
-			double price = ct.getPriceCategory();
+			String price = ct.getPriceCategory();
 
 			if (Kenteken != null) {
-				jsonMap.put("pricecategory", Double.toString(price));
+				jsonMap.put("pricecategory", price);
 				jsonMap.put("licenseplate", ct.getLicensePlate());
 				jsonMap.put("modelcar", ct.getModelCar());
 				jsonMap.put("brandcar", ct.getBrandCar());
@@ -580,7 +588,7 @@ public class DBServlet extends HttpServlet {
 			req.setAttribute("naws", ns.getAllNaws());
 			bsn = Integer.parseInt(req.getParameter("bsnhide"));
 			NAW naw = ns.getNAWByBsn(bsn);
-			double category = Double.parseDouble(req.getParameter("category"));
+			String category = req.getParameter("category");
 			String license = req.getParameter("license");
 			String carmodel = req.getParameter("carmodel");
 			String carbrand = req.getParameter("carbrand");
@@ -696,7 +704,7 @@ public class DBServlet extends HttpServlet {
 
 		if (userPath.equals(
 			"/PrizeCategoryChange")) {
-			double category = Double.parseDouble(req.getParameter("category"));
+			String category = req.getParameter("category");
 
 			NAW naw = ns.getNAWByBsn(bsn);
 			CarTracker ct = cts.getSingleCarTrackerByNaw(naw);

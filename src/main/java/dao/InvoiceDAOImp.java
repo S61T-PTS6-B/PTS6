@@ -32,7 +32,17 @@ public class InvoiceDAOImp implements InvoiceDAO {
 
 	@Override
 	public void createInvoice(Invoice i) {
-		em.persist(i);
+		try {
+			em.persist(i);
+		} catch (Exception e) {
+			System.out.println("Shit man");
+		}
+	}
+	
+	@Override
+	public Invoice getInvoiceById(long id)
+	{
+		return em.find(Invoice.class, id);
 	}
 
 	@Override
@@ -60,12 +70,14 @@ public class InvoiceDAOImp implements InvoiceDAO {
 			inWithCT.add((Invoice) em.createQuery("SELECT i FROM INVOICE i WHERE i.car = :car").setParameter("car", ct).getSingleResult());
 		}
 		return inWithCT;
-	
+
 	}
 
 	@Override
 	public void payInvoice(Long id) {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		Invoice i = getInvoiceById(id);
+		i.setPaid(true);
+		em.merge(i);
 	}
 
 	@Override
@@ -76,6 +88,12 @@ public class InvoiceDAOImp implements InvoiceDAO {
 	@Override
 	public void saveInvoice(Invoice in) {
 		em.merge(in);
+	}
+
+	@Override
+	public void sendLetter(Long invoiceID) {
+		//STUUR EEN BRIEF NAAR DE BEWONER
+		System.out.println("Stuur een brief. Naar factuur: " + invoiceID.toString());
 	}
 
 }

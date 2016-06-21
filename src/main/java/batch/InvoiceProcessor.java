@@ -35,8 +35,9 @@ public class InvoiceProcessor implements ItemProcessor {
  
     @EJB
     private ICarTrackerService cts;
+    
     @EJB
-    LocationsCalculator lc;
+    private LocationsCalculator lc;
  
     public InvoiceProcessor() {
     }

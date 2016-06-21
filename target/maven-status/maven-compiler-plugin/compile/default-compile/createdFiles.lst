@@ -1,4 +1,5 @@
 websocket\NAW\NAWEncoder.class
+service\CordonService.class
 websocket\NAW\INAWDecoder.class
 model\Location_.class
 websocket\CarOwner\CarOwnerDecoder.class
@@ -11,13 +12,16 @@ model\Location.class
 model\Road.class
 batch\InvoiceReader.class
 websocket\CarTracker\CarTrackerDecoder.class
+dao\CordonDAOImp.class
 service\ICarTrackerService.class
 dao\RoadDAOImp.class
+Beans\InvoicePaidBean.class
 dao\RoadRateDAOImp.class
 model\CarOwner.class
 model\NAW_.class
 dao\CarOwnerDAOImp.class
 dao\RoadDAO.class
+service\ICordonService.class
 model\Cordon_.class
 service\CarTrackerService.class
 service\ICarOwnerService.class
@@ -27,12 +31,14 @@ dao\InvoiceDAOImp.class
 websocket\CarOwner\CarOwnerSocket.class
 calculations\LocationsCalculator.class
 model\NAW.class
+endpoints\MonitoringEndpointREST.class
 service\IRoadService.class
 dao\CarOwnerDAO.class
 dao\CarTrackerDAO.class
 service\IInvoiceService.class
 dao\InvoiceDAO.class
 dao\RoadRateDAO.class
+dao\CordonDAO.class
 model\Invoice_.class
 model\RoadRate_.class
 model\Road_.class
@@ -56,6 +62,7 @@ websocket\Politie\PolitieEncoder.class
 dao\CarTrackerDAOImp.class
 service\RoadService.class
 batch\InvoiceProcessor.class
+SendQueue\InvoiceQueueSend.class
 pdf\PdfBuilder.class
 websocket\CarTracker\CarTrackerSocket.class
 service\InvoiceService.class
@@ -63,4 +70,5 @@ batch\InvoiceWriter.class
 model\Cordon.class
 websocket\NAW\NAWDecoder.class
 batch\AESencrp.class
+controller\CarTrackerServlet.class
 model\RoadRate.class

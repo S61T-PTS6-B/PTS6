@@ -52,5 +52,10 @@ public class InvoiceService implements IInvoiceService{
 	public void saveInvoice(Invoice in) {
 		ida.saveInvoice(in);
 	}
+
+	@Override
+	public void sendLetter(Long invoiceID) {
+		ida.sendLetter(invoiceID);
+	}
 	
 }

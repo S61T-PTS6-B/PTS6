@@ -466,7 +466,8 @@
 		    <h2>Actieve kilometertarieven</h2>
 		    <select id= "activeroadrateList" name="roadrateList" size="5" onchange="PopulateData()">
 
-		</select>
+		</select><br />
+		    <button>Tarief</button> <button>Tijdsinterval</button>
 		    
 		    <p><h2>Weg gegevens </h1></p>
 		    <img id="addico" onclick="div_showct();

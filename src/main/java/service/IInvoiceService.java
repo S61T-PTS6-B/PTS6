@@ -27,5 +27,7 @@ public interface IInvoiceService {
 	public List<Invoice> getPaidInvoicesByNAW(NAW naw);
 	
 	public void saveInvoice(Invoice in);
+
+	public void sendLetter(Long invoiceID);
 	
 }
