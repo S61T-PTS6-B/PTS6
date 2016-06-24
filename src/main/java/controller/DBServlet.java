@@ -281,7 +281,6 @@ public class DBServlet extends HttpServlet {
 				js.put("licensePlate", ct.getLicensePlate());
 				js.put("modelCar", ct.getModelCar());
 				js.put("brandCar", ct.getBrandCar());
-				js.put("websiteSubscription", ct.isRekeningrijdersWebsite());
 				jsonArray.add(js);
 			}
 			container.put("cartrackers", jsonArray);
@@ -567,7 +566,7 @@ public class DBServlet extends HttpServlet {
 			String city = req.getParameter("city");
 			String telephone = req.getParameter("telephone");
 			String email = req.getParameter("email");
-			NAW n = new NAW(bsn, firstname, lastname, address, number, zipcode, city, telephone, email);
+			NAW n = new NAW(bsn, firstname, lastname, address, number, zipcode, city, telephone, email, false);
 			ns.createNAW(n);
 			req.setAttribute("naws", ns.getAllNaws());
 			RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/pages/manage.jsp");
@@ -592,7 +591,7 @@ public class DBServlet extends HttpServlet {
 			String license = req.getParameter("license");
 			String carmodel = req.getParameter("carmodel");
 			String carbrand = req.getParameter("carbrand");
-			CarTracker ct = new CarTracker(category, license, carmodel, carbrand, true);
+			CarTracker ct = new CarTracker(category, license, carmodel, carbrand);
 			cts.createCarTracker(ct);
 			req.setAttribute("CTs", cts.getAllCarTrackers());
 			Date startdate = new Date();

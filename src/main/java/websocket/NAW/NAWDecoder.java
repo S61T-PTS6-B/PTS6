@@ -40,23 +40,37 @@ public class NAWDecoder implements INAWDecoder {
 		bsnReceive = jsonObj.getString("bsn");
 		int bsnConverted = Integer.parseInt(bsnReceive);
 		test = ns.getNAWByBsn(bsnConverted);
-		String email = jsonObj.getString("newmail");
-		String telephone = jsonObj.getString("newphone");
-		if (email.equals("")) {
-			if (telephone.equals("")) {
-				test = ns.getNAWByBsn(bsnConverted);
-				return encode.Encode(test);
+		try {
+			System.out.println(object);
+			String email = jsonObj.getString("newmail");
+			String telephone = jsonObj.getString("newphone");
+			String register = jsonObj.getString("register");
+			if (email.equals("")) {
+				if (telephone.equals("")) {
+					if (register.equals("")) {
+						test = ns.getNAWByBsn(bsnConverted);
+						return encode.Encode(test);
+					} else {
+						test = ns.getNAWByBsn(bsnConverted);
+						NAW result = ns.changeMembership(test);
+						return encode.Encode(result);
+					}
+
+				} else {
+					String newphone = jsonObj.getString("newphone");
+					System.out.println("Nieuwe telefoon: " + newphone);
+					NAW result = ns.changePhone(test, newphone);
+					return encode.Encode(result);
+				}
 			} else {
-				String newphone = jsonObj.getString("newphone");
-				System.out.println("Nieuwe telefoon: " + newphone);
-				NAW result = ns.changePhone(test, newphone);
+				String newmail = jsonObj.getString("newmail");
+				System.out.println("Nieuwe email: " + newmail);
+				NAW result = ns.changeMail(test, newmail);
 				return encode.Encode(result);
 			}
-		} else {
-			String newmail = jsonObj.getString("newmail");
-			System.out.println("Nieuwe email: " + newmail);
-			NAW result = ns.changeMail(test, newmail);
-			return encode.Encode(result);
+		} catch (JSONException e) {
+			System.out.println("Er is geen goede JSON string gestuurd.");
+			return null;
 		}
 
 	}

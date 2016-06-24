@@ -14,30 +14,32 @@ import model.NAW;
  */
 public interface INAWService {
 
-	public void createNAW(NAW naw);
+	void createNAW(NAW naw);
 
-	public List<NAW> getAllNaws();
+	List<NAW> getAllNaws();
 
-	public NAW getNAWByBsn(int bsn);
+	NAW getNAWByBsn(int bsn);
 
-	public NAW changeMail(NAW naw, String newmail);
+	NAW changeMail(NAW naw, String newmail);
 
-	public NAW changePhone(NAW naw, String newphone);
+	NAW changePhone(NAW naw, String newphone);
 
-	public NAW changeFirstname(NAW naw, String newfirstname);
+	NAW changeFirstname(NAW naw, String newfirstname);
 
-	public NAW changeLastname(NAW naw, String newlastname);
+	NAW changeLastname(NAW naw, String newlastname);
 
-	public NAW changeAddress(NAW naw, String newstreet);
+	NAW changeAddress(NAW naw, String newstreet);
 
-	public NAW changeHouseNumber(NAW naw, String newnumber);
+	NAW changeHouseNumber(NAW naw, String newnumber);
 	
-	public NAW changeZipcode(NAW naw, String newzipcode);
+	NAW changeZipcode(NAW naw, String newzipcode);
 	
-	public NAW changeCity(NAW naw, String newcity);
+	NAW changeCity(NAW naw, String newcity);
 	
-	public NAW changeTelephone(NAW naw, String newtelephone);
+	NAW changeTelephone(NAW naw, String newtelephone);
 	
-	public NAW changeEmail(NAW naw, String newmail);
+	NAW changeEmail(NAW naw, String newmail);
+	
+	NAW changeMembership(NAW naw);
 
 }

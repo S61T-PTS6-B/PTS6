@@ -39,4 +39,6 @@ public interface NawDAO {
 	public NAW changeTelephone(NAW naw, String newtelephone);
 	
 	public NAW changeEmail(NAW naw, String newmail);
+	
+	public NAW changeMembership(NAW naw);
 }

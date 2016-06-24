@@ -115,4 +115,11 @@ public class NawDAOImp implements NawDAO {
 		em.merge(naw);
 		return naw;
 	}
+
+	@Override
+	public NAW changeMembership(NAW naw) {
+		naw.setMembership(true);
+		em.merge(naw);
+		return naw;
+	}
 }

@@ -35,7 +35,6 @@ public class CarTrackerEncoder {
 				.add("licensePlate", ct.getLicensePlate())
 				.add("modelCar", ct.getModelCar())
 				.add("brandCar", ct.getBrandCar())
-				.add("websiteSubscription", ct.isRekeningrijdersWebsite())
 				.build();
 			jsonar.add(json);
 		}

@@ -95,11 +95,6 @@ public class CarTrackerDAOImp implements CarTrackerDAO {
 	}
 
 	@Override
-	public void changeWebsiteSubscription(CarTracker ct, Boolean subscription) {
-		ct.setRekeningrijdersWebsite(subscription);
-	}
-
-	@Override
 	public CarTracker getSingleCarTrackerByNaw(NAW naw) {
 		CarTracker ctWithId = (CarTracker) em.createQuery("SELECT t.carid FROM CarOwner t WHERE t.nawid = :naw_id").setParameter("naw_id", naw).getSingleResult();
 		long id = ctWithId.getId();
@@ -131,4 +126,5 @@ public class CarTrackerDAOImp implements CarTrackerDAO {
 		}
 
 	}
+
 }

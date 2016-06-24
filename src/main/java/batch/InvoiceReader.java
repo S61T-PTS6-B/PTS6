@@ -52,7 +52,7 @@ public class InvoiceReader implements javax.batch.api.chunk.ItemReader {
      
         String send = "month=" + month + "&year=" + year;
         String encrp = AESencrp.encrypt(send);
-        String url = "http://145.93.81.6:8080/VerplaatsingSysteem/Rest/carTrackers/allMonth?code=" + encrp;
+        String url = "http://145.93.80.184:8080/VerplaatsingSysteem/Rest/carTrackers/allMonth?code=" + encrp;
 
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();

@@ -36,8 +36,6 @@ public interface CarTrackerDAO {
     public void changeModelCar(CarTracker ct, String modelcar);
     
     public void changeBrandCar(CarTracker ct, String brandcar);
-    
-    public void changeWebsiteSubscription(CarTracker ct, Boolean subscription);
 
     public CarTracker getSingleCarTrackerByNaw(NAW naw);
 

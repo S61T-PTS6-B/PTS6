@@ -86,4 +86,9 @@ public class NAWService implements INAWService {
 		return nd.changeEmail(naw, newmail);
 	}
 
+	@Override
+	public NAW changeMembership(NAW naw) {
+		return nd.changeMembership(naw);
+	}
+
 }

@@ -5,6 +5,7 @@
  */
 package websocket.NAW;
 
+import java.math.BigDecimal;
 import javax.ejb.Stateless;
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -32,6 +33,7 @@ public class NAWEncoder {
                 .add("city", object.getCity())
                 .add("telephone", object.getTelephone())
                 .add("email", object.getEmail())
+		.add("websitesubscription", String.valueOf(object.isMembership()))
                 .build();
         return json.toString();
     }

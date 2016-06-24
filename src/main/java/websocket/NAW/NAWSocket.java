@@ -23,24 +23,29 @@ import org.json.JSONException;
 @ServerEndpoint(value = "/NAWSocket")
 public class NAWSocket {
 
-    private Set<Session> sessions = Collections.synchronizedSet(new HashSet<Session>());
-    @Inject
-    INAWDecoder decoder;
+	private Set<Session> sessions = Collections.synchronizedSet(new HashSet<Session>());
+	@Inject
+	INAWDecoder decoder;
 
-    public NAWSocket() {
-    }
+	public NAWSocket() {
+	}
 
-    @OnOpen
-    public void onOpen(Session session) {
-        System.out.println("Server : open");
-        sessions.add(session);
-    }
+	@OnOpen
+	public void onOpen(Session session) {
+		try {
+			System.out.println("Server : open");
+			sessions.add(session);
+		} catch (Exception e) {
+			System.out.println("Shit man");
+		}
 
-    @OnMessage
-    public String onMessage(String Message) throws JSONException {
-        System.out.println("Receive from client: " + Message);
-        String replyMessage = decoder.Decode(Message);
-        System.out.println("send to client: " + replyMessage);
-        return replyMessage;
-    }
+	}
+
+	@OnMessage
+	public String onMessage(String Message) throws JSONException {
+		System.out.println("Receive from client: " + Message);
+		String replyMessage = decoder.Decode(Message);
+		System.out.println("send to client: " + replyMessage);
+		return replyMessage;
+	}
 }

@@ -38,18 +38,16 @@ public class CarTracker implements Serializable {
     private String licensePlate;
     private String modelCar;
     private String brandCar;
-    private boolean websiteSubscription;
 
     public CarTracker() {
     } 
     
 
-    public CarTracker(String prizeCategory, String licensePlate, String modelCar, String brandCar, boolean websiteSubscription) {
+    public CarTracker(String prizeCategory, String licensePlate, String modelCar, String brandCar) {
         this.priceCategory = prizeCategory;
         this.licensePlate = licensePlate;
         this.modelCar = modelCar;
         this.brandCar = brandCar;
-        this.websiteSubscription = websiteSubscription;
     }
 
     public String getPriceCategory() {
@@ -82,14 +80,6 @@ public class CarTracker implements Serializable {
 
     public void setBrandCar(String merkAuto) {
         this.brandCar = merkAuto;
-    }
-
-    public boolean isRekeningrijdersWebsite() {
-        return websiteSubscription;
-    }
-
-    public void setRekeningrijdersWebsite(boolean rekeningrijdersWebsite) {
-        this.websiteSubscription = rekeningrijdersWebsite;
     }
 
     public Long getId() {
